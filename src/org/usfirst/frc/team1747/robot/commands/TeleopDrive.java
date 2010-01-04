@@ -29,7 +29,7 @@ public class TeleopDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	driveTrain.TankDrive(controller.getLeftVert(), controller.getRightVert());
+    	driveTrain.tankDrive(controller.getLeftVert(), controller.getRightVert());
     }
     
     // Make this return true when this Command no longer needs to run execute()
