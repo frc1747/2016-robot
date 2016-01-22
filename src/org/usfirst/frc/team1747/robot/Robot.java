@@ -15,10 +15,7 @@ import org.usfirst.frc.team1747.robot.subsystems.Shooter;
  * directory.
  */
 public class Robot extends IterativeRobot {
-<<<<<<< HEAD
-=======
 
->>>>>>> 92ba008c418b3980965e1d4ea49ee975d270b106
 	public static OI oi;
 	public static Shooter shooter;
 	public static DriveTrain drive;
@@ -31,13 +28,6 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		shooter = new Shooter();
 		drive = new DriveTrain();
-<<<<<<< HEAD
-        chooser = new SendableChooser();
-//        chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
-        
-=======
->>>>>>> 92ba008c418b3980965e1d4ea49ee975d270b106
     }
 	
 	/**
