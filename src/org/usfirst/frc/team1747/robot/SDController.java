@@ -15,30 +15,6 @@ public class SDController {
 		SmartDashboard.putData(Scheduler.getInstance());
 	}
 
-	public double getDampeningConstant() {
-		return SmartDashboard.getNumber("Dampening Constant");
-	}
-
-	public double getElevatorP() {
-		return SmartDashboard.getNumber("Elevator P");
-	}
-
-	public double getElevatorI() {
-		return SmartDashboard.getNumber("Elevator I");
-	}
-
-	public double getElevatorD() {
-		return SmartDashboard.getNumber("Elevator D");
-	}
-
-	public double getRightDamper() {
-		return SmartDashboard.getNumber("Right Damper");
-	}
-
-	public double getLeftDamper() {
-		return SmartDashboard.getNumber("Left Damper");
-	}
-
 	public void refresh() {
 		oi.getController().logToSmartDashboard();
 		driveTrain.logToSmartDashboard();
