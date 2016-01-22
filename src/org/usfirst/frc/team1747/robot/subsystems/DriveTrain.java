@@ -31,6 +31,11 @@ public class DriveTrain extends Subsystem {
 		rightTalon2.set(rightSpeed);
 		
 	}
+	
+	public void arcadeDrive(double straight, double turn){
+			tankDrive(straight+turn, straight-turn);
+	
+	}
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
