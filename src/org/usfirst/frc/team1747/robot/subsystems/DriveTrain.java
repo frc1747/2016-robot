@@ -71,4 +71,9 @@ public class DriveTrain extends Subsystem {
 		setDefaultCommand(new TeleopDrive());
 		
 	}
+
+	public void logToSmartDashboard() {
+		// TODO Auto-generated method stub
+		
+	}
 }
