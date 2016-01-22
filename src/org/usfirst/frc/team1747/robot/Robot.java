@@ -2,14 +2,10 @@
 package org.usfirst.frc.team1747.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
-
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,12 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 92ba008c418b3980965e1d4ea49ee975d270b106
 	public static OI oi;
 	public static Shooter shooter;
 	public static DriveTrain drive;
-    Command autonomousCommand;
-    SendableChooser chooser;
-
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -33,10 +31,13 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		shooter = new Shooter();
 		drive = new DriveTrain();
+<<<<<<< HEAD
         chooser = new SendableChooser();
 //        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
         
+=======
+>>>>>>> 92ba008c418b3980965e1d4ea49ee975d270b106
     }
 	
 	/**
@@ -62,21 +63,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-        autonomousCommand = (Command) chooser.getSelected();
-        
-		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new MyAutoCommand();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new ExampleCommand();
-			break;
-		} */
-    	
-    	// schedule the autonomous command (example)
-        if (autonomousCommand != null) autonomousCommand.start();
+
     }
 
     /**
@@ -87,12 +74,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-        if (autonomousCommand != null) autonomousCommand.cancel();
-    }
+	}
 
     /**
      * This function is called periodically during operator control
