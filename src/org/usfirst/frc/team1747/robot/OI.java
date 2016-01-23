@@ -2,6 +2,7 @@ package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.commands.Shoot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.USBCamera;
 
 public class OI {
 
@@ -17,5 +18,25 @@ public class OI {
 			controller = new CyborgController(0);
 		}
 		return controller;
+	}
+	
+	private USBCamera intakeCamera;
+	
+	public USBCamera getIntakeCamera() {
+		if (intakeCamera == null){
+			intakeCamera = new USBCamera();
+			intakeCamera.openCamera(); 
+			
+		}
+		return intakeCamera;
+	}
+	private USBCamera shooterCamera;
+	
+	public USBCamera getShooterCamera() {
+		if (shooterCamera == null){
+			shooterCamera = new USBCamera();
+			shooterCamera.openCamera();
+		}
+		return shooterCamera;
 	}
 }
