@@ -5,29 +5,29 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class Cyborg {
-	
+
 	private static final int JOY_LEFT_BUMPER = 5;
 	private static final int JOY_RIGHT_BUMPER = 6;
-	private static final int TRIGGER_LEFT_BUTTON=7;
-	private static final int TRIGGER_RIGHT_BUTTON=8;
+	private static final int TRIGGER_LEFT_BUTTON = 7;
+	private static final int TRIGGER_RIGHT_BUTTON = 8;
 
-	private static final int BACK_BUTTON=9;
-	private static final int START_BUTTON=10;
+	private static final int BACK_BUTTON = 9;
+	private static final int START_BUTTON = 10;
 
-	private static final int LEFT_JOY_PRESS=11;
-	private static final int RIGHT_JOY_PRESS=12;
+	private static final int LEFT_JOY_PRESS = 11;
+	private static final int RIGHT_JOY_PRESS = 12;
 
-	private static final int FPS_BUTTON=13;
-	
+	private static final int FPS_BUTTON = 13;
+
 	JoystickButton leftBumper, rightBumper, leftTrigger, rightTrigger;
 	JoystickButton leftJoystickPress, rightJoystickPress;
 	JoystickButton fpsButton, backButton, startButton;
-	
+
 	Joystick controller;
-	
-	public Cyborg(int portNum){
-		controller=new Joystick(portNum);
-		leftBumper=new JoystickButton(controller,JOY_LEFT_BUMPER);
+
+	public Cyborg(int portNum) {
+		controller = new Joystick(portNum);
+		leftBumper = new JoystickButton(controller, JOY_LEFT_BUMPER);
 		rightBumper = new JoystickButton(controller, JOY_RIGHT_BUMPER);
 		leftTrigger = new JoystickButton(controller, TRIGGER_LEFT_BUTTON);
 		rightTrigger = new JoystickButton(controller, TRIGGER_RIGHT_BUTTON);
@@ -35,9 +35,9 @@ public abstract class Cyborg {
 		rightJoystickPress = new JoystickButton(controller, RIGHT_JOY_PRESS);
 		fpsButton = new JoystickButton(controller, FPS_BUTTON);
 		backButton = new JoystickButton(controller, BACK_BUTTON);
-		startButton = new JoystickButton(controller, START_BUTTON);	
+		startButton = new JoystickButton(controller, START_BUTTON);
 	}
-	
+
 	public JoystickButton getLeftBumper() {
 		return leftBumper;
 	}
@@ -69,23 +69,31 @@ public abstract class Cyborg {
 	public JoystickButton getStartButton() {
 		return startButton;
 	}
-	
+
 	public JoystickButton getBackButton() {
 		return backButton;
 	}
-	
-	public int getDPad(){
+
+	public int getDPad() {
 		return controller.getPOV();
 	}
 
 	abstract public JoystickButton getButtonOne();
+
 	abstract public JoystickButton getButtonTwo();
+
 	abstract public JoystickButton getButtonThree();
+
 	abstract public JoystickButton getButtonFour();
-	abstract public double getLeftVert() ;
-	abstract public double getLeftHoriz() ;
-	abstract public double getRightVert() ;
-	abstract public double getRightHoriz() ;
+
+	abstract public double getLeftVert();
+
+	abstract public double getLeftHoriz();
+
+	abstract public double getRightVert();
+
+	abstract public double getRightHoriz();
+
 	abstract public double getTriggerAxis();
 
 	public void logToSmartDashboard() {

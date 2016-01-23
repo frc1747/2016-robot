@@ -3,7 +3,7 @@ package org.usfirst.frc.team1747.robot;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class PrecisionCyborgController extends Cyborg{
+public class PrecisionCyborgController extends Cyborg {
 
 	private static final int LEFT_JOY_HORIZ_AXIS = 0;
 	private static final int LEFT_JOY_VERT_AXIS = 1;
@@ -12,7 +12,7 @@ public class PrecisionCyborgController extends Cyborg{
 	private static final int RIGHT_JOY_VERT_AXIS = 4;
 
 	private static final int TRIGGER_AXIS = 3;
-	
+
 	private static final int JOY_SQUARE_BUTTON = 1;
 	private static final int JOY_X_BUTTON = 2;
 	private static final int JOY_CIRCLE_BUTTON = 3;
@@ -43,8 +43,8 @@ public class PrecisionCyborgController extends Cyborg{
 	public double getRightHoriz() {
 		return controller.getRawAxis(RIGHT_JOY_HORIZ_AXIS);
 	}
-	
-	public double getTriggerAxis(){
+
+	public double getTriggerAxis() {
 		return -controller.getRawAxis(TRIGGER_AXIS);
 	}
 
@@ -64,12 +64,12 @@ public class PrecisionCyborgController extends Cyborg{
 		return buttonTriangle;
 	}
 
-	public void logToSmartDashboard(){
+	public void logToSmartDashboard() {
 		super.logToSmartDashboard();
-		SmartDashboard.putBoolean("Button One",buttonSquare.get());
-		SmartDashboard.putBoolean("Button Two",buttonX.get());
-		SmartDashboard.putBoolean("Button Three",buttonCircle.get());
-		SmartDashboard.putBoolean("Button Four",buttonTriangle.get());
+		SmartDashboard.putBoolean("Button One", buttonSquare.get());
+		SmartDashboard.putBoolean("Button Two", buttonX.get());
+		SmartDashboard.putBoolean("Button Three", buttonCircle.get());
+		SmartDashboard.putBoolean("Button Four", buttonTriangle.get());
 		SmartDashboard.putNumber("Left Joystick X", getLeftHoriz());
 		SmartDashboard.putNumber("Left Joystick Y", getLeftVert());
 		SmartDashboard.putNumber("Right Joystick X", getRightHoriz());
