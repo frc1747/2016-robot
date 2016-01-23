@@ -36,6 +36,7 @@ public class OI {
 		if (shooterCamera == null){
 			shooterCamera = new USBCamera();
 			shooterCamera.openCamera();
+			shooterCamera.startCapture();
 		}
 		return shooterCamera;
 	}
