@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1747.robot.commands;
 
 import org.usfirst.frc.team1747.robot.OI;
+import org.usfirst.frc.team1747.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,7 +11,7 @@ public class SwitchCamera extends Command {
 	OI oi;
 
 	public SwitchCamera() {
-		oi = new OI();
+		oi = Robot.getOi();
 	}
 
 	@Override

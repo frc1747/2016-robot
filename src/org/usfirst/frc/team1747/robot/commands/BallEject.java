@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class BallEject extends Command {
 	
 	Intake intake;
-	DigitalInput input, input2;
+	DigitalInput liftInput, intakeInput;
 	double startTime;
 	
 	//input senses if the arm is low enough to get the ball
@@ -17,14 +17,14 @@ public class BallEject extends Command {
 	
 	public BallEject(){
 		intake = Robot.getIntake();
-		input = intake.getLiftInput();
-		input2 = intake.getIntakeInput();
+		liftInput = intake.getLiftInput();
+		intakeInput = intake.getIntakeInput();
 		requires(intake);
 	}
 
 	protected void initialize() {
 		intake.liftControl(0.5);
-		if(input.get()){
+		if(liftInput.get()){
 			intake.liftControl(0);
 		}
 		startTime = System.currentTimeMillis(); 
@@ -37,12 +37,7 @@ public class BallEject extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		if(System.currentTimeMillis() - startTime >= 2000){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return (System.currentTimeMillis() - startTime >= 2000);
 	}
 
 	@Override
@@ -52,8 +47,6 @@ public class BallEject extends Command {
 
 	@Override
 	protected void interrupted() {
-		// TODO Auto-generated method stub
-
 	}
 
 }
