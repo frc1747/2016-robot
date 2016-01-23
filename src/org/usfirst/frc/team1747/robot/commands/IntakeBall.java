@@ -34,28 +34,14 @@ public class IntakeBall extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		if(input2.get()){
-			return true;
-		}
-			else{
-				return false;
-		}
-		// TODO Auto-generated method stub
-		//System.out.println(System.currentTimeMillis() - startTime);
-		//System.currentTimeMillis() - startTime > 50000.0;
+		return input2.get();
 	}
 
-	@Override
 	protected void end() {
 		intake.rollerControl(0);
-		}
-		// TODO Auto-generated method stub
-		//shooter.shoot(0.0);
-
-	@Override
+	}
+	
 	protected void interrupted() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 

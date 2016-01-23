@@ -8,25 +8,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Intake extends Subsystem {
-    CANTalon liftCIM1, liftCIM2, rollerCIM;
+    CANTalon liftMotorOne, liftMotorTwo, rollerMotor;
     public static DigitalInput liftInput, intakeInput;
     
     public Intake(){
-    	liftCIM1 = new CANTalon(33);
-    	liftCIM2 = new CANTalon(44);
-    	rollerCIM = new CANTalon(55);
-    	
+    	liftMotorOne = new CANTalon(33);
+    	liftMotorTwo = new CANTalon(44);
+    	rollerMotor = new CANTalon(55);
     }
     
     public void liftControl(double speed){
-    	liftCIM1.set(-speed);
-    	liftCIM2.set(speed);
-    	
+    	liftMotorOne.set(-speed);
+    	liftMotorTwo.set(speed);
     }
     
     public void rollerControl(double speed){
-    	rollerCIM.set(speed);
-    	
+    	rollerMotor.set(speed);
     }
     
     public DigitalInput getLiftInput(){
@@ -39,8 +36,6 @@ public class Intake extends Subsystem {
 
 
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
     }
 }
 
