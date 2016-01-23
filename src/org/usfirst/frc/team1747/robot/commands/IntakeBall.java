@@ -10,6 +10,9 @@ public class IntakeBall extends Command {
 	
 	Intake intake;
 	DigitalInput input = new DigitalInput(1);
+	DigitalInput input2 = new DigitalInput(2);
+	//input senses if the arm is low enough to get the ball
+	//input2 senses if we have a ball
 	
 	public IntakeBall(){
 		intake = Robot.getIntake();
@@ -29,16 +32,23 @@ public class IntakeBall extends Command {
 
 	@Override
 	protected boolean isFinished() {
+		if(input2.get()){
+			return true;
+		}
+			else{
+				return false;
+		}
 		// TODO Auto-generated method stub
 		//System.out.println(System.currentTimeMillis() - startTime);
-		return false;//System.currentTimeMillis() - startTime > 50000.0;
+		//System.currentTimeMillis() - startTime > 50000.0;
 	}
 
 	@Override
 	protected void end() {
+		intake.rollerControl(0);
+		}
 		// TODO Auto-generated method stub
 		//shooter.shoot(0.0);
-	}
 
 	@Override
 	protected void interrupted() {
