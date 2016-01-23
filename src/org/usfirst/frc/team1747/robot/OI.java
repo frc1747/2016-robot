@@ -2,6 +2,8 @@ package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.commands.BallEject;
 import org.usfirst.frc.team1747.robot.commands.IntakeBall;
+import org.usfirst.frc.team1747.robot.commands.IntakeManual;
+
 import org.usfirst.frc.team1747.robot.commands.Shoot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.USBCamera;
@@ -15,6 +17,8 @@ public class OI {
 		getController().buttonA.cancelWhenPressed(new Shoot(0.0));
 		getController().buttonB.whenPressed(new IntakeBall());
 		getController().buttonX.whenPressed(new BallEject());
+		getController().buttonY.whenPressed(new IntakeManual(SmartDashboard.getNumber("Intake Speed", 1.0)));
+		getController().buttonY.cancelWhenPressed(new IntakeManual(0.0));
 	}
 
 	public CyborgController getController() {
