@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import org.usfirst.frc.team1747.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -8,18 +10,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Intake extends Subsystem {
-    CANTalon liftMotorOne, liftMotorTwo, rollerMotor;
+    CANTalon leftLiftMotor, rightLiftMotor, rollerMotor;
     public static DigitalInput liftInput, intakeInput;
     
     public Intake(){
-    	liftMotorOne = new CANTalon(33);
-    	liftMotorTwo = new CANTalon(44);
-    	rollerMotor = new CANTalon(55);
+    	leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
+    	rightLiftMotor = new CANTalon(RobotMap.RIGHT_LIFT_MOTOR);
+    	rollerMotor = new CANTalon(RobotMap.ROLLER_MINICIM);
     }
     
     public void liftControl(double speed){
-    	liftMotorOne.set(-speed);
-    	liftMotorTwo.set(speed);
+    	leftLiftMotor.set(-speed);
+    	rightLiftMotor.set(speed);
     }
     
     public void rollerControl(double speed){

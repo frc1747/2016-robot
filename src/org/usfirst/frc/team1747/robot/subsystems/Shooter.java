@@ -1,27 +1,29 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import org.usfirst.frc.team1747.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Shooter extends Subsystem {
 
-	CANTalon leftMotorOne, leftMotorTwo;
-	CANTalon rightMotorOne, rightMotorTwo;
+	CANTalon leftShooterMotorOne, leftShooterMotorTwo;
+	CANTalon rightShooterMotorOne, rightShooterMotorTwo;
 
 	public Shooter() {
-		System.out.println("Motor created");
-		leftMotorOne = new CANTalon(1);
-		leftMotorTwo = new CANTalon(22);
-		rightMotorOne = new CANTalon(22);
-		rightMotorTwo = new CANTalon(2);
+		System.out.println("ShooterMotor created");
+		leftShooterMotorOne = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_ONE);
+		leftShooterMotorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
+		rightShooterMotorOne = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_ONE);
+		rightShooterMotorTwo = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_TWO);
 	}
 
 	public void shoot(double speed) {
 		System.out.println("Shooting " + speed);
-		leftMotorOne.set(-speed);
-		leftMotorTwo.set(-speed);
-		rightMotorOne.set(speed);
-		rightMotorTwo.set(speed);
+		leftShooterMotorOne.set(-speed);
+		leftShooterMotorTwo.set(-speed);
+		rightShooterMotorOne.set(speed);
+		rightShooterMotorTwo.set(speed);
 	}
 
 	protected void initDefaultCommand() {
