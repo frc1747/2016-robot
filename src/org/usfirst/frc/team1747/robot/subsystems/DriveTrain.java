@@ -31,12 +31,17 @@ public class DriveTrain extends Subsystem {
 		leftCimTwo = new CANTalon(RobotMap.LEFT_DRIVE_CIM_TWO);
 		leftMiniCim = new CANTalon(RobotMap.LEFT_DRIVE_MINICIM);
 		rightCimOne = new CANTalon(RobotMap.RIGHT_DRIVE_CIM_ONE);
+		rightCimOne.setInverted(true);
 		rightCimTwo = new CANTalon(RobotMap.RIGHT_DRIVE_CIM_TWO);
+		rightCimTwo.setInverted(true);
 		rightMiniCim = new CANTalon(RobotMap.RIGHT_DRIVE_MINICIM);
+		rightMiniCim.setInverted(true);
+		
 		for(int j = 0; j < SIGMOIDSTRETCH.length; j++){
 			leftTargetDeltas[j] = 0.0;
 			rightTargetDeltas[j] = 0.0;
 		}
+		
 		prevLeftTarget = 0.0;
 		prevRightTarget = 0.0;
 		pLeftCurrent = 0.0;

@@ -61,7 +61,6 @@ public class Robot extends IterativeRobot {
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the switch structure below with additional strings & commands.
 	 */
-	@Override
 	public void autonomousInit() {
 		sd.refresh();
 	}

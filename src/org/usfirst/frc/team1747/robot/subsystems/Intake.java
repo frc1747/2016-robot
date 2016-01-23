@@ -16,12 +16,13 @@ public class Intake extends Subsystem {
     public Intake(){
     	leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
     	rightLiftMotor = new CANTalon(RobotMap.RIGHT_LIFT_MOTOR);
+    	rightLiftMotor.setInverted(true);
     	rollerMotor = new CANTalon(RobotMap.ROLLER_MINICIM);
     }
     
     //Moves the arm
     public void liftControl(double speed){
-    	leftLiftMotor.set(-speed);
+    	leftLiftMotor.set(speed);
     	rightLiftMotor.set(speed);
     }
     
