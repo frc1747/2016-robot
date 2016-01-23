@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 /**
@@ -19,6 +20,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static Shooter shooter;
 	public static DriveTrain drive;
+	public static Intake intake;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -85,5 +87,8 @@ public class Robot extends IterativeRobot {
     }
     public static DriveTrain getDriveTrain(){
     	return drive;
+    }
+    public static Intake getIntake(){
+    	return intake;
     }
 }
