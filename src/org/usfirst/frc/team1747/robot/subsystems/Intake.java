@@ -19,11 +19,13 @@ public class Intake extends Subsystem {
     	rollerMotor = new CANTalon(RobotMap.ROLLER_MINICIM);
     }
     
+    //Moves the arm
     public void liftControl(double speed){
     	leftLiftMotor.set(-speed);
     	rightLiftMotor.set(speed);
     }
     
+    //Sets the pickup speed
     public void rollerControl(double speed){
     	rollerMotor.set(speed);
     }

@@ -12,15 +12,13 @@ public class IntakeManual extends Command{
 
 	
 	
-	//input senses if the arm is low enough to get the ball
-	//input2 senses if we have a ball
-	
 	public IntakeManual(double speed){
 		intake = Robot.getIntake();
 		requires(intake);
 		this.speed = speed;
 	}
-
+	
+	//Set the intake/eject system to a specified speed
 	protected void initialize() {
 		intake.rollerControl(speed);
 	}

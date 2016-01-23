@@ -21,7 +21,8 @@ public class BallEject extends Command {
 		intakeInput = intake.getIntakeInput();
 		requires(intake);
 	}
-
+	
+	//Put the arm in position to eject the ball it is holding
 	protected void initialize() {
 		intake.liftControl(0.5);
 		if(liftInput.get()){
@@ -30,17 +31,18 @@ public class BallEject extends Command {
 		startTime = System.currentTimeMillis(); 
 		
 	}
-
+	
+	//Eject the ball
 	protected void execute() {
 		intake.rollerControl(-0.5);
 	}
 
-	@Override
+	//After 2000milliseconds, stop the motors
 	protected boolean isFinished() {
 		return (System.currentTimeMillis() - startTime >= 2000);
 	}
 
-	@Override
+	
 	protected void end() {
 		intake.rollerControl(0.0);
 	}

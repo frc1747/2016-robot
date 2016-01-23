@@ -11,8 +11,8 @@ public class IntakeBall extends Command {
 	Intake intake;
 	DigitalInput liftInput, intakeInput;
 	
-	//input senses if the arm is low enough to get the ball
-	//input2 senses if we have a ball
+	//liftInput senses if the arm is low enough to get the ball
+	//intakeInput senses if we have a ball
 	
 	public IntakeBall(){
 		intake = Robot.getIntake();
@@ -21,22 +21,24 @@ public class IntakeBall extends Command {
 		requires(intake);
 	}
 
+	//Move the arm into position to pick up a ball
 	protected void initialize() {
 		intake.liftControl(0.5);
 		if(liftInput.get()){
 			intake.liftControl(0);
 		}
 	}
-
+	
+	//Pick up a ball
 	protected void execute() {
 		intake.rollerControl(0.5);
 	}
 
-	@Override
 	protected boolean isFinished() {
 		return intakeInput.get();
 	}
-
+	
+	//The intake stops when a ball is sensed in the robot
 	protected void end() {
 		intake.rollerControl(0);
 	}
