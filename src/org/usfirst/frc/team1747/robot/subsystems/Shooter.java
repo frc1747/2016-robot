@@ -3,14 +3,15 @@ package org.usfirst.frc.team1747.robot.subsystems;
 import org.usfirst.frc.team1747.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
-public class Shooter extends Subsystem {
+public class Shooter extends PIDSubsystem {
 
 	CANTalon leftShooterMotorOne, leftShooterMotorTwo;
 	CANTalon rightShooterMotorOne, rightShooterMotorTwo;
 
-	public Shooter() {
+	public Shooter(double P, double I, double D) {
+		super(P,I,D);
 		System.out.println("ShooterMotor created");
 		leftShooterMotorOne = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_ONE);
 		leftShooterMotorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
@@ -30,6 +31,17 @@ public class Shooter extends Subsystem {
 	}
 
 	protected void initDefaultCommand() {
+	}
+
+	@Override
+	protected double returnPIDInput() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected void usePIDOutput(double arg0) {
+		shoot(arg0);
 	}
 
 }

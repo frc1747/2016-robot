@@ -27,11 +27,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		shooter = new Shooter();
+		shooter = new Shooter(0,0,0);
+		//0,0,0 are PID Values
 		drive = new DriveTrain();
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
+		
 	}
 
 	/**
