@@ -3,15 +3,16 @@ package org.usfirst.frc.team1747.robot.subsystems;
 import org.usfirst.frc.team1747.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
-public class Shooter extends Subsystem {
+public class Shooter extends PIDSubsystem {
 
 	CANTalon leftShooterMotorOne, leftShooterMotorTwo;
 	CANTalon rightShooterMotorOne, rightShooterMotorTwo;
 
-	public Shooter() {
+	public Shooter(double P, double I, double D) {
+		super(P, I, D);
 		System.out.println("ShooterMotor created");
 		leftShooterMotorOne = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_ONE);
 		leftShooterMotorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
@@ -22,6 +23,7 @@ public class Shooter extends Subsystem {
 		SmartDashboard.putNumber("Shooter Speed", 1.0);
 	}
 
+	// Runs the shooting motors at the speed given from teleop drive
 	public void shoot(double speed) {
 		System.out.println("Shooting " + speed);
 		leftShooterMotorOne.set(speed);
@@ -34,6 +36,17 @@ public class Shooter extends Subsystem {
 	}
 
 	public void logToSmartDashboard() {
+
+	}
+
+	@Override
+	protected double returnPIDInput() {
+		return 0;
+	}
+
+	@Override
+	protected void usePIDOutput(double arg0) {
+		shoot(arg0);
 	}
 
 }
