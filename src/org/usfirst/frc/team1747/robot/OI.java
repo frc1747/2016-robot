@@ -11,8 +11,7 @@ public class OI {
 	private CyborgController controller;
 
 	public OI() {
-		getController().buttonA.whenPressed(new Shoot(SmartDashboard.getNumber("Shooter Speed", 1.0)));
-		getController().buttonA.cancelWhenPressed(new Shoot(0.0));
+		getController().buttonA.whileHeld(new Shoot(SmartDashboard.getNumber("Shooter Speed", 1.0)));
 		getController().buttonB.whenPressed(new IntakeBall());
 		getController().buttonX.whenPressed(new BallEject());
 	}

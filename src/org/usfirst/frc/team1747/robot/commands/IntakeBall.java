@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class IntakeBall extends Command {
-	
+
 	Intake intake;
 	DigitalInput liftInput, intakeInput;
-	
-	//input senses if the arm is low enough to get the ball
-	//input2 senses if we have a ball
-	
-	public IntakeBall(){
+
+	// input senses if the arm is low enough to get the ball
+	// input2 senses if we have a ball
+
+	public IntakeBall() {
 		intake = Robot.getIntake();
 		liftInput = intake.getLiftInput();
 		intakeInput = intake.getIntakeInput();
@@ -23,7 +23,7 @@ public class IntakeBall extends Command {
 
 	protected void initialize() {
 		intake.liftControl(0.5);
-		if(liftInput.get()){
+		if (liftInput.get()) {
 			intake.liftControl(0);
 		}
 	}
@@ -40,9 +40,8 @@ public class IntakeBall extends Command {
 	protected void end() {
 		intake.rollerControl(0);
 	}
-	
+
 	protected void interrupted() {
 	}
-	
 
 }

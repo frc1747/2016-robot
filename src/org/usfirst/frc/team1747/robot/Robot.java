@@ -21,6 +21,7 @@ public class Robot extends IterativeRobot {
 	private static DriveTrain drive;
 	private static SDController sd;
 	private static Intake intake;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -66,9 +67,6 @@ public class Robot extends IterativeRobot {
 		sd.refresh();
 	}
 
-    public static Intake getIntake(){
-    	return intake;
-    }
 	/**
 	 * This function is called periodically during autonomous
 	 */
@@ -119,5 +117,9 @@ public class Robot extends IterativeRobot {
 
 	public static Shooter getShooter() {
 		return shooter;
+	}
+
+	public static Intake getIntake() {
+		return intake;
 	}
 }

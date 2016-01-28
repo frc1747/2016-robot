@@ -4,6 +4,7 @@ import org.usfirst.frc.team1747.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends Subsystem {
 
@@ -18,6 +19,7 @@ public class Shooter extends Subsystem {
 		rightShooterMotorTwo = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_TWO);
 		rightShooterMotorOne.setInverted(true);
 		rightShooterMotorTwo.setInverted(true);
+		SmartDashboard.putNumber("Shooter Speed", 1.0);
 	}
 
 	public void shoot(double speed) {
@@ -29,6 +31,9 @@ public class Shooter extends Subsystem {
 	}
 
 	protected void initDefaultCommand() {
+	}
+
+	public void logToSmartDashboard() {
 	}
 
 }
