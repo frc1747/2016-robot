@@ -26,7 +26,7 @@ public class TeleopDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		driveTrain.tankDrive(controller.getLeftVert(), controller.getRightVert());
+		driveTrain.smoothDrive(controller.getLeftVert(), controller.getRightHoriz());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
