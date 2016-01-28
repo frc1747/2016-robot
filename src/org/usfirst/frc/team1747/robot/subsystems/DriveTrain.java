@@ -7,6 +7,7 @@ import org.usfirst.frc.team1747.robot.commands.TeleopDrive;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
 	CANTalon leftCimOne, leftCimTwo, leftMiniCim;
@@ -72,6 +73,8 @@ public class DriveTrain extends Subsystem {
 
 	// This is a public void that logs smart dashboard.
 	public void logToSmartDashboard() {
+		SmartDashboard.putNumber("Left Speed", leftCimTwo.getSpeed());
+		SmartDashboard.putNumber("Right Speed", rightCimTwo.getSpeed());
 	}
 }
 

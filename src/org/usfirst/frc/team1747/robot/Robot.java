@@ -30,6 +30,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		shooter = new Shooter();
 		drive = new DriveTrain();
+		intake = new Intake();
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
