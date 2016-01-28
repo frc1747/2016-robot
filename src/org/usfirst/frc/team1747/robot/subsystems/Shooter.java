@@ -16,12 +16,14 @@ public class Shooter extends Subsystem {
 		leftShooterMotorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
 		rightShooterMotorOne = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_ONE);
 		rightShooterMotorTwo = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_TWO);
+		rightShooterMotorOne.setInverted(true);
+		rightShooterMotorTwo.setInverted(true);
 	}
 
 	public void shoot(double speed) {
 		System.out.println("Shooting " + speed);
-		leftShooterMotorOne.set(-speed);
-		leftShooterMotorTwo.set(-speed);
+		leftShooterMotorOne.set(speed);
+		leftShooterMotorTwo.set(speed);
 		rightShooterMotorOne.set(speed);
 		rightShooterMotorTwo.set(speed);
 	}
