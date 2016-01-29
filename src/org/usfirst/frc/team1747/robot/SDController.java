@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -11,11 +12,13 @@ public class SDController {
 	private OI oi;
 	private DriveTrain driveTrain;
 	private Shooter shooter;
+	private Intake intake;
 
 	public SDController() {
 		oi = Robot.getOi();
 		driveTrain = Robot.getDrive();
-		shooter=Robot.getShooter();
+		shooter = Robot.getShooter();
+		intake = Robot.getIntake();
 		SmartDashboard.putData(Scheduler.getInstance());
 	}
 
@@ -23,5 +26,6 @@ public class SDController {
 		oi.getController().logToSmartDashboard();
 		driveTrain.logToSmartDashboard();
 		shooter.logToSmartDashboard();
+		intake.logToSmartDashboard();
 	}
 }

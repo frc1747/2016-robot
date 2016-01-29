@@ -9,41 +9,40 @@ import edu.wpi.first.wpilibj.command.Command;
 public class IntakeBall extends Command {
 
 	Intake intake;
-	DigitalInput liftInput, intakeInput;
 
 	// liftInput senses if the arm is low enough to get the ball
 	// intakeInput senses if we have a ball
-
 	public IntakeBall() {
 		intake = Robot.getIntake();
-		liftInput = intake.getLiftInput();
-		intakeInput = intake.getIntakeInput();
 		requires(intake);
 	}
 
-	// Move the arm into position to pick up a ball
 	protected void initialize() {
-		intake.liftControl(0.5);
-		if (liftInput.get()) {
-			intake.liftControl(0);
-		}
+
 	}
 
 	// Pick up a ball
 	protected void execute() {
 		intake.rollerControl(0.5);
+		if (!intake.isAtBottom()) {
+			intake.liftControl(-.5);
+		} else {
+			intake.liftControl(0);
+		}
 	}
 
 	protected boolean isFinished() {
-		return intakeInput.get();
+		return intake.hasBall();
 	}
 
 	// The intake stops when a ball is sensed in the robot
 	protected void end() {
 		intake.rollerControl(0);
+		intake.liftControl(0);
 	}
 
 	protected void interrupted() {
+		end();
 	}
 
 }
