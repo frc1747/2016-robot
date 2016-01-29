@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends Subsystem {
-	
+
 	CANTalon leftLiftMotor, rightLiftMotor, rollerMotor;
 	DigitalInput bottomIntake, topIntake, ballIntake;
 
@@ -31,6 +31,14 @@ public class Intake extends Subsystem {
 			leftLiftMotor.set(0);
 			rightLiftMotor.set(0);
 		}
+	}
+
+	public void moveLiftDown() {
+		liftControl(.5);
+	}
+
+	public void moveLiftUp() {
+		liftControl(-.5);
 	}
 
 	// Sets the pickup speed

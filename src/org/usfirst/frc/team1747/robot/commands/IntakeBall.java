@@ -25,7 +25,7 @@ public class IntakeBall extends Command {
 	protected void execute() {
 		intake.rollerControl(0.5);
 		if (!intake.isAtBottom()) {
-			intake.liftControl(-.5);
+			intake.moveLiftDown();
 		} else {
 			intake.liftControl(0);
 		}
