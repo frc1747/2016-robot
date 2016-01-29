@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
 import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.commands.IntakeManual;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -40,6 +41,14 @@ public class Intake extends Subsystem {
 	public void moveLiftUp() {
 		liftControl(-.5);
 	}
+	
+	public void intakeBall() {
+		rollerControl(0.5);
+	}
+	
+	public void ejectBall() {
+		rollerControl(-0.5);
+	}
 
 	// Sets the pickup speed
 	public void rollerControl(double speed) {
@@ -47,6 +56,7 @@ public class Intake extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
+		setDefaultCommand(new IntakeManual());
 	}
 
 	public boolean isAtBottom() {

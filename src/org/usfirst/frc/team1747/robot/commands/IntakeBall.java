@@ -23,7 +23,7 @@ public class IntakeBall extends Command {
 
 	// Pick up a ball
 	protected void execute() {
-		intake.rollerControl(0.5);
+		intake.intakeBall();
 		if (!intake.isAtBottom()) {
 			intake.moveLiftDown();
 		} else {

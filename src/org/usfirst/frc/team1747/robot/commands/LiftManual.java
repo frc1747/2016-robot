@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class IntakeManual extends Command {
+public class LiftManual extends Command {
 
 	Intake intake;
 	OI oi;
 	
-    public IntakeManual() {
+    public LiftManual() {
     	intake = Robot.getIntake();
     	oi = Robot.getOi();
         requires(intake);
@@ -27,10 +27,10 @@ public class IntakeManual extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(oi.getController().getDPad() != -1){
-    		if(oi.getController().getDPad() == 0){
-    			intake.intakeBall();
-    		} else if (oi.getController().getDPad() == 180){
-    			intake.ejectBall();
+    		if(oi.getController().getDPad() == 90){
+    			intake.moveLiftUp();;
+    		} else if (oi.getController().getDPad() == 270){
+    			intake.moveLiftDown();
     		}
     	}
     }

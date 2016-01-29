@@ -22,7 +22,7 @@ public class BallEject extends Command {
 
 	// Eject the ball
 	protected void execute() {
-		intake.rollerControl(-0.5);
+		intake.ejectBall();
 	}
 
 	// After 2000milliseconds, stop the motors
