@@ -15,6 +15,7 @@ public class OI {
 
 	public OI() {
 		getController().getRightTrigger().whileHeld(new Shoot());
+		getController().getLeftTrigger().whileHeld(new ReverseShooter());
 		getController().getButtonOne().whenPressed(new	IntakeBall());
 		getController().getButtonTwo().whenPressed(new LowerLift());
 		getController().getButtonThree().whenPressed(new BallEject());
