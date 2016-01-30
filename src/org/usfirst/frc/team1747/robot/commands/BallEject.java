@@ -47,6 +47,7 @@ public class BallEject extends Command {
 
 	@Override
 	protected void end() {
+		intake.rollerControl(0);
 		// TODO Auto-generated method stub
 		// shooter.shoot(0.0);
 	}
