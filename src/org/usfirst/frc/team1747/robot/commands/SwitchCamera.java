@@ -14,13 +14,9 @@ public class SwitchCamera extends Command {
 		oi = Robot.getOi();
 	}
 
-	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
-
 	}
-
-	@Override
+	
 	protected void execute() {
 		if (shooterCamera) {
 			oi.getShooterCamera().startCapture();
@@ -33,21 +29,13 @@ public class SwitchCamera extends Command {
 		shooterCamera = !shooterCamera;
 	}
 
-	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
-
 	}
 
-	@Override
 	protected void interrupted() {
-		// TODO Auto-generated method stub
 	}
-
 }
