@@ -5,21 +5,21 @@ import org.usfirst.frc.team1747.robot.commands.IntakeManual;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends Subsystem {
 
-	CANTalon leftLiftMotor, rightLiftMotor, rollerMotor;
-	DigitalInput bottomIntake, topIntake, ballIntake;
+	CANTalon leftLiftMotor, rightLiftMotor;
+	Talon rollerMotor;
+	DigitalInput ballIntake;
 
 	public Intake() {
 		leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
 		rightLiftMotor = new CANTalon(RobotMap.RIGHT_LIFT_MOTOR);
 		rightLiftMotor.setInverted(true);
-		rollerMotor = new CANTalon(RobotMap.ROLLER_MINICIM);
-		bottomIntake = new DigitalInput(RobotMap.BOTTOM_INTAKE);
-		topIntake = new DigitalInput(RobotMap.TOP_INTAKE);
+		rollerMotor = new Talon(RobotMap.ROLLER_MINICIM);
 		ballIntake = new DigitalInput(RobotMap.BALL_INTAKE);
 	}
 
@@ -41,11 +41,11 @@ public class Intake extends Subsystem {
 	public void moveLiftUp() {
 		liftControl(-.5);
 	}
-	
+
 	public void intakeBall() {
 		rollerControl(0.5);
 	}
-	
+
 	public void ejectBall() {
 		rollerControl(-0.5);
 	}
@@ -59,12 +59,14 @@ public class Intake extends Subsystem {
 		setDefaultCommand(new IntakeManual());
 	}
 
+	// TODO: Verify
 	public boolean isAtBottom() {
-		return bottomIntake.get();
+		return leftLiftMotor.isFwdLimitSwitchClosed() && rightLiftMotor.isFwdLimitSwitchClosed();
 	}
 
+	// TODO: Verify
 	public boolean isAtTop() {
-		return topIntake.get();
+		return leftLiftMotor.isRevLimitSwitchClosed() && rightLiftMotor.isRevLimitSwitchClosed();
 	}
 
 	public boolean hasBall() {
@@ -75,6 +77,5 @@ public class Intake extends Subsystem {
 		SmartDashboard.putBoolean("TopIntake", isAtTop());
 		SmartDashboard.putBoolean("BottomIntake", isAtBottom());
 		SmartDashboard.putBoolean("BallIntake", hasBall());
-
 	}
 }
