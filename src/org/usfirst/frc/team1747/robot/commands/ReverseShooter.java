@@ -8,10 +8,14 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ReverseShooter extends Command {
 	Shooter shooter;
 
-	@Override
-	protected void initialize() {
+	public ReverseShooter() {
 		shooter = Robot.getShooter();
 		requires(shooter);
+	}
+
+	@Override
+	protected void initialize() {
+
 	}
 
 	@Override
