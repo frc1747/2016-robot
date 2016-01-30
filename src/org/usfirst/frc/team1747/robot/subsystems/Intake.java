@@ -1,46 +1,80 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.commands.IntakeManual;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- *
- */
 public class Intake extends Subsystem {
-    CANTalon liftCIM1, liftCIM2, rollerCIM;
-    public static DigitalInput liftInput, intakeInput;
-    
-    public Intake(){
-    	liftCIM1 = new CANTalon(33);
-    	liftCIM2 = new CANTalon(44);
-    	rollerCIM = new CANTalon(55);
-    	
-    }
-    
-    public void liftControl(double speed){
-    	liftCIM1.set(-speed);
-    	liftCIM2.set(speed);
-    	
-    }
-    
-    public void rollerControl(double speed){
-    	rollerCIM.set(speed);
-    	
-    }
-    
-    public DigitalInput getLiftInput(){
-    	return liftInput;
-    }
-    
-    public DigitalInput getIntakeInput(){
-    	return intakeInput;
-    }
 
+	CANTalon leftLiftMotor, rightLiftMotor, rollerMotor;
+	DigitalInput bottomIntake, topIntake, ballIntake;
 
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    }
+	public Intake() {
+		leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
+		rightLiftMotor = new CANTalon(RobotMap.RIGHT_LIFT_MOTOR);
+		rightLiftMotor.setInverted(true);
+		rollerMotor = new CANTalon(RobotMap.ROLLER_MINICIM);
+		bottomIntake = new DigitalInput(RobotMap.BOTTOM_INTAKE);
+		topIntake = new DigitalInput(RobotMap.TOP_INTAKE);
+		ballIntake = new DigitalInput(RobotMap.BALL_INTAKE);
+	}
+
+	// Moves the arm
+	public void liftControl(double speed) {
+		if ((speed > 0 && !isAtTop()) || (speed < 0 && !isAtBottom())) {
+			leftLiftMotor.set(speed);
+			rightLiftMotor.set(speed);
+		} else {
+			leftLiftMotor.set(0);
+			rightLiftMotor.set(0);
+		}
+	}
+
+	public void moveLiftDown() {
+		liftControl(.5);
+	}
+
+	public void moveLiftUp() {
+		liftControl(-.5);
+	}
+	
+	public void intakeBall() {
+		rollerControl(0.5);
+	}
+	
+	public void ejectBall() {
+		rollerControl(-0.5);
+	}
+
+	// Sets the pickup speed
+	public void rollerControl(double speed) {
+		rollerMotor.set(speed);
+	}
+
+	public void initDefaultCommand() {
+		setDefaultCommand(new IntakeManual());
+	}
+
+	public boolean isAtBottom() {
+		return bottomIntake.get();
+	}
+
+	public boolean isAtTop() {
+		return topIntake.get();
+	}
+
+	public boolean hasBall() {
+		return ballIntake.get();
+	}
+
+	public void logToSmartDashboard() {
+		SmartDashboard.putBoolean("TopIntake", isAtTop());
+		SmartDashboard.putBoolean("BottomIntake", isAtBottom());
+		SmartDashboard.putBoolean("BallIntake", hasBall());
+
+	}
 }
-

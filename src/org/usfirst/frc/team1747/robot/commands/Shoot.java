@@ -14,9 +14,7 @@ public class Shoot extends Command {
 	public Shoot(double speed) {
 		shooter = Robot.getShooter();
 		requires(shooter);
-		System.out.println("shooting!!!!");
 		this.speed = speed;
-		// startTime = System.currentTimeMillis();
 	}
 
 	protected void initialize() {
@@ -30,21 +28,16 @@ public class Shoot extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		// System.out.println(System.currentTimeMillis() - startTime);
-		return false;// System.currentTimeMillis() - startTime > 50000.0;
+		return false;
 	}
 
 	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
-		// shooter.shoot(0.0);
+		shooter.shoot(0.0);
 	}
 
 	@Override
 	protected void interrupted() {
-		// TODO Auto-generated method stub
-
+		end();
 	}
-
 }

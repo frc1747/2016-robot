@@ -7,56 +7,42 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class IntakeBall extends Command {
-	
+
 	Intake intake;
-	DigitalInput input, input2;
-	
-	//input senses if the arm is low enough to get the ball
-	//input2 senses if we have a ball
-	
-	public IntakeBall(){
+
+	// liftInput senses if the arm is low enough to get the ball
+	// intakeInput senses if we have a ball
+	public IntakeBall() {
 		intake = Robot.getIntake();
-		input = intake.getLiftInput();
-		input2 = intake.getIntakeInput();
 		requires(intake);
 	}
 
 	protected void initialize() {
-		intake.liftControl(0.5);
-		if(input.get()){
+
+	}
+
+	// Pick up a ball
+	protected void execute() {
+		intake.intakeBall();
+		if (!intake.isAtBottom()) {
+			intake.moveLiftDown();
+		} else {
 			intake.liftControl(0);
 		}
 	}
 
-	protected void execute() {
-		intake.rollerControl(0.5);
-	}
-
-	@Override
 	protected boolean isFinished() {
-		if(input2.get()){
-			return true;
-		}
-			else{
-				return false;
-		}
-		// TODO Auto-generated method stub
-		//System.out.println(System.currentTimeMillis() - startTime);
-		//System.currentTimeMillis() - startTime > 50000.0;
+		return intake.hasBall();
 	}
 
-	@Override
+	// The intake stops when a ball is sensed in the robot
 	protected void end() {
 		intake.rollerControl(0);
-		}
-		// TODO Auto-generated method stub
-		//shooter.shoot(0.0);
-
-	@Override
-	protected void interrupted() {
-		// TODO Auto-generated method stub
-		
+		intake.liftControl(0);
 	}
-	
+
+	protected void interrupted() {
+		end();
+	}
 
 }

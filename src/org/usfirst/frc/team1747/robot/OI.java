@@ -2,6 +2,9 @@ package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.commands.BallEject;
 import org.usfirst.frc.team1747.robot.commands.IntakeBall;
+import org.usfirst.frc.team1747.robot.commands.IntakeManual;
+import org.usfirst.frc.team1747.robot.commands.LowerLift;
+import org.usfirst.frc.team1747.robot.commands.RaiseLift;
 import org.usfirst.frc.team1747.robot.commands.Shoot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.USBCamera;
@@ -11,10 +14,11 @@ public class OI {
 	private CyborgController controller;
 
 	public OI() {
-		getController().buttonA.whenPressed(new Shoot(SmartDashboard.getNumber("Shooter Speed", 1.0)));
-		getController().buttonA.cancelWhenPressed(new Shoot(0.0));
-		getController().buttonB.whenPressed(new IntakeBall());
-		getController().buttonX.whenPressed(new BallEject());
+		getController().getRightTrigger().whileHeld(new Shoot(SmartDashboard.getNumber("Shooter Speed", 1.0)));
+		getController().getButtonOne().whenPressed(new LowerLift());
+		getController().getButtonTwo().whenPressed(new IntakeBall());
+		getController().getButtonThree().whenPressed(new BallEject());
+		getController().getButtonFour().whenPressed(new RaiseLift());
 	}
 
 	public CyborgController getController() {

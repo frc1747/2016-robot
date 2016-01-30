@@ -21,17 +21,21 @@ public class Robot extends IterativeRobot {
 	private static DriveTrain drive;
 	private static SDController sd;
 	private static Intake intake;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
-		shooter = new Shooter();
+		shooter = new Shooter(0,0,0);
+		//0,0,0 are PID Values
 		drive = new DriveTrain();
+		intake = new Intake();
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
+		
 	}
 
 	/**
@@ -61,14 +65,10 @@ public class Robot extends IterativeRobot {
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the switch structure below with additional strings & commands.
 	 */
-	@Override
 	public void autonomousInit() {
 		sd.refresh();
 	}
 
-    public static Intake getIntake(){
-    	return intake;
-    }
 	/**
 	 * This function is called periodically during autonomous
 	 */
@@ -119,5 +119,9 @@ public class Robot extends IterativeRobot {
 
 	public static Shooter getShooter() {
 		return shooter;
+	}
+
+	public static Intake getIntake() {
+		return intake;
 	}
 }

@@ -10,5 +10,23 @@ public class RobotMap {
 	public static final String INTAKE_CAMERA = "Cam1";
 	public static final String SHOOTER_CAMERA = "Cam2";
 	
-
+	public static final int LEFT_DRIVE_CIM_ONE = 11;
+	public static final int LEFT_DRIVE_CIM_TWO = 12;
+	public static final int LEFT_DRIVE_MINICIM = 13;
+	public static final int RIGHT_DRIVE_CIM_ONE = 21;
+	public static final int RIGHT_DRIVE_CIM_TWO = 22;
+	public static final int RIGHT_DRIVE_MINICIM = 23;
+	
+	public static final int LEFT_LIFT_MOTOR = 0;
+	public static final int RIGHT_LIFT_MOTOR = 0;
+	public static final int ROLLER_MINICIM = 0;
+	
+	public static final int LEFT_SHOOTER_MOTOR_ONE = 0;
+	public static final int LEFT_SHOOTER_MOTOR_TWO = 0;
+	public static final int RIGHT_SHOOTER_MOTOR_ONE = 0;
+	public static final int RIGHT_SHOOTER_MOTOR_TWO = 0;
+	
+	public static final int BOTTOM_INTAKE = 0;
+	public static final int TOP_INTAKE = 0;
+	public static final int BALL_INTAKE = 0;
 }

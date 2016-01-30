@@ -1,32 +1,52 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import org.usfirst.frc.team1747.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
-public class Shooter extends Subsystem {
+public class Shooter extends PIDSubsystem {
 
-	CANTalon leftShooter1, leftShooter2;
-	CANTalon rightShooter1, rightShooter2;
+	CANTalon leftShooterMotorOne, leftShooterMotorTwo;
+	CANTalon rightShooterMotorOne, rightShooterMotorTwo;
 
-	public Shooter() {
-		System.out.println("Shooter created");
-		leftShooter1 = new CANTalon(1);
-		rightShooter1 = new CANTalon(22);
-		leftShooter2 = new CANTalon(11);
-		rightShooter2 = new CANTalon(2);
+	public Shooter(double P, double I, double D) {
+		super(P, I, D);
+		System.out.println("ShooterMotor created");
+		leftShooterMotorOne = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_ONE);
+		leftShooterMotorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
+		rightShooterMotorOne = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_ONE);
+		rightShooterMotorTwo = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_TWO);
+		rightShooterMotorOne.setInverted(true);
+		rightShooterMotorTwo.setInverted(true);
+		SmartDashboard.putNumber("Shooter Speed", 1.0);
 	}
 
+	// Runs the shooting motors at the speed given from teleop drive
 	public void shoot(double speed) {
-		System.out.println("Shooting" + speed);
-		leftShooter1.set(-speed);
-		leftShooter2.set(-speed);
-		rightShooter1.set(speed);
-		rightShooter2.set(speed);
+		System.out.println("Shooting " + speed);
+		leftShooterMotorOne.set(speed);
+		leftShooterMotorTwo.set(speed);
+		rightShooterMotorOne.set(speed);
+		rightShooterMotorTwo.set(speed);
 	}
 
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
+	}
 
+	public void logToSmartDashboard() {
+
+	}
+
+	@Override
+	protected double returnPIDInput() {
+		return 0;
+	}
+
+	@Override
+	protected void usePIDOutput(double arg0) {
+		shoot(arg0);
 	}
 
 }
