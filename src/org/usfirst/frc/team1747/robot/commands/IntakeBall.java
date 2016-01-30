@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class IntakeBall extends Command {
 
 	Intake intake;
+	double time = -1;
 
 	// liftInput senses if the arm is low enough to get the ball
 	// intakeInput senses if we have a ball
@@ -18,21 +19,25 @@ public class IntakeBall extends Command {
 	}
 
 	protected void initialize() {
-
+		time = -1;
 	}
 
 	// Pick up a ball
 	protected void execute() {
 		intake.intakeBall();
-		if (!intake.isAtBottom()) {
-			intake.moveLiftDown();
-		} else {
-			intake.liftControl(0);
-		}
+		/*
+		 * if (!intake.isAtBottom()) { intake.moveLiftDown(); } else {
+		 * intake.liftControl(0); }
+		 */
 	}
 
 	protected boolean isFinished() {
-		return intake.hasBall();
+		if (intake.hasBall() && time == -1) {
+			time = System.currentTimeMillis();
+		} else if (time != -1 && System.currentTimeMillis() - time > 300) {
+			return true;
+		}
+		return false;
 	}
 
 	// The intake stops when a ball is sensed in the robot

@@ -28,9 +28,9 @@ public class DriveTrain extends Subsystem {
 		rightCimTwo = new CANTalon(RobotMap.RIGHT_DRIVE_CIM_TWO);
 		rightMiniCim = new CANTalon(RobotMap.RIGHT_DRIVE_MINICIM);
 		// Left and right motors face each other
-		rightCimOne.setInverted(true);
-		rightCimTwo.setInverted(true);
-		rightMiniCim.setInverted(true);
+		leftCimOne.setInverted(true);
+		leftCimTwo.setInverted(true);
+		leftMiniCim.setInverted(true);
 		for (int j = 0; j < SIGMOIDSTRETCH.length; j++) {
 			straightTargetDeltas.add(0.0);
 			rotationTargetDeltas.add(0.0);

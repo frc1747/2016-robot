@@ -1,29 +1,36 @@
 package org.usfirst.frc.team1747.robot.commands;
 
 import org.usfirst.frc.team1747.robot.Robot;
+import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shoot extends Command {
 
 	Shooter shooter;
-	double speed;
+	Intake intake;
 	double startTime;
+	double time = -1;
 
-	public Shoot(double speed) {
+	public Shoot() {
 		shooter = Robot.getShooter();
+		intake = Robot.getIntake();
 		requires(shooter);
-		this.speed = speed;
 	}
 
 	protected void initialize() {
+		double speed = SmartDashboard.getNumber("Shooter Speed", .25);
 		System.out.println(speed);
 		shooter.shoot(speed);
+		time = System.currentTimeMillis();
 	}
 
 	protected void execute() {
-
+		if (System.currentTimeMillis() - time > 3000) {
+			intake.intakeBall();
+		}
 	}
 
 	@Override
@@ -34,6 +41,7 @@ public class Shoot extends Command {
 	@Override
 	protected void end() {
 		shooter.shoot(0.0);
+		intake.rollerControl(0);
 	}
 
 	@Override

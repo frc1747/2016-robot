@@ -18,6 +18,7 @@ public class Intake extends Subsystem {
 	public Intake() {
 		leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
 		rightLiftMotor = new CANTalon(RobotMap.RIGHT_LIFT_MOTOR);
+		leftLiftMotor.setInverted(true);
 		rightLiftMotor.setInverted(true);
 		rollerMotor = new Talon(RobotMap.ROLLER_MINICIM);
 		ballIntake = new DigitalInput(RobotMap.BALL_INTAKE);
@@ -43,11 +44,11 @@ public class Intake extends Subsystem {
 	}
 
 	public void intakeBall() {
-		rollerControl(0.5);
+		rollerControl(1);
 	}
 
 	public void ejectBall() {
-		rollerControl(-0.5);
+		rollerControl(-1);
 	}
 
 	// Sets the pickup speed

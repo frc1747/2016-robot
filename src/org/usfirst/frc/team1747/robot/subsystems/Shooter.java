@@ -18,9 +18,9 @@ public class Shooter extends PIDSubsystem {
 		leftShooterMotorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
 		rightShooterMotorOne = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_ONE);
 		rightShooterMotorTwo = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_TWO);
-		rightShooterMotorOne.setInverted(true);
-		rightShooterMotorTwo.setInverted(true);
-		SmartDashboard.putNumber("Shooter Speed", 1.0);
+		leftShooterMotorOne.setInverted(true);
+		leftShooterMotorTwo.setInverted(true);
+		SmartDashboard.putNumber("Shooter Speed", 0.250);
 	}
 
 	// Runs the shooting motors at the speed given from teleop drive
