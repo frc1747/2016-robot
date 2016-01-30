@@ -17,7 +17,7 @@ public class DriveTrain extends Subsystem {
 	LinkedList<Double> straightTargetDeltas = new LinkedList<Double>();
 	LinkedList<Double> rotationTargetDeltas = new LinkedList<Double>();
 
-	double pStraightTarget=0.0, pRotationTarget=0.0, prevTargetStraight=0.0, prevTargetRotation=0.0;
+	double pStraightTarget = 0.0, pRotationTarget = 0.0, prevTargetStraight = 0.0, prevTargetRotation = 0.0;
 
 	// Sets up CANTalons for drive train
 	public DriveTrain() {
@@ -66,6 +66,7 @@ public class DriveTrain extends Subsystem {
 		arcadeDrive(pStraightTarget, pRotationTarget);
 	}
 
+	@Override
 	public void initDefaultCommand() {
 		setDefaultCommand(new TeleopDrive());
 
@@ -77,4 +78,3 @@ public class DriveTrain extends Subsystem {
 		SmartDashboard.putNumber("Right Speed", rightCimTwo.getSpeed());
 	}
 }
-

@@ -3,7 +3,6 @@ package org.usfirst.frc.team1747.robot.commands;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class IntakeBall extends Command {
@@ -18,11 +17,13 @@ public class IntakeBall extends Command {
 		requires(intake);
 	}
 
+	@Override
 	protected void initialize() {
 		time = -1;
 	}
 
 	// Pick up a ball
+	@Override
 	protected void execute() {
 		intake.intakeBall();
 		/*
@@ -31,6 +32,7 @@ public class IntakeBall extends Command {
 		 */
 	}
 
+	@Override
 	protected boolean isFinished() {
 		if (intake.hasBall() && time == -1) {
 			time = System.currentTimeMillis();
@@ -41,11 +43,13 @@ public class IntakeBall extends Command {
 	}
 
 	// The intake stops when a ball is sensed in the robot
+	@Override
 	protected void end() {
 		intake.rollerControl(0);
 		intake.liftControl(0);
 	}
 
+	@Override
 	protected void interrupted() {
 		end();
 	}

@@ -11,33 +11,38 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RaiseLift extends Command {
 
 	Intake intake;
-	
-    public RaiseLift() {
-    	intake = Robot.getIntake();
-        requires(intake);
-    }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	intake.moveLiftUp();
-    }
+	public RaiseLift() {
+		intake = Robot.getIntake();
+		requires(intake);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	// Called just before this Command runs the first time
+	@Override
+	protected void initialize() {
+		intake.moveLiftUp();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return intake.isAtTop();
-    }
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		return intake.isAtTop();
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {
+
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {
+	}
 }

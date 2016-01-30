@@ -3,8 +3,8 @@ package org.usfirst.frc.team1747.robot.subsystems;
 import org.usfirst.frc.team1747.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends PIDSubsystem {
 
@@ -32,6 +32,7 @@ public class Shooter extends PIDSubsystem {
 		rightShooterMotorTwo.set(speed);
 	}
 
+	@Override
 	protected void initDefaultCommand() {
 	}
 

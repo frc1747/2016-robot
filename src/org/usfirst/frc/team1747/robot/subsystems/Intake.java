@@ -56,6 +56,7 @@ public class Intake extends Subsystem {
 		rollerMotor.set(speed);
 	}
 
+	@Override
 	public void initDefaultCommand() {
 		setDefaultCommand(new IntakeManual());
 	}

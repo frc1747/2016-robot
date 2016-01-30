@@ -1,11 +1,12 @@
 package org.usfirst.frc.team1747.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
+
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,14 +29,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		shooter = new Shooter(0,0,0);
-		//0,0,0 are PID Values
+		shooter = new Shooter(0, 0, 0);
+		// 0,0,0 are PID Values
 		drive = new DriveTrain();
 		intake = new Intake();
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
-		
+
 	}
 
 	/**
@@ -65,6 +66,7 @@ public class Robot extends IterativeRobot {
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the switch structure below with additional strings & commands.
 	 */
+	@Override
 	public void autonomousInit() {
 		sd.refresh();
 	}

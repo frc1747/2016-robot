@@ -28,42 +28,52 @@ public class PrecisionCyborgController extends Cyborg {
 		buttonCircle = new JoystickButton(controller, JOY_CIRCLE_BUTTON);
 	}
 
+	@Override
 	public double getLeftVert() {
 		return -controller.getRawAxis(LEFT_JOY_VERT_AXIS);
 	}
 
+	@Override
 	public double getLeftHoriz() {
 		return controller.getRawAxis(LEFT_JOY_HORIZ_AXIS);
 	}
 
+	@Override
 	public double getRightVert() {
 		return -controller.getRawAxis(RIGHT_JOY_VERT_AXIS);
 	}
 
+	@Override
 	public double getRightHoriz() {
 		return controller.getRawAxis(RIGHT_JOY_HORIZ_AXIS);
 	}
 
+	@Override
 	public double getTriggerAxis() {
 		return -controller.getRawAxis(TRIGGER_AXIS);
 	}
 
+	@Override
 	public JoystickButton getButtonOne() {
 		return buttonSquare;
 	}
 
+	@Override
 	public JoystickButton getButtonThree() {
 		return buttonCircle;
 	}
 
+	@Override
 	public JoystickButton getButtonTwo() {
 		return buttonX;
 	}
 
+	@Override
 	public JoystickButton getButtonFour() {
 		return buttonTriangle;
 	}
 
+	@Override
 	public void logToSmartDashboard() {
 		super.logToSmartDashboard();
 		SmartDashboard.putBoolean("Button One", buttonSquare.get());

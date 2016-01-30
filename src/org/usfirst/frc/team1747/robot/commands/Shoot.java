@@ -20,6 +20,7 @@ public class Shoot extends Command {
 		requires(shooter);
 	}
 
+	@Override
 	protected void initialize() {
 		double speed = SmartDashboard.getNumber("Shooter Speed", .25);
 		System.out.println(speed);
@@ -27,6 +28,7 @@ public class Shoot extends Command {
 		time = System.currentTimeMillis();
 	}
 
+	@Override
 	protected void execute() {
 		if (System.currentTimeMillis() - time > 3000) {
 			intake.intakeBall();

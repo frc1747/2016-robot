@@ -15,20 +15,24 @@ public class BallEject extends Command {
 		requires(intake);
 	}
 
+	@Override
 	protected void initialize() {
 		startTime = System.currentTimeMillis();
 	}
 
 	// Eject the ball
+	@Override
 	protected void execute() {
 		intake.ejectBall();
 	}
 
 	// After 2000milliseconds, stop the motors
+	@Override
 	protected boolean isFinished() {
 		return (System.currentTimeMillis() - startTime >= 2000);
 	}
 
+	@Override
 	protected void end() {
 		intake.rollerControl(0.0);
 	}

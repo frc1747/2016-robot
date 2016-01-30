@@ -14,9 +14,11 @@ public class SwitchCamera extends Command {
 		oi = Robot.getOi();
 	}
 
+	@Override
 	protected void initialize() {
 	}
-	
+
+	@Override
 	protected void execute() {
 		if (shooterCamera) {
 			oi.getShooterCamera().startCapture();
@@ -29,13 +31,16 @@ public class SwitchCamera extends Command {
 		shooterCamera = !shooterCamera;
 	}
 
+	@Override
 	protected boolean isFinished() {
 		return false;
 	}
 
+	@Override
 	protected void end() {
 	}
 
+	@Override
 	protected void interrupted() {
 	}
 }
