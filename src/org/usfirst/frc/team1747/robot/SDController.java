@@ -5,6 +5,7 @@ import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SDController {
@@ -13,6 +14,7 @@ public class SDController {
 	private DriveTrain driveTrain;
 	private Shooter shooter;
 	private Intake intake;
+	private NetworkTable networkTable = NetworkTable.getTable("imageProcessing");
 
 	public SDController() {
 		oi = Robot.getOi();
@@ -27,5 +29,6 @@ public class SDController {
 		driveTrain.logToSmartDashboard();
 		shooter.logToSmartDashboard();
 		intake.logToSmartDashboard();
+		SmartDashboard.putString("ShooterDirection", networkTable.getString("ShootDirection", "robotUnknown"));
 	}
 }

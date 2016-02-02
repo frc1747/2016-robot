@@ -18,29 +18,33 @@ public class Intake extends Subsystem {
 	public Intake() {
 		leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
 		rightLiftMotor = new CANTalon(RobotMap.RIGHT_LIFT_MOTOR);
-		leftLiftMotor.setInverted(true);
-		rightLiftMotor.setInverted(true);
 		rollerMotor = new Talon(RobotMap.ROLLER_MINICIM);
 		ballIntake = new DigitalInput(RobotMap.BALL_INTAKE);
 	}
 
 	// Moves the arm
 	public void liftControl(double speed) {
-		if ((speed > 0 && !isAtTop()) || (speed < 0 && !isAtBottom())) {
+		if ((speed > 0 && !isAtTop())) {
+			SmartDashboard.putNumber("speed", speed);
+			leftLiftMotor.set(speed);
+			rightLiftMotor.set(speed);
+		} else if (speed < 0 && !isAtBottom()) {
+			SmartDashboard.putNumber("speed", speed);
 			leftLiftMotor.set(speed);
 			rightLiftMotor.set(speed);
 		} else {
+			SmartDashboard.putNumber("speed", 0);
 			leftLiftMotor.set(0);
 			rightLiftMotor.set(0);
 		}
 	}
 
 	public void moveLiftDown() {
-		liftControl(.5);
+		liftControl(-.25);
 	}
 
 	public void moveLiftUp() {
-		liftControl(-.5);
+		liftControl(.5);
 	}
 
 	public void intakeBall() {
@@ -63,12 +67,12 @@ public class Intake extends Subsystem {
 
 	// TODO: Verify
 	public boolean isAtBottom() {
-		return leftLiftMotor.isFwdLimitSwitchClosed() && rightLiftMotor.isFwdLimitSwitchClosed();
+		return leftLiftMotor.isRevLimitSwitchClosed() && rightLiftMotor.isRevLimitSwitchClosed();
 	}
 
 	// TODO: Verify
 	public boolean isAtTop() {
-		return leftLiftMotor.isRevLimitSwitchClosed() && rightLiftMotor.isRevLimitSwitchClosed();
+		return leftLiftMotor.isFwdLimitSwitchClosed() && rightLiftMotor.isFwdLimitSwitchClosed();
 	}
 
 	public boolean hasBall() {
