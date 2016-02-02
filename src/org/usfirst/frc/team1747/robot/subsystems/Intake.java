@@ -13,13 +13,14 @@ public class Intake extends Subsystem {
 
 	CANTalon leftLiftMotor, rightLiftMotor;
 	Talon rollerMotor;
-	DigitalInput ballIntake;
-
+	DigitalInput ballIntake, intakeLimit;
+	
 	public Intake() {
 		leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
 		rightLiftMotor = new CANTalon(RobotMap.RIGHT_LIFT_MOTOR);
 		rollerMotor = new Talon(RobotMap.ROLLER_MINICIM);
 		ballIntake = new DigitalInput(RobotMap.BALL_INTAKE);
+		intakeLimit = new DigitalInput(RobotMap.INTAKE_LIMIT);
 	}
 
 	// Moves the arm
