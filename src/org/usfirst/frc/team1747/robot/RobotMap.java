@@ -27,4 +27,5 @@ public class RobotMap {
 	public static final int RIGHT_SHOOTER_MOTOR_TWO = 44;
 
 	public static final int BALL_INTAKE = 9;
+	public static final int INTAKE_LIMIT = 3;
 }
