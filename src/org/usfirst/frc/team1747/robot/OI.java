@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1747.robot;
 
+import org.usfirst.frc.team1747.robot.commands.AutoShoot;
 import org.usfirst.frc.team1747.robot.commands.BallEject;
 import org.usfirst.frc.team1747.robot.commands.IntakeBall;
 import org.usfirst.frc.team1747.robot.commands.LowerLift;
@@ -20,6 +21,7 @@ public class OI {
 		getController().getButtonTwo().whenPressed(new LowerLift());
 		getController().getButtonThree().whenPressed(new BallEject());
 		getController().getButtonFour().whenPressed(new RaiseLift());
+		getController().getStartButton().whileHeld(new AutoShoot());
 	}
 
 	public CyborgController getController() {
