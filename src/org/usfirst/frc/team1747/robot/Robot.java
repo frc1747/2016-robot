@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1747.robot;
 
+import org.usfirst.frc.team1747.robot.commands.AutoShoot;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
@@ -68,7 +69,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		sd.refresh();
+		new AutoShoot().start();
 	}
 
 	/**

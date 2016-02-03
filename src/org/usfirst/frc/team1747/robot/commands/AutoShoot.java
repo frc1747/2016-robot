@@ -8,37 +8,40 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class AutoShoot extends Command {
-	
+
 	DriveTrain drive;
 	Shooter shoot;
 	NetworkTable networkTable;
-	
+
 	public AutoShoot() {
 		drive = Robot.getDrive();
 		shoot = Robot.getShooter();
 		networkTable = NetworkTable.getTable("imageProcessing");
 		requires(shoot);
+		requires(drive);
 	}
 
 	protected void initialize() {
-		
+		System.out.println("Running");
 	}
 
 	protected void execute() {
 		String direction = networkTable.getString("ShootDirection", "unknown");
-		if(direction == "left"){
-			drive.arcadeDrive(0.0, 0.3);
-		}
-		if(direction == "right"){
+		System.out.println(direction);
+		if (direction.equals("left")) {
 			drive.arcadeDrive(0.0, -0.3);
 		}
-		if(direction == "forward"){
+		if (direction.equals("right")) {
+			drive.arcadeDrive(0.0, 0.3);
+		}
+		if (direction.equals("forward")) {
 			drive.arcadeDrive(0.3, 0.0);
 		}
-		if(direction == "backward"){
+		if (direction.equals("backward")) {
 			drive.arcadeDrive(-0.3, 0.0);
 		}
-		if(direction == "shoot"){
+		if (direction.equals("shoot")) {
+			drive.arcadeDrive(0, 0);
 			shoot.shoot(0.5);
 		}
 	}
@@ -48,6 +51,8 @@ public class AutoShoot extends Command {
 	}
 
 	protected void end() {
+		shoot.shoot(0);
+		drive.arcadeDrive(0, 0);
 	}
 
 	protected void interrupted() {

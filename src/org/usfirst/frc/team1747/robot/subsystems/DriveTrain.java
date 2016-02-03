@@ -6,6 +6,7 @@ import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.commands.TeleopDrive;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

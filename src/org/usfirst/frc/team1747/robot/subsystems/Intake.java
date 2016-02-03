@@ -76,7 +76,7 @@ public class Intake extends Subsystem {
 	}
 
 	public boolean hasBall() {
-		return ballIntake.get();
+		return !ballIntake.get();
 	}
 
 	public void logToSmartDashboard() {
