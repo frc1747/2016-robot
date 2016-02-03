@@ -34,12 +34,7 @@ public class IntakeBall extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		if (intake.hasBall() && time == -1) {
-			time = System.currentTimeMillis();
-		} else if (time != -1 && System.currentTimeMillis() - time > 300) {
-			return true;
-		}
-		return false;
+		return intake.hasBall();
 	}
 
 	// The intake stops when a ball is sensed in the robot
