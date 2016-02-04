@@ -3,6 +3,7 @@ package org.usfirst.frc.team1747.robot.subsystems;
 import org.usfirst.frc.team1747.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -10,6 +11,7 @@ public class Shooter extends PIDSubsystem {
 
 	CANTalon leftShooterMotorOne, leftShooterMotorTwo;
 	CANTalon rightShooterMotorOne, rightShooterMotorTwo;
+	Solenoid led;
 
 	public Shooter(double P, double I, double D) {
 		super(P, I, D);
@@ -20,7 +22,8 @@ public class Shooter extends PIDSubsystem {
 		rightShooterMotorTwo = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_TWO);
 		leftShooterMotorOne.setInverted(true);
 		leftShooterMotorTwo.setInverted(true);
-		SmartDashboard.putNumber("Shooter Speed", 0.250);
+		led = new Solenoid(RobotMap.LED);
+		SmartDashboard.putNumber("Shooter Speed", 0.5);
 	}
 
 	// Runs the shooting motors at the speed given from teleop drive
@@ -49,5 +52,12 @@ public class Shooter extends PIDSubsystem {
 	protected void usePIDOutput(double arg0) {
 		shoot(arg0);
 	}
-
+	
+	public void turnOnLED(){
+		led.set(true);
+	}
+	
+	public void turnOffLED(){
+		led.set(false);
+	}
 }

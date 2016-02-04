@@ -22,7 +22,7 @@ public class Shoot extends Command {
 
 	@Override
 	protected void initialize() {
-		double speed = SmartDashboard.getNumber("Shooter Speed", .25);
+		double speed = SmartDashboard.getNumber("Shooter Speed", .5);
 		System.out.println(speed);
 		shooter.shoot(speed);
 		time = System.currentTimeMillis();

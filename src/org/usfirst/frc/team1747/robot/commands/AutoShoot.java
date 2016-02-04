@@ -23,6 +23,7 @@ public class AutoShoot extends Command {
 
 	protected void initialize() {
 		System.out.println("Running");
+		shoot.turnOnLED();
 	}
 
 	protected void execute() {
@@ -53,6 +54,7 @@ public class AutoShoot extends Command {
 	protected void end() {
 		shoot.shoot(0);
 		drive.arcadeDrive(0, 0);
+		shoot.turnOffLED();
 	}
 
 	protected void interrupted() {
