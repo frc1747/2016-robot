@@ -46,6 +46,10 @@ public class Intake extends Subsystem {
 	public void moveLiftUp() {
 		liftControl(.5);
 	}
+	
+	public void liftStop(){
+		liftControl(0);
+	}
 
 	public void intakeBall() {
 		rollerControl(1);
@@ -53,6 +57,10 @@ public class Intake extends Subsystem {
 
 	public void ejectBall() {
 		rollerControl(-1);
+	}
+	
+	public void rollerStop(){
+		rollerMotor.set(0);
 	}
 
 	// Sets the pickup speed

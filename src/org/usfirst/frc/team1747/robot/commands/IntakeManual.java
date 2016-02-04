@@ -30,14 +30,21 @@ public class IntakeManual extends Command {
 	protected void execute() {
 		if (oi.getController().getDPad() != -1) {
 			if (oi.getController().getDPad() == 90) {
+				intake.liftStop();
 				intake.rollerControl(-.75);
 			} else if (oi.getController().getDPad() == 270) {
+				intake.liftStop();
 				intake.rollerControl(.75);
-			} else {
-				intake.rollerControl(0);
+			} else if (oi.getController().getDPad() == 0) {
+				intake.rollerStop();
+				intake.moveLiftUp();
+			} else if (oi.getController().getDPad() == 180) {
+				intake.rollerStop();
+				intake.moveLiftDown();
 			}
 		} else {
-			intake.rollerControl(0);
+			intake.rollerStop();
+			intake.liftStop();
 		}
 	}
 

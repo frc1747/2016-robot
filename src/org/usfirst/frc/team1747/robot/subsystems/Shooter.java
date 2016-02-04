@@ -40,7 +40,8 @@ public class Shooter extends PIDSubsystem {
 	}
 
 	public void logToSmartDashboard() {
-
+		SmartDashboard.putNumber("Left Shooter Speed", getLeftSpeed());
+		SmartDashboard.putNumber("Right Shooter Speed", getRightSpeed());
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class Shooter extends PIDSubsystem {
 
 	@Override
 	protected void usePIDOutput(double arg0) {
-		shoot(arg0);
+		//shoot(arg0);
 	}
 	
 	public void turnOnLED(){
@@ -59,5 +60,13 @@ public class Shooter extends PIDSubsystem {
 	
 	public void turnOffLED(){
 		led.set(false);
+	}
+	
+	public double getLeftSpeed(){
+		return leftShooterMotorOne.getSpeed();
+	}
+	
+	public double getRightSpeed(){
+		return rightShooterMotorOne.getSpeed();
 	}
 }

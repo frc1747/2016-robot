@@ -18,6 +18,7 @@ public class Shoot extends Command {
 		shooter = Robot.getShooter();
 		intake = Robot.getIntake();
 		requires(shooter);
+		requires(intake);
 	}
 
 	@Override
