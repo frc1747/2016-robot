@@ -6,9 +6,6 @@ import org.usfirst.frc.team1747.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class IntakeManual extends Command {
 
 	Intake intake;
@@ -37,10 +34,10 @@ public class IntakeManual extends Command {
 				intake.rollerControl(.75);
 			} else if (oi.getController().getDPad() == 0) {
 				intake.rollerStop();
-				intake.moveLiftUp();
+				intake.liftControl(0.8);
 			} else if (oi.getController().getDPad() == 180) {
 				intake.rollerStop();
-				intake.moveLiftDown();
+				intake.liftControl(-0.5);
 			}
 		} else {
 			intake.rollerStop();

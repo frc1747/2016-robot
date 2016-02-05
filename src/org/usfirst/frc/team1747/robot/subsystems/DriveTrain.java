@@ -29,17 +29,17 @@ public class DriveTrain extends Subsystem {
 	// Sets up CANTalons for drive train
 	public DriveTrain() {
 		leftCimOne = new CANTalon(RobotMap.LEFT_DRIVE_CIM_ONE);
-		//setupPID(leftCimOne, CANTalon.TalonControlMode.Position);
+		setupPID(leftCimOne, CANTalon.TalonControlMode.Position);
 		leftCimTwo = new CANTalon(RobotMap.LEFT_DRIVE_CIM_TWO);
-		//setupPID(leftCimTwo, CANTalon.TalonControlMode.Follower);
+		setupPID(leftCimTwo, CANTalon.TalonControlMode.Follower);
 		leftMiniCim = new CANTalon(RobotMap.LEFT_DRIVE_MINICIM);
-		//setupPID(leftMiniCim, CANTalon.TalonControlMode.Follower);
+		setupPID(leftMiniCim, CANTalon.TalonControlMode.Follower);
 		rightCimOne = new CANTalon(RobotMap.RIGHT_DRIVE_CIM_ONE);
-		//setupPID(rightCimOne, CANTalon.TalonControlMode.Position);
+		setupPID(rightCimOne, CANTalon.TalonControlMode.Position);
 		rightCimTwo = new CANTalon(RobotMap.RIGHT_DRIVE_CIM_TWO);
-		//setupPID(rightCimTwo, CANTalon.TalonControlMode.Follower);
+		setupPID(rightCimTwo, CANTalon.TalonControlMode.Follower);
 		rightMiniCim = new CANTalon(RobotMap.RIGHT_DRIVE_MINICIM);
-		//setupPID(rightMiniCim, CANTalon.TalonControlMode.Follower);
+		setupPID(rightMiniCim, CANTalon.TalonControlMode.Follower);
 		// Left and right motors face each other
 		leftCimOne.setInverted(true);
 		leftCimTwo.setInverted(true);
@@ -80,8 +80,16 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void setupPID(CANTalon talon, CANTalon.TalonControlMode controlMode) {
-		talon.setControlMode(controlMode.getValue());
-		talon.setPID(kP, kI, kD);
+//		talon.setControlMode(controlMode.getValue());
+//		talon.setPID(kP, kI, kD);
+	}
+	
+	public double getLeftSpeed(){
+		return leftCimTwo.getSpeed();
+	}
+	
+	public double getRightSpeed(){
+		return -rightCimTwo.getSpeed();
 	}
 
 	@Override
@@ -92,7 +100,7 @@ public class DriveTrain extends Subsystem {
 
 	// This is a public void that logs smart dashboard.
 	public void logToSmartDashboard() {
-		SmartDashboard.putNumber("Left Speed", leftCimTwo.getSpeed());
-		SmartDashboard.putNumber("Right Speed", rightCimTwo.getSpeed());
+		SmartDashboard.putNumber("Left Speed", getLeftSpeed());
+		SmartDashboard.putNumber("Right Speed", getRightSpeed());
 	}
 }
