@@ -6,8 +6,6 @@ import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.commands.TeleopDrive;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.PWM;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,12 +14,12 @@ public class DriveTrain extends Subsystem {
 	CANTalon rightCimOne, rightCimTwo, rightMiniCim;
 
 	static final double[] SIGMOIDSTRETCH = { 0.03, 0.06, 0.09, 0.1, 0.11, 0.12, 0.11, 0.1, 0.09, 0.06, 0.03 };
-	
+
 	LinkedList<Double> straightTargetDeltas = new LinkedList<Double>();
 	LinkedList<Double> rotationTargetDeltas = new LinkedList<Double>();
 
 	double pStraightTarget = 0.0, pRotationTarget = 0.0, prevTargetStraight = 0.0, prevTargetRotation = 0.0;
-	
+
 	private static final double kP = 0;
 	private static final double kI = 0;
 	private static final double kD = 0;
@@ -78,17 +76,17 @@ public class DriveTrain extends Subsystem {
 		}
 		arcadeDrive(pStraightTarget, pRotationTarget);
 	}
-	
+
 	public void setupPID(CANTalon talon, CANTalon.TalonControlMode controlMode) {
-//		talon.setControlMode(controlMode.getValue());
-//		talon.setPID(kP, kI, kD);
+		// talon.setControlMode(controlMode.getValue());
+		// talon.setPID(kP, kI, kD);
 	}
-	
-	public double getLeftSpeed(){
+
+	public double getLeftSpeed() {
 		return leftCimTwo.getSpeed();
 	}
-	
-	public double getRightSpeed(){
+
+	public double getRightSpeed() {
 		return -rightCimTwo.getSpeed();
 	}
 

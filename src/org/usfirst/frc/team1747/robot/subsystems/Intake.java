@@ -14,7 +14,7 @@ public class Intake extends Subsystem {
 	CANTalon leftLiftMotor, rightLiftMotor;
 	Talon rollerMotor;
 	DigitalInput ballIntake;
-	
+
 	public Intake() {
 		leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
 		rightLiftMotor = new CANTalon(RobotMap.RIGHT_LIFT_MOTOR);
@@ -46,8 +46,8 @@ public class Intake extends Subsystem {
 	public void moveLiftUp() {
 		liftControl(.5);
 	}
-	
-	public void liftStop(){
+
+	public void liftStop() {
 		liftControl(0);
 	}
 
@@ -58,8 +58,8 @@ public class Intake extends Subsystem {
 	public void ejectBall() {
 		rollerControl(-1);
 	}
-	
-	public void rollerStop(){
+
+	public void rollerStop() {
 		rollerMotor.set(0);
 	}
 

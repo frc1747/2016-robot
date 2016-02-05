@@ -3,7 +3,6 @@ package org.usfirst.frc.team1747.robot.subsystems;
 import org.usfirst.frc.team1747.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,8 +20,8 @@ public class Shooter extends PIDSubsystem {
 		leftShooterMotorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
 		rightShooterMotorOne = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_ONE);
 		rightShooterMotorTwo = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_TWO);
-//		leftShooterMotorOne.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
-//		rightShooterMotorOne.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
+		// leftShooterMotorOne.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
+		// rightShooterMotorOne.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
 		leftShooterMotorOne.setInverted(true);
 		leftShooterMotorTwo.setInverted(true);
 		led = new Solenoid(RobotMap.LED);

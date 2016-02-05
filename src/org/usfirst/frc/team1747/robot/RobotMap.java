@@ -29,6 +29,6 @@ public class RobotMap {
 	public static final int BALL_INTAKE = 0;
 	public static final int RIGHT_CLIMB_CIM = 0;
 	public static final int LEFT_CLIMB_CIM = 0;
-	
+
 	public static final int LED = 0;
 }
