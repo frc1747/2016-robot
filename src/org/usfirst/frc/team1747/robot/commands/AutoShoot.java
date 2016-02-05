@@ -30,16 +30,16 @@ public class AutoShoot extends Command {
 		String direction = networkTable.getString("ShootDirection", "unknown");
 		System.out.println(direction);
 		if (direction.equals("left")) {
-			drive.arcadeDrive(0.0, -0.3);
+			drive.arcadeDrive(0.0, -0.2);
 		}
 		if (direction.equals("right")) {
-			drive.arcadeDrive(0.0, 0.3);
+			drive.arcadeDrive(0.0, 0.2);
 		}
 		if (direction.equals("forward")) {
-			drive.arcadeDrive(0.3, 0.0);
+			drive.arcadeDrive(0.2, 0.0);
 		}
 		if (direction.equals("backward")) {
-			drive.arcadeDrive(-0.3, 0.0);
+			drive.arcadeDrive(-0.2, 0.0);
 		}
 		if (direction.equals("shoot")) {
 			drive.arcadeDrive(0, 0);

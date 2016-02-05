@@ -76,7 +76,7 @@ public class DriveTrain extends Subsystem {
 		}
 		arcadeDrive(pStraightTarget, pRotationTarget);
 	}
-
+	
 	public void setupPID(CANTalon talon, CANTalon.TalonControlMode controlMode) {
 		// talon.setControlMode(controlMode.getValue());
 		// talon.setPID(kP, kI, kD);
