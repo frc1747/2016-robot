@@ -76,6 +76,23 @@ public class DriveTrain extends Subsystem {
 		}
 		arcadeDrive(pStraightTarget, pRotationTarget);
 	}
+	
+	public void plateauDrive(double straight, double turn){
+		
+		if(Math.abs(straight) < 0.5){
+			straight = (Math.abs(straight)/straight) * 0.5/(1 + Math.exp(-20 * (straight - 0.2)));
+		}
+		else {
+			straight = (Math.abs(straight)/straight) * (0.5/(1 + Math.exp(-20 * (straight - 0.8))+0.5) );
+		}
+		if(Math.abs(turn) < 0.5){
+			turn = (Math.abs(turn)/turn) * 0.5/(1 + Math.exp(-20 * (turn - 0.2)));
+		}
+		else {
+			turn = (Math.abs(turn)/turn) * (0.5/(1 + Math.exp(-20 * (turn - 0.8))+0.5) );
+		}
+		tankDrive(straight+turn, straight-turn);
+	}
 
 	public void setupPID(CANTalon talon, CANTalon.TalonControlMode controlMode) {
 		// talon.setControlMode(controlMode.getValue());
