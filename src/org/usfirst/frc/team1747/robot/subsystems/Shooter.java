@@ -3,8 +3,9 @@ package org.usfirst.frc.team1747.robot.subsystems;
 import org.usfirst.frc.team1747.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,6 +14,7 @@ public class Shooter extends Subsystem {
 
 	CANTalon leftShooterMotorOne, leftShooterMotorTwo;
 	CANTalon rightShooterMotorOne, rightShooterMotorTwo;
+	PIDController leftPIDController, rightPIDController;
 	Solenoid led;
 	double kP = .05;
 	double kI = 0;
@@ -33,22 +35,23 @@ public class Shooter extends Subsystem {
 		leftShooterMotorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
 		rightShooterMotorOne = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_ONE);
 		rightShooterMotorTwo = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_TWO);
-		leftShooterMotorOne.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
-		rightShooterMotorOne.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
-		leftShooterMotorOne.setInverted(true);
-		leftShooterMotorTwo.setInverted(true);
 		led = new Solenoid(RobotMap.LED);
 		leftCounter = new Counter();
-		leftCounter.setUpSource(RobotMap.LEFT_COUNTER);
-		leftCounter.setUpDownCounterMode(); 
 		rightCounter = new Counter();
+		leftShooterMotorOne.setInverted(true);
+		leftShooterMotorTwo.setInverted(true);
+		leftCounter.setUpSource(RobotMap.LEFT_COUNTER);
+		leftCounter.setUpDownCounterMode();
 		rightCounter.setUpSource(RobotMap.RIGHT_COUNTER);
-		rightCounter.setUpDownCounterMode(); 
-		SmartDashboard.putNumber("Shooter Speed", 17);
+		rightCounter.setUpDownCounterMode();
+		SmartDashboard.putNumber("Shooter Speed", .6);
 		SmartDashboard.putNumber("Shooter P", kP);
 		SmartDashboard.putNumber("Shooter I", kI);
 		SmartDashboard.putNumber("Shooter D", kD);
 		updatePID();
+	}
+
+	public void enablePID() {
 	}
 
 	// Runs the shooting motors at the speed given from teleop drive
@@ -79,11 +82,11 @@ public class Shooter extends Subsystem {
 		}
 	}
 
-	public void setSetpoint(double targetCurrent) {
-		leftShooterMotorOne.setSetpoint(targetCurrent);
-		leftShooterMotorTwo.setSetpoint(targetCurrent);
-		rightShooterMotorOne.setSetpoint(targetCurrent);
-		rightShooterMotorTwo.setSetpoint(targetCurrent);
+	public void setSetpoint(double targetSpeed) {
+		leftShooterMotorOne.setSetpoint(targetSpeed);
+		leftShooterMotorTwo.setSetpoint(targetSpeed);
+		rightShooterMotorOne.setSetpoint(targetSpeed);
+		rightShooterMotorTwo.setSetpoint(targetSpeed);
 	}
 
 	public void turnOnLED() {
@@ -95,10 +98,22 @@ public class Shooter extends Subsystem {
 	}
 
 	public double getLeftSpeed() {
-		return leftCounter.getPeriod();
+		return 1.0 / leftCounter.getPeriod();
 	}
 
 	public double getRightSpeed() {
-		return rightCounter.getPeriod();
+		return 1.0 / rightCounter.getPeriod();
 	}
+	/*
+	class ShooterSide implements PIDOutput{
+		public ShooterSide(int motorOne, int MotorTwo){
+			
+		}
+		@Override
+		public void pidWrite(double output) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	*/
 }
