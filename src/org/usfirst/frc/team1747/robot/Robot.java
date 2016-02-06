@@ -30,8 +30,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		shooter = new Shooter(0, 0, 0);
-		// 0,0,0 are PID Values
+		shooter = new Shooter();
 		drive = new DriveTrain();
 		intake = new Intake();
 		oi = new OI();
