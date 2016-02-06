@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
 import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class Climber extends Subsystem {
+public class Climber extends Subsystem implements SDLogger {
 
 	CANTalon rightClimberTalon, leftClimberTalon;
 
@@ -31,5 +32,11 @@ public class Climber extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
+	}
+
+	@Override
+	public void logToSmartDashboard() {
+		// TODO Auto-generated method stub
+		
 	}
 }

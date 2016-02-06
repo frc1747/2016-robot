@@ -3,13 +3,14 @@ package org.usfirst.frc.team1747.robot.subsystems;
 import java.util.LinkedList;
 
 import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
 import org.usfirst.frc.team1747.robot.commands.TeleopDrive;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends Subsystem implements SDLogger {
 	CANTalon leftCimOne, leftCimTwo, leftMiniCim;
 	CANTalon rightCimOne, rightCimTwo, rightMiniCim;
 
@@ -76,22 +77,20 @@ public class DriveTrain extends Subsystem {
 		}
 		arcadeDrive(pStraightTarget, pRotationTarget);
 	}
-	
-	public void plateauDrive(double straight, double turn){
-		
-		if(Math.abs(straight) < 0.5){
-			straight = (Math.abs(straight)/straight) * 0.5/(1 + Math.exp(-20 * (straight - 0.2)));
+
+	public void plateauDrive(double straight, double turn) {
+
+		if (Math.abs(straight) < 0.5) {
+			straight = (Math.abs(straight) / straight) * 0.5 / (1 + Math.exp(-20 * (straight - 0.2)));
+		} else {
+			straight = (Math.abs(straight) / straight) * (0.5 / (1 + Math.exp(-20 * (straight - 0.8)) + 0.5));
 		}
-		else {
-			straight = (Math.abs(straight)/straight) * (0.5/(1 + Math.exp(-20 * (straight - 0.8))+0.5) );
+		if (Math.abs(turn) < 0.5) {
+			turn = (Math.abs(turn) / turn) * 0.5 / (1 + Math.exp(-20 * (turn - 0.2)));
+		} else {
+			turn = (Math.abs(turn) / turn) * (0.5 / (1 + Math.exp(-20 * (turn - 0.8)) + 0.5));
 		}
-		if(Math.abs(turn) < 0.5){
-			turn = (Math.abs(turn)/turn) * 0.5/(1 + Math.exp(-20 * (turn - 0.2)));
-		}
-		else {
-			turn = (Math.abs(turn)/turn) * (0.5/(1 + Math.exp(-20 * (turn - 0.8))+0.5) );
-		}
-		tankDrive(straight+turn, straight-turn);
+		tankDrive(straight + turn, straight - turn);
 	}
 
 	public void setupPID(CANTalon talon, CANTalon.TalonControlMode controlMode) {
@@ -115,7 +114,7 @@ public class DriveTrain extends Subsystem {
 
 	// This is a public void that logs smart dashboard.
 	public void logToSmartDashboard() {
-		SmartDashboard.putNumber("Left Speed", getLeftSpeed());
-		SmartDashboard.putNumber("Right Speed", getRightSpeed());
+		SmartDashboard.putNumber("Left DriveTrain Speed", getLeftSpeed());
+		SmartDashboard.putNumber("Right DriveTrain Speed", getRightSpeed());
 	}
 }

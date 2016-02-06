@@ -27,7 +27,7 @@ public class Shoot extends Command {
 		double speed = SmartDashboard.getNumber("Shooter Speed", .5);
 		System.out.println(speed);
 		shooter.turnOnLED();
-		shooter.setSetpoint(speed);
+		shooter.shoot(speed);
 		time = System.currentTimeMillis();
 	}
 		

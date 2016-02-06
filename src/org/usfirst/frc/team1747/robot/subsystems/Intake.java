@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
 import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
 import org.usfirst.frc.team1747.robot.commands.IntakeManual;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Intake extends Subsystem {
+public class Intake extends Subsystem implements SDLogger {
 
 	CANTalon leftLiftMotor, rightLiftMotor;
 	Talon rollerMotor;
@@ -73,12 +74,10 @@ public class Intake extends Subsystem {
 		setDefaultCommand(new IntakeManual());
 	}
 
-	// TODO: Verify
 	public boolean isAtBottom() {
 		return leftLiftMotor.isRevLimitSwitchClosed() && rightLiftMotor.isRevLimitSwitchClosed();
 	}
 
-	// TODO: Verify
 	public boolean isAtTop() {
 		return leftLiftMotor.isFwdLimitSwitchClosed() && rightLiftMotor.isFwdLimitSwitchClosed();
 	}
