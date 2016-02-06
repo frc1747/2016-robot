@@ -5,8 +5,6 @@ import org.usfirst.frc.team1747.robot.SDLogger;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -14,11 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends Subsystem implements SDLogger {
 
-	class ShooterSide implements PIDOutput {
+	class ShooterSide {
 		CANTalon motorOne, motorTwo;
 		Counter counter;
-		PIDController pidController;
 		double kP, kI, kD;
+		boolean pidEnabled;
+		double targetSpeed;
+		double integralError;
+		double previousError;
 
 		public ShooterSide(int motorOneId, int motorTwoId, boolean inverted, int counterId) {
 			motorOne = new CANTalon(motorOneId);
@@ -30,9 +31,10 @@ public class Shooter extends Subsystem implements SDLogger {
 			counter.setUpDownCounterMode();
 			counter.setPIDSourceType(PIDSourceType.kRate);
 			counter.setDistancePerPulse(1.0);
-			pidController = new PIDController(kP, kI, kD, counter, this);
-			pidController.disable();
-			pidController.setOutputRange(-.8, .8);
+			pidEnabled = false;
+			targetSpeed = 0;
+			integralError = 0;
+			previousError = 0;
 		}
 
 		public double getP() {
@@ -48,17 +50,21 @@ public class Shooter extends Subsystem implements SDLogger {
 		}
 
 		public double getSpeed() {
-			return counter.getRate();
-			// return 1.0 / counter.getPeriod();
+			return counter.getRate() / 10000.0;
 		}
 
-		public void pidWrite(double output) {
-			if (motorOne.getInverted()) {
-				SmartDashboard.putNumber("left", output);
-			} else {
-				SmartDashboard.putNumber("right", output);
-			}
-			set(output);
+		public void runPID() {
+			double currentSpeed = getSpeed();
+			double currentError = (currentSpeed - targetSpeed);
+			integralError += currentError;
+			// Motor Voltage = Kp*error + Ki*error_sum + Kd*(error-error_last)
+			double speed = kP * currentError + kI * integralError + kD * (currentError - previousError);
+			previousError = currentError;
+			if (motorOne.getInverted())
+				SmartDashboard.putNumber("left", speed);
+			else
+				SmartDashboard.putNumber("right", speed);
+			set(speed);
 		}
 
 		public void set(double speed) {
@@ -67,25 +73,24 @@ public class Shooter extends Subsystem implements SDLogger {
 		}
 
 		public void setPID(double p, double i, double d) {
-			if (p != kP || i != kI || d != kD) {
-				pidController.setPID(p, i, d);
-				kP = p;
-				kI = i;
-				kD = d;
-			}
+			kP = p;
+			kI = i;
+			kD = d;
 		}
 
 		public void setSetpoint(double targetSpeed) {
-			pidController.setSetpoint(targetSpeed);
+			this.targetSpeed = targetSpeed;
 		}
 
 		public void enablePID() {
-			pidController.reset();
-			pidController.enable();
+			pidEnabled = true;
 		}
 
 		public void disablePID() {
-			pidController.disable();
+			pidEnabled = false;
+			targetSpeed = 0;
+			integralError = 0;
+			previousError = 0;
 		}
 	}
 
@@ -117,6 +122,11 @@ public class Shooter extends Subsystem implements SDLogger {
 	public void disablePID() {
 		left.disablePID();
 		right.disablePID();
+	}
+
+	public void runPID() {
+		left.runPID();
+		right.runPID();
 	}
 
 	@Override

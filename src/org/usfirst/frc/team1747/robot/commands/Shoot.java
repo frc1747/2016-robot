@@ -34,6 +34,7 @@ public class Shoot extends Command {
 
 	@Override
 	protected void execute() {
+		shooter.runPID();
 		if (System.currentTimeMillis() - time > 3000) {
 			intake.intakeBall();
 		}
