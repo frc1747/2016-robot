@@ -26,10 +26,11 @@ public class Shoot extends Command {
 		double speed = SmartDashboard.getNumber("Shooter Speed", .5);
 		System.out.println(speed);
 		shooter.turnOnLED();
-		shooter.shoot(speed);
+		shooter.setSetpoint(speed);
 		time = System.currentTimeMillis();
 	}
-
+		
+	
 	@Override
 	protected void execute() {
 		if (System.currentTimeMillis() - time > 3000) {

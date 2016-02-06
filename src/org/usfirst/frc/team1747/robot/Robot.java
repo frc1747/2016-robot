@@ -36,7 +36,6 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
-
 	}
 
 	/**

@@ -30,5 +30,8 @@ public class RobotMap {
 	public static final int RIGHT_CLIMB_CIM = 0;
 	public static final int LEFT_CLIMB_CIM = 0;
 
+	public static final int LEFT_COUNTER = 3;
+	public static final int RIGHT_COUNTER = 1;
+	
 	public static final int LED = 0;
 }
