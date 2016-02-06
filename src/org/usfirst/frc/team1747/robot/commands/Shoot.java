@@ -4,7 +4,6 @@ import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,14 +23,15 @@ public class Shoot extends Command {
 
 	@Override
 	protected void initialize() {
-		double speed = SmartDashboard.getNumber("Shooter Speed", .5);
+		double speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
 		System.out.println(speed);
 		shooter.turnOnLED();
-		shooter.shoot(speed);
+		// shooter.shoot(speed);
+		shooter.enablePID();
+		shooter.setSetpoint(speed);
 		time = System.currentTimeMillis();
 	}
-		
-	
+
 	@Override
 	protected void execute() {
 		if (System.currentTimeMillis() - time > 3000) {
@@ -46,6 +46,7 @@ public class Shoot extends Command {
 
 	@Override
 	protected void end() {
+		shooter.disablePID();
 		shooter.shoot(0.0);
 		intake.rollerControl(0);
 		shooter.turnOffLED();

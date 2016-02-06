@@ -7,11 +7,12 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Shooter extends Subsystem implements SDLogger{
+public class Shooter extends Subsystem implements SDLogger {
 
 	class ShooterSide implements PIDOutput {
 		CANTalon motorOne, motorTwo;
@@ -27,8 +28,11 @@ public class Shooter extends Subsystem implements SDLogger{
 			counter = new Counter();
 			counter.setUpSource(counterId);
 			counter.setUpDownCounterMode();
+			counter.setPIDSourceType(PIDSourceType.kRate);
+			counter.setDistancePerPulse(1.0);
 			pidController = new PIDController(kP, kI, kD, counter, this);
 			pidController.disable();
+			pidController.setOutputRange(-.8, .8);
 		}
 
 		public double getP() {
@@ -44,10 +48,16 @@ public class Shooter extends Subsystem implements SDLogger{
 		}
 
 		public double getSpeed() {
-			return 1.0 / counter.getPeriod();
+			return counter.getRate();
+			// return 1.0 / counter.getPeriod();
 		}
 
 		public void pidWrite(double output) {
+			if (motorOne.getInverted()) {
+				SmartDashboard.putNumber("left", output);
+			} else {
+				SmartDashboard.putNumber("right", output);
+			}
 			set(output);
 		}
 
@@ -70,6 +80,7 @@ public class Shooter extends Subsystem implements SDLogger{
 		}
 
 		public void enablePID() {
+			pidController.reset();
 			pidController.enable();
 		}
 
