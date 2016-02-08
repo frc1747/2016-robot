@@ -68,8 +68,8 @@ public class Shooter extends Subsystem implements SDLogger {
 		}
 
 		public void set(double speed) {
-			motorOne.set(speed);
-			motorTwo.set(speed);
+			motorOne.set(-20.0*speed);
+			motorTwo.set(-20.0*speed);
 		}
 
 		public void setPID(double p, double i, double d) {
@@ -124,6 +124,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		right.disablePID();
 	}
 
+	
 	public void runPID() {
 		left.runPID();
 		right.runPID();
