@@ -79,17 +79,22 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	}
 
 	public void plateauDrive(double straight, double turn) {
-
-		if (Math.abs(straight) < 0.5) {
-			straight = (Math.abs(straight) / straight) * 0.5 / (1 + Math.exp(-20 * (straight - 0.2)));
+		if (Math.abs(straight) < .01) {
+			straight = 0.0;
+		} else if (Math.abs(straight) < 0.5) {
+			straight = (Math.abs(straight) / straight) * 0.5 / (1 + Math.exp(-20.0 * (straight - 0.2)));
 		} else {
-			straight = (Math.abs(straight) / straight) * (0.5 / (1 + Math.exp(-20 * (straight - 0.8)) + 0.5));
+			straight = (Math.abs(straight) / straight) * (0.5 / (1 + Math.exp(-20.0 * (straight - 0.8)) + 0.5));
 		}
-		if (Math.abs(turn) < 0.5) {
-			turn = (Math.abs(turn) / turn) * 0.5 / (1 + Math.exp(-20 * (turn - 0.2)));
+		if (Math.abs(turn) < .01) {
+			turn = 0.0;
+		} else if (Math.abs(turn) < 0.5) {
+			turn = (Math.abs(turn) / turn) * 0.5 / (1 + Math.exp(-20.0 * (turn - 0.2)));
 		} else {
-			turn = (Math.abs(turn) / turn) * (0.5 / (1 + Math.exp(-20 * (turn - 0.8)) + 0.5));
+			turn = (Math.abs(turn) / turn) * (0.5 / (1 + Math.exp(-20.0 * (turn - 0.8)) + 0.5));
 		}
+		SmartDashboard.putNumber("Straight", straight);
+		SmartDashboard.putNumber("Turn", turn);
 		tankDrive(straight + turn, straight - turn);
 	}
 

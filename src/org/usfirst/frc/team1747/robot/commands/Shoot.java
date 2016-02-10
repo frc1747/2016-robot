@@ -25,7 +25,6 @@ public class Shoot extends Command {
 	protected void initialize() {
 		double speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
 		System.out.println(speed);
-		shooter.turnOnLED();
 		// shooter.shoot(speed);
 		shooter.enablePID();
 		shooter.setSetpoint(speed);
@@ -50,7 +49,6 @@ public class Shoot extends Command {
 		shooter.disablePID();
 		shooter.shoot(0.0);
 		intake.rollerControl(0);
-		shooter.turnOffLED();
 	}
 
 	@Override

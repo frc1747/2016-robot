@@ -68,8 +68,8 @@ public class Shooter extends Subsystem implements SDLogger {
 		}
 
 		public void set(double speed) {
-			motorOne.set(-20.0*speed);
-			motorTwo.set(-20.0*speed);
+			motorOne.set(-20.0 * speed);
+			motorTwo.set(-20.0 * speed);
 		}
 
 		public void setPID(double p, double i, double d) {
@@ -104,7 +104,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		right = new ShooterSide(RobotMap.RIGHT_SHOOTER_MOTOR_ONE, RobotMap.RIGHT_SHOOTER_MOTOR_TWO, false,
 				RobotMap.RIGHT_COUNTER);
 		led = new Solenoid(RobotMap.LED);
-
+		turnOnLED();
 		SmartDashboard.putNumber("Target Shooter Speed", .6);
 		SmartDashboard.putNumber("Shooter LP", .05);
 		SmartDashboard.putNumber("Shooter LI", 0);
@@ -124,7 +124,6 @@ public class Shooter extends Subsystem implements SDLogger {
 		right.disablePID();
 	}
 
-	
 	public void runPID() {
 		left.runPID();
 		right.runPID();

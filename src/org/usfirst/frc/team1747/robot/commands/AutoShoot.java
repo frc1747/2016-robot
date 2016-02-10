@@ -23,27 +23,25 @@ public class AutoShoot extends Command {
 
 	protected void initialize() {
 		System.out.println("Running");
-		shoot.turnOnLED();
 	}
 
 	protected void execute() {
 		String direction = networkTable.getString("ShootDirection", "unknown");
 		System.out.println(direction);
 		if (direction.equals("left")) {
-			drive.arcadeDrive(0.0, -0.2);
+			drive.arcadeDrive(0.0, -0.225);
 		}
 		if (direction.equals("right")) {
-			drive.arcadeDrive(0.0, 0.2);
+			drive.arcadeDrive(0.0, 0.225);
 		}
 		if (direction.equals("forward")) {
-			drive.arcadeDrive(0.2, 0.0);
+			drive.arcadeDrive(0.25, 0.0);
 		}
 		if (direction.equals("backward")) {
-			drive.arcadeDrive(-0.2, 0.0);
+			drive.arcadeDrive(-0.25, 0.0);
 		}
 		if (direction.equals("shoot")) {
 			drive.arcadeDrive(0, 0);
-			shoot.shoot(0.5);
 		}
 	}
 
@@ -52,9 +50,7 @@ public class AutoShoot extends Command {
 	}
 
 	protected void end() {
-		shoot.shoot(0);
 		drive.arcadeDrive(0, 0);
-		shoot.turnOffLED();
 	}
 
 	protected void interrupted() {
