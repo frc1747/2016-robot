@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team1747.robot.RobotMap;
@@ -11,96 +12,10 @@ import java.util.LinkedList;
 
 public class DriveTrain extends Subsystem implements SDLogger {
 
-    class DriveSide {
-        CANTalon cimOne, cimTwo, miniCim;
-        double kP, kI, kD;
-        boolean pidEnabled;
-        double targetSpeed;
-        double integralError;
-        double previousError;
-
-
-        public DriveSide(int cimOneID, int cimTwoID, int miniCimID, boolean inverted) {
-            cimOne = new CANTalon(cimOneID);
-            cimTwo = new CANTalon(cimTwoID);
-            miniCim = new CANTalon(miniCimID);
-            cimOne.setInverted(inverted);
-            cimTwo.setInverted(inverted);
-            miniCim.setInverted(inverted);
-            pidEnabled = false;
-            targetSpeed = 0;
-            integralError = 0;
-            previousError = 0;
-        }
-
-        public double getP() {
-            return kP;
-        }
-
-        public double getI() {
-            return kI;
-        }
-
-        public double getD() {
-            return kD;
-        }
-
-
-        @SuppressWarnings("Duplicates")
-        public void runPID() {
-            double currentSpeed = getSpeed();
-            double currentError = (currentSpeed - targetSpeed);
-            integralError += currentError;
-            // Motor Voltage = Kp*error + Ki*error_sum + Kd*(error-error_last)
-            double speed = kP * currentError + kI * integralError + kD * (currentError - previousError);
-            previousError = currentError;
-            if (cimOne.getInverted())
-                SmartDashboard.putNumber("left", speed);
-            else
-                SmartDashboard.putNumber("right", speed);
-            set(speed);
-        }
-
-        public double getSpeed() {
-            return cimTwo.getSpeed();
-        }
-
-        public void set(double speed) {
-            cimOne.set(speed);
-            cimTwo.set(speed);
-            miniCim.set(speed);
-        }
-
-        public void setPID(double p, double i, double d) {
-            kP = p;
-            kI = i;
-            kD = d;
-        }
-
-        public void setSetpoint(double targetSpeed) {
-            this.targetSpeed = targetSpeed;
-        }
-
-        public void enablePID() {
-            pidEnabled = true;
-        }
-
-        public void disablePID() {
-            pidEnabled = false;
-            targetSpeed = 0;
-            integralError = 0;
-            previousError = 0;
-        }
-    }
-
-    DriveSide left, right;
-
-
     static final double[] SIGMOIDSTRETCH = {0.03, 0.06, 0.09, 0.1, 0.11, 0.12, 0.11, 0.1, 0.09, 0.06, 0.03};
-
+    DriveSide left, right;
     LinkedList<Double> straightTargetDeltas = new LinkedList<Double>();
     LinkedList<Double> rotationTargetDeltas = new LinkedList<Double>();
-
     double pStraightTarget = 0.0, pRotationTarget = 0.0, prevTargetStraight = 0.0, prevTargetRotation = 0.0;
 
     // Sets up CANTalons for drive train
@@ -148,7 +63,8 @@ public class DriveTrain extends Subsystem implements SDLogger {
         } else if (Math.abs(straight) < 0.5) {
             straight = (Math.abs(straight) / straight) * 0.5 / (1 + Math.exp(-20.0 * (Math.abs(straight) - 0.2)));
         } else {
-            straight = (Math.abs(straight) / straight) * (0.5 / (1 + Math.exp(-20.0 * (Math.abs(straight) - 0.8)) + 0.5));
+            straight = (Math.abs(straight) / straight) * (0.5 / (1 + Math.exp(-20.0 * (Math.abs(straight) - 0.8))
+                    + 0.5));
         }
         if (Math.abs(turn) < .01) {
             turn = 0.0;
@@ -177,5 +93,128 @@ public class DriveTrain extends Subsystem implements SDLogger {
         right.setPID(SmartDashboard.getNumber("DriveTrain RP", right.getP()),
                 SmartDashboard.getNumber("DriveTrain RI", right.getI()),
                 SmartDashboard.getNumber("DriveTrain RD", right.getD()));
+    }
+
+    public void enablePID() {
+        left.enablePID();
+        right.enablePID();
+    }
+
+    public void setSetpoint(double targetSpeed) {
+        left.setSetpoint(targetSpeed);
+        right.setSetpoint(targetSpeed);
+    }
+
+    public void runPID() {
+        left.runPID();
+        right.runPID();
+    }
+
+    public void disablePID() {
+        left.disablePID();
+        right.disablePID();
+    }
+
+    public boolean isAtTarget() {
+        return left.isAtTarget() && right.isAtTarget();
+    }
+
+    class DriveSide {
+        CANTalon cimOne, cimTwo, miniCim;
+        double kP, kI, kD;
+        boolean pidEnabled;
+        double targetDistance;
+        double integralError;
+        double previousError;
+        double netDistance;
+        double distance = 0;
+        double pDistance = 0;
+        double time = 0;
+        double pTime = 0;
+        double accumulator;
+
+        public DriveSide(int cimOneID, int cimTwoID, int miniCimID, boolean inverted) {
+            cimOne = new CANTalon(cimOneID);
+            cimTwo = new CANTalon(cimTwoID);
+            miniCim = new CANTalon(miniCimID);
+            cimOne.setInverted(inverted);
+            cimTwo.setInverted(inverted);
+            miniCim.setInverted(inverted);
+            pidEnabled = false;
+            targetDistance = 0;
+            integralError = 0;
+            previousError = 0;
+        }
+
+        public double getP() {
+            return kP;
+        }
+
+        public double getI() {
+            return kI;
+        }
+
+        public double getD() {
+            return kD;
+        }
+
+
+        @SuppressWarnings("Duplicates")
+        public void runPID() {
+            double currentDistance = getNetDistance();
+            double currentError = (currentDistance - targetDistance);
+            integralError += currentError;
+            // Motor Voltage = Kp*error + Ki*error_sum + Kd*(error-error_last)
+            double speed = kP * currentError + kI * integralError + kD * (currentError - previousError);
+            previousError = currentError;
+            if (cimOne.getInverted())
+                SmartDashboard.putNumber("left", speed);
+            else
+                SmartDashboard.putNumber("right", speed);
+            set(speed);
+        }
+
+        public double getSpeed() {
+            return cimTwo.getSpeed();
+        }
+
+        private double getNetDistance() {
+            pTime = time;
+            time = Timer.getFPGATimestamp();
+            accumulator += (getSpeed() * (time - pTime));
+            return accumulator;
+        }
+
+        public void set(double speed) {
+            cimOne.set(speed);
+            cimTwo.set(speed);
+            miniCim.set(speed);
+        }
+
+        public void setPID(double p, double i, double d) {
+            kP = p;
+            kI = i;
+            kD = d;
+        }
+
+        public void setSetpoint(double targetDistance) {
+            this.targetDistance = targetDistance;
+        }
+
+
+        public boolean isAtTarget() {
+            return targetDistance == getNetDistance();
+        }
+
+        public void enablePID() {
+            pidEnabled = true;
+        }
+
+        public void disablePID() {
+            pidEnabled = false;
+            targetDistance = 0;
+            integralError = 0;
+            previousError = 0;
+        }
     }
 }
