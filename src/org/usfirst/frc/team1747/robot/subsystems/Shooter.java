@@ -24,6 +24,8 @@ public class Shooter extends Subsystem implements SDLogger {
 		public ShooterSide(int motorOneId, int motorTwoId, boolean inverted, int counterId) {
 			motorOne = new CANTalon(motorOneId);
 			motorTwo = new CANTalon(motorTwoId);
+			motorOne.changeControlMode(CANTalon.TalonControlMode.Voltage);
+			motorTwo.changeControlMode(CANTalon.TalonControlMode.Voltage);
 			motorOne.setInverted(inverted);
 			motorTwo.setInverted(inverted);
 			counter = new Counter();
