@@ -71,8 +71,9 @@ public class Shooter extends Subsystem implements SDLogger {
 		}
 
 		public void set(double speed) {
-			motorOne.set(-20.0 * speed);
-			motorTwo.set(-20.0 * speed);
+			speed *= 12.0;
+			motorOne.set(speed);
+			motorTwo.set(speed);
 		}
 
 		public void setPID(double p, double i, double d) {

@@ -111,6 +111,16 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		right.disablePID();
 	}
 
+	public void enableRamping() {
+		left.enableRamping();
+		right.enableRamping();
+	}
+
+	public void disableRamping() {
+		left.disableRamping();
+		right.disableRamping();
+	}
+
 	class DriveSide {
 		CANTalon cimOne, cimTwo, miniCim;
 		double kP, kI, kD;
@@ -121,9 +131,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			cimTwo = new CANTalon(cimTwoID);
 			miniCim = new CANTalon(miniCimID);
 			cimTwo.setPIDSourceType(PIDSourceType.kDisplacement);
-			cimOne.setVoltageRampRate(12);
-			cimTwo.setVoltageRampRate(12);
-			miniCim.setVoltageRampRate(12);
+			cimTwo.setVoltageRampRate(18);
 			cimTwo.changeControlMode(TalonControlMode.Voltage);
 			cimOne.changeControlMode(TalonControlMode.Follower);
 			miniCim.changeControlMode(TalonControlMode.Follower);
@@ -132,6 +140,14 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			cimOne.setInverted(inverted);
 			cimTwo.setInverted(inverted);
 			miniCim.setInverted(inverted);
+		}
+
+		public void enableRamping() {
+			cimTwo.setVoltageRampRate(18);
+		}
+
+		public void disableRamping() {
+			cimTwo.setVoltageRampRate(0);
 		}
 
 		public double getP() {
@@ -151,9 +167,8 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		}
 
 		public void set(double speed) {
-			cimOne.set(speed);
+			speed *= 12.0;
 			cimTwo.set(speed);
-			miniCim.set(speed);
 		}
 
 		public void setPID(double p, double i, double d) {
@@ -183,7 +198,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		}
 
 		public boolean isAtTarget() {
-			//TODO: Verify grace distance
+			// TODO: Verify grace distance
 			return Math.abs(this.targetDistance - cimTwo.get()) < .1;
 		}
 	}

@@ -28,7 +28,13 @@ public class TeleopDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		driveTrain.smoothDrive(controller.getLeftVert(), controller.getRightHoriz());
+		double leftVert = controller.getLeftVert(), rightHoriz = controller.getRightHoriz();
+		if (Math.abs(leftVert) < .1 && Math.abs(rightHoriz) < .1) {
+			driveTrain.disableRamping();
+		} else {
+			driveTrain.enableRamping();
+		}
+		driveTrain.smoothDrive(leftVert, rightHoriz);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

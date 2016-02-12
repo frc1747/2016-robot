@@ -7,8 +7,6 @@ package org.usfirst.frc.team1747.robot;
  * floating around.
  */
 public class RobotMap {
-	public static final String INTAKE_CAMERA = "Cam1";
-	public static final String SHOOTER_CAMERA = "Cam2";
 
 	public static final int LEFT_DRIVE_CIM_ONE = 21;
 	public static final int LEFT_DRIVE_CIM_TWO = 22;
@@ -32,6 +30,9 @@ public class RobotMap {
 
 	public static final int LEFT_COUNTER = 3;
 	public static final int RIGHT_COUNTER = 1;
-	
+
+	public static final int INTAKE_ENCODER_A = 4;
+	public static final int INTAKE_ENCODER_B = 5;
+
 	public static final int LED = 0;
 }
