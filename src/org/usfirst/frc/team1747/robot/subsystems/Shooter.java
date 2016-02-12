@@ -4,6 +4,7 @@ import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.SDLogger;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -24,8 +25,8 @@ public class Shooter extends Subsystem implements SDLogger {
 		public ShooterSide(int motorOneId, int motorTwoId, boolean inverted, int counterId) {
 			motorOne = new CANTalon(motorOneId);
 			motorTwo = new CANTalon(motorTwoId);
-			motorOne.changeControlMode(CANTalon.TalonControlMode.Voltage);
-			motorTwo.changeControlMode(CANTalon.TalonControlMode.Voltage);
+			motorOne.changeControlMode(TalonControlMode.Voltage);
+			motorTwo.changeControlMode(TalonControlMode.Voltage);
 			motorOne.setInverted(inverted);
 			motorTwo.setInverted(inverted);
 			counter = new Counter();

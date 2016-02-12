@@ -22,7 +22,6 @@ public class DriveStraight extends Command {
 
     @Override
     protected void execute() {
-        driveTrain.runPID();
     }
 
     @Override

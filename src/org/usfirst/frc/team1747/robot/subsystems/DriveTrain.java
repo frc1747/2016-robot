@@ -1,14 +1,16 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.LinkedList;
+
 import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.SDLogger;
 import org.usfirst.frc.team1747.robot.commands.TeleopDrive;
 
-import java.util.LinkedList;
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem implements SDLogger {
 	static final double[] SIGMOIDSTRETCH = { 0.03, 0.06, 0.09, 0.1, 0.11, 0.12, 0.11, 0.1, 0.09, 0.06, 0.03 };
@@ -104,50 +106,32 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		right.setSetpoint(targetSpeed);
 	}
 
-	public void runPID() {
-		left.runPID();
-		right.runPID();
-	}
-
 	public void disablePID() {
 		left.disablePID();
 		right.disablePID();
 	}
 
-	public boolean isAtTarget() {
-		return left.isAtTarget() && right.isAtTarget();
-	}
-
 	class DriveSide {
 		CANTalon cimOne, cimTwo, miniCim;
 		double kP, kI, kD;
-		boolean pidEnabled;
 		double targetDistance;
-		double integralError;
-		double previousError;
-		double netDistance;
-		double distance = 0;
-		double pDistance = 0;
-		double time = 0;
-		double pTime = 0;
-		double accumulator = 0;
 
 		public DriveSide(int cimOneID, int cimTwoID, int miniCimID, boolean inverted) {
 			cimOne = new CANTalon(cimOneID);
 			cimTwo = new CANTalon(cimTwoID);
 			miniCim = new CANTalon(miniCimID);
+			cimTwo.setPIDSourceType(PIDSourceType.kDisplacement);
+			cimOne.setVoltageRampRate(12);
+			cimTwo.setVoltageRampRate(12);
+			miniCim.setVoltageRampRate(12);
+			cimTwo.changeControlMode(TalonControlMode.Voltage);
+			cimOne.changeControlMode(TalonControlMode.Follower);
+			miniCim.changeControlMode(TalonControlMode.Follower);
+			cimOne.set(cimTwoID);
+			miniCim.set(cimTwoID);
 			cimOne.setInverted(inverted);
 			cimTwo.setInverted(inverted);
 			miniCim.setInverted(inverted);
-			pidEnabled = false;
-			targetDistance = 0;
-			integralError = 0;
-			previousError = 0;
-			distance = 0;
-			pDistance = 0;
-			time = 0;
-			pTime = 0;
-			accumulator = 0;
 		}
 
 		public double getP() {
@@ -162,30 +146,8 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			return kD;
 		}
 
-		@SuppressWarnings("Duplicates")
-		public void runPID() {
-			double currentDistance = getNetDistance();
-			double currentError = (currentDistance - targetDistance);
-			integralError += currentError;
-			// Motor Voltage = Kp*error + Ki*error_sum + Kd*(error-error_last)
-			double speed = kP * currentError + kI * integralError + kD * (currentError - previousError);
-			previousError = currentError;
-			if (cimOne.getInverted())
-				SmartDashboard.putNumber("left", speed);
-			else
-				SmartDashboard.putNumber("right", speed);
-			set(speed);
-		}
-
 		public double getSpeed() {
 			return cimTwo.getSpeed();
-		}
-
-		private double getNetDistance() {
-			pTime = time;
-			time = Timer.getFPGATimestamp();
-			accumulator += (getSpeed() * (time - pTime));
-			return accumulator;
 		}
 
 		public void set(double speed) {
@@ -202,27 +164,31 @@ public class DriveTrain extends Subsystem implements SDLogger {
 
 		public void setSetpoint(double targetDistance) {
 			this.targetDistance = targetDistance;
-		}
-
-		public boolean isAtTarget() {
-			return targetDistance == getNetDistance();
+			cimTwo.setSetpoint(targetDistance);
 		}
 
 		public void enablePID() {
-			pidEnabled = true;
+			cimTwo.changeControlMode(TalonControlMode.Position);
+			cimOne.setPID(kP, kI, kD);
+			cimTwo.setPID(kP, kI, kD);
+			miniCim.setPID(kP, kI, kD);
 		}
 
 		public void disablePID() {
-			pidEnabled = false;
-			targetDistance = 0;
-			integralError = 0;
-			previousError = 0;
-			pTime = 0;
-			accumulator = 0;
-			distance = 0;
-			pDistance = 0;
-			time = 0;
-			pTime = 0;
+			cimTwo.changeControlMode(TalonControlMode.Voltage);
+			cimOne.setPID(0, 0, 0);
+			cimTwo.setPID(0, 0, 0);
+			miniCim.setPID(0, 0, 0);
+			this.targetDistance = 0;
 		}
+
+		public boolean isAtTarget() {
+			//TODO: Verify grace distance
+			return Math.abs(this.targetDistance - cimTwo.get()) < .1;
+		}
+	}
+
+	public boolean isAtTarget() {
+		return left.isAtTarget() && right.isAtTarget();
 	}
 }
