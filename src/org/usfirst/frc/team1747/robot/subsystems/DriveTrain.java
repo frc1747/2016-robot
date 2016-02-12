@@ -9,6 +9,7 @@ import org.usfirst.frc.team1747.robot.commands.TeleopDrive;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,13 +19,17 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	LinkedList<Double> straightTargetDeltas = new LinkedList<Double>();
 	LinkedList<Double> rotationTargetDeltas = new LinkedList<Double>();
 	double pStraightTarget = 0.0, pRotationTarget = 0.0, prevTargetStraight = 0.0, prevTargetRotation = 0.0;
-
+	Solenoid glowLeft;
+	Solenoid glowRight;
 	// Sets up CANTalons for drive train
 	public DriveTrain() {
 		left = new DriveSide(RobotMap.LEFT_DRIVE_CIM_ONE, RobotMap.LEFT_DRIVE_CIM_TWO, RobotMap.LEFT_DRIVE_MINICIM,
 				true);
 		right = new DriveSide(RobotMap.RIGHT_DRIVE_CIM_ONE, RobotMap.RIGHT_DRIVE_CIM_TWO, RobotMap.RIGHT_DRIVE_MINICIM,
 				false);
+		glowLeft = new Solenoid(RobotMap.ROBOT_GLOW_LEFT);
+		glowRight = new Solenoid(RobotMap.ROBOT_GLOW_RIGHT);
+		turnOnGlow();
 		// Left and right motors face each other, left is inverted
 		for (int j = 0; j < SIGMOIDSTRETCH.length; j++) {
 			straightTargetDeltas.add(0.0);
@@ -205,5 +210,15 @@ public class DriveTrain extends Subsystem implements SDLogger {
 
 	public boolean isAtTarget() {
 		return left.isAtTarget() && right.isAtTarget();
+	}
+	
+	public void turnOnGlow() {
+		glowRight.set(true);
+		glowLeft.set(true);
+	}
+	
+	public void turnOffGlow() {
+		glowRight.set(false);
+		glowLeft.set(false);
 	}
 }
