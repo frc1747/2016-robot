@@ -13,6 +13,7 @@ public class Shoot extends Command {
 	Intake intake;
 	double startTime;
 	double time = -1;
+	boolean pidMode;
 
 	public Shoot() {
 		shooter = Robot.getShooter();
@@ -23,12 +24,15 @@ public class Shoot extends Command {
 
 	@Override
 	protected void initialize() {
-		double speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
-		shooter.shoot(speed);
-		// double targetSpeed = SmartDashboard.getNumber("Target Shooter Speed",
-		// .6) * -20.0;
-		// shooter.enablePID();
-		// shooter.setSetpoint(targetSpeed);
+		pidMode = SmartDashboard.getBoolean("Shooter PID Mode", true);
+		if (pidMode) {
+			double targetSpeed = SmartDashboard.getNumber("Target Shooter Speed", .6) * -20.0;
+			shooter.enablePID();
+			shooter.setSetpoint(targetSpeed);
+		} else {
+			double speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
+			shooter.shoot(speed);
+		}
 		time = System.currentTimeMillis();
 	}
 
@@ -47,8 +51,10 @@ public class Shoot extends Command {
 
 	@Override
 	protected void end() {
+		if(pidMode){
+			 shooter.disablePID();			
+		}
 		shooter.shoot(0.0);
-		// shooter.disablePID();
 		intake.rollerControl(0);
 	}
 

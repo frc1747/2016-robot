@@ -115,6 +115,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("Shooter RP", .05);
 		SmartDashboard.putNumber("Shooter RI", 0);
 		SmartDashboard.putNumber("Shooter RD", 0);
+		SmartDashboard.putBoolean("Shooter PID Mode", true);
 	}
 
 	public void enablePID() {
