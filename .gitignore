@@ -49,3 +49,6 @@ sysProps.xml
 
 # TeXlipse plugin
 .texlipse
+
+*.iml
+.idea/
