@@ -9,9 +9,8 @@ import org.usfirst.frc.team1747.robot.subsystems.Intake;
 public class LiftPortcullis extends Command {
     DriveTrain drive;
     Intake intake;
-    SmartDashboard smartDashboard;
 
-    LiftPortcullis() {
+    public LiftPortcullis() {
         drive = Robot.getDriveTrain();
         intake = Robot.getIntake();
         requires(drive);
