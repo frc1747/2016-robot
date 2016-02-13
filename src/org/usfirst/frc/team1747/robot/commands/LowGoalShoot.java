@@ -29,7 +29,7 @@ public class LowGoalShoot extends Command {
 
 	@Override
 	protected void execute() {
-		if (System.currentTimeMillis() - time > 3000) {
+		if (System.currentTimeMillis() - time > 2000) {
 			intake.intakeBall();
 		}
 	}

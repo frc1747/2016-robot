@@ -9,8 +9,6 @@ import org.usfirst.frc.team1747.robot.commands.RaiseLift;
 import org.usfirst.frc.team1747.robot.commands.ReverseShooter;
 import org.usfirst.frc.team1747.robot.commands.Shoot;
 
-import edu.wpi.first.wpilibj.vision.USBCamera;
-
 public class OI {
 
 	private CyborgController controller;
