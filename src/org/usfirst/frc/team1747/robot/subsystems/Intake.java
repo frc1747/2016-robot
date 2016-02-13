@@ -1,16 +1,16 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.SDLogger;
 import org.usfirst.frc.team1747.robot.commands.IntakeManual;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends Subsystem implements SDLogger {
 
@@ -18,6 +18,8 @@ public class Intake extends Subsystem implements SDLogger {
 	Talon rollerMotor;
 	DigitalInput ballIntake;
 	Encoder encoder;
+	double kP, kI, kD;
+	double targetDistance;
 
 	public Intake() {
 		leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
@@ -98,4 +100,35 @@ public class Intake extends Subsystem implements SDLogger {
 	public double getSpeed() {
 		return encoder.getRate();
 	}
+
+	public void setPID(double p, double i, double d) {
+		kP = p;
+		kI = i;
+		kD = d;
+	}
+
+	public void setSetpoint(double targetDistance) {
+		this.targetDistance = targetDistance;
+		leftLiftMotor.setSetpoint(targetDistance);
+		leftLiftMotor.setSetpoint(targetDistance);
+	}
+
+	public void enablePID() {
+		leftLiftMotor.changeControlMode(TalonControlMode.Position);
+		rightLiftMotor.changeControlMode(TalonControlMode.Position);
+		leftLiftMotor.setPID(kP, kI, kD);
+		rightLiftMotor.setPID(kP, kI, kD);
+	}
+
+	public void disablePID() {
+		leftLiftMotor.changeControlMode(TalonControlMode.Voltage);
+		leftLiftMotor.changeControlMode(TalonControlMode.Voltage);
+		leftLiftMotor.setPID(0, 0, 0);
+		rightLiftMotor.setPID(0, 0, 0);
+	}
+
+	public boolean isAtTarget() {
+		return Math.abs(this.targetDistance - leftLiftMotor.get()) < .01;
+	}
+
 }
