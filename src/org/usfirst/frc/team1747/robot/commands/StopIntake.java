@@ -8,10 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class StopIntake extends Command {
 	Intake intake;
-	OI oi;
 
 	public StopIntake() {
-		oi = Robot.getOi();
 		intake = Robot.getIntake();
 		requires(intake);
 	}
@@ -19,7 +17,7 @@ public class StopIntake extends Command {
 	@Override
 	protected void initialize() {
 		intake.rollerStop();
-		oi.setIntakeCommand();
+		Robot.getOi().setIntakeCommand();
 	}
 
 	@Override

@@ -9,19 +9,17 @@ import edu.wpi.first.wpilibj.command.Command;
 public class IntakeBall extends Command {
 
 	Intake intake;
-	OI oi;
 
 	// liftInput senses if the arm is low enough to get the ball
 	// intakeInput senses if we have a ball
 	public IntakeBall() {
 		intake = Robot.getIntake();
-		oi = Robot.getOi();
 		requires(intake);
 	}
 
 	@Override
 	protected void initialize() {
-		oi.setCancelIntakeCommand();
+		//Robot.getOi().setCancelIntakeCommand();
 	}
 
 	// Pick up a ball
@@ -39,7 +37,7 @@ public class IntakeBall extends Command {
 	@Override
 	protected void end() {
 		intake.rollerControl(0);
-		oi.setIntakeCommand();
+		Robot.getOi().setIntakeCommand();
 	}
 
 	@Override

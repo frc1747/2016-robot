@@ -25,17 +25,17 @@ public class IntakeManual extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if (oi.getController().getDPad() != -1) {
-			if (oi.getController().getDPad() == 90) {
+		if (oi.getAuxController().getDPad() != -1) {
+			if (oi.getAuxController().getDPad() == 90) {
 				intake.liftStop();
 				intake.rollerControl(-.75);
-			} else if (oi.getController().getDPad() == 270) {
+			} else if (oi.getAuxController().getDPad() == 270) {
 				intake.liftStop();
 				intake.rollerControl(.75);
-			} else if (oi.getController().getDPad() == 0) {
+			} else if (oi.getAuxController().getDPad() == 0) {
 				intake.rollerStop();
 				intake.liftControl(0.8);
-			} else if (oi.getController().getDPad() == 180) {
+			} else if (oi.getAuxController().getDPad() == 180) {
 				intake.rollerStop();
 				intake.liftControl(-0.5);
 			}

@@ -23,7 +23,7 @@ public class LowGoalShoot extends Command {
 
 	@Override
 	protected void initialize() {
-		shooter.shoot(.3);
+		shooter.shoot(.2);
 		time = System.currentTimeMillis();
 	}
 

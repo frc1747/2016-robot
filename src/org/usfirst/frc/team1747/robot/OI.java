@@ -15,10 +15,12 @@ import edu.wpi.first.wpilibj.command.Command;
 public class OI {
 
 	private CyborgController controller;
+	private PrecisionCyborgController auxController;
 	Command intake, cancelIntake;
 
 	public OI() {
 		controller = new CyborgController(0);
+		auxController = new PrecisionCyborgController(1);
 		intake = new IntakeBall();
 		cancelIntake = new StopIntake();
 		controller.getRightTrigger().whileHeld(new Shoot());
@@ -33,6 +35,10 @@ public class OI {
 
 	public CyborgController getController() {
 		return controller;
+	}
+
+	public PrecisionCyborgController getAuxController() {
+		return auxController;
 	}
 
 	public void setIntakeCommand() {
