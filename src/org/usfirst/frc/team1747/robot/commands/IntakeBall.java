@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1747.robot.commands;
 
-import org.usfirst.frc.team1747.robot.OI;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 
@@ -19,13 +18,13 @@ public class IntakeBall extends Command {
 
 	@Override
 	protected void initialize() {
-		//Robot.getOi().setCancelIntakeCommand();
+		intake.intakeBall();
 	}
 
 	// Pick up a ball
 	@Override
 	protected void execute() {
-		intake.intakeBall();
+
 	}
 
 	@Override
@@ -37,12 +36,11 @@ public class IntakeBall extends Command {
 	@Override
 	protected void end() {
 		intake.rollerControl(0);
-		Robot.getOi().setIntakeCommand();
 	}
 
 	@Override
 	protected void interrupted() {
-		intake.rollerControl(0);
+		end();
 	}
 
 }
