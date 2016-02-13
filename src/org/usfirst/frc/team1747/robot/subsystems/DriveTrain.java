@@ -148,7 +148,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		}
 
 		public void enableRamping() {
-			cimTwo.setVoltageRampRate(18);
+			cimTwo.setVoltageRampRate(24);
 		}
 
 		public void disableRamping() {
