@@ -110,35 +110,42 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("Right Distance", right.getNetDistance());
 	}
 
+	//enables PID
 	public void enablePID() {
 		left.enablePID();
 		right.enablePID();
 	}
 
+	//sets up setpoint
 	public void setSetpoint(double targetSpeed) {
 		left.setSetpoint(targetSpeed);
 		right.setSetpoint(targetSpeed);
 	}
 
+	//disables PID
 	public void disablePID() {
 		left.disablePID();
 		right.disablePID();
 	}
 
+	//enables Ramping
 	public void enableRamping() {
 		left.enableRamping();
 		right.enableRamping();
 	}
 
+	//disables ramping
 	public void disableRamping() {
 		left.disableRamping();
 		right.disableRamping();
 	}
 
+	//determines if robot is at target
 	public boolean isAtTarget() {
 		return left.isAtTarget() && right.isAtTarget();
 	}
 
+	//turns on the LED lights
 	public void turnOnGlow() {
 		glowRight.set(true);
 		glowLeft.set(true);
@@ -149,6 +156,12 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		glowLeft.set(false);
 	}
 
+	public void runPID() {
+		left.runPID();
+		right.runPID();
+	}
+
+	//sets up constants for DriveSide
 	class DriveSide {
 		CANTalon cimOne, cimTwo, miniCim;
 		double kP, kI, kD;
@@ -160,6 +173,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		double time;
 		boolean inverted;
 
+		//sets up the control modes for the talons
 		public DriveSide(int cimOneID, int cimTwoID, int miniCimID, boolean inverted) {
 			cimOne = new CANTalon(cimOneID);
 			cimTwo = new CANTalon(cimTwoID);
@@ -179,46 +193,56 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			this.inverted = inverted;
 		}
 
+		//enables ramping
 		public void enableRamping() {
 			cimTwo.setVoltageRampRate(24);
 		}
 
+		//disables ramping
 		public void disableRamping() {
 			cimTwo.setVoltageRampRate(0);
 		}
 
+		//gets P
 		public double getP() {
 			return kP;
 		}
 
+		//gets I
 		public double getI() {
 			return kI;
 		}
 
+		//gets D
 		public double getD() {
 			return kD;
 		}
 
+		//returns the speed of cimtwo
 		public double getSpeed() {
 			return cimTwo.getSpeed() * .04295 * (inverted ? 1 : -(4.0/3.0)); //Remove when encoder repaired
 		}
 
+		//sets speed of cimTwo
 		public void set(double speed) {
 			speed *= 12.0;
 			cimTwo.set(speed);
 		}
 
+		//sets kP, kI, and kD
 		public void setPID(double p, double i, double d) {
 			kP = p;
 			kI = i;
 			kD = d;
 		}
 
+		//sets the target distance
 		public void setSetpoint(double targetDistance) {
 			this.targetDistance = targetDistance;
 			cimTwo.setSetpoint(targetDistance);
 		}
 
+		// enable PID and clears target distance
 		public void enablePID() {
 			pidEnabled = true;
 			time = System.currentTimeMillis();
@@ -229,10 +253,12 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			time = 0;
 		}
 
+		// disables the PID
 		public void disablePID() {
 			pidEnabled = false;
 		}
 
+		//runs the PID
 		public void runPID() {
 			if (pidEnabled) {
 				double currentDistance = getNetDistance();
@@ -267,10 +293,5 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			netDistance += (getSpeed() * (time - pTime)) / 1000.0;
 			return netDistance;
 		}
-	}
-
-	public void runPID() {
-		left.runPID();
-		right.runPID();
 	}
 }
