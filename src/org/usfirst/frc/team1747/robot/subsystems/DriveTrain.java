@@ -207,6 +207,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
             cimTwo.setSetpoint(targetDistance);
         }
 
+        //enables PID
         public void enablePID() {
             cimTwo.changeControlMode(TalonControlMode.Position);
             cimOne.setPID(kP, kI, kD);
@@ -214,6 +215,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
             miniCim.setPID(kP, kI, kD);
         }
 
+        //disables PID
         public void disablePID() {
             cimTwo.changeControlMode(TalonControlMode.Voltage);
             cimOne.setPID(0, 0, 0);
