@@ -27,7 +27,6 @@ public class AutoShoot extends Command {
 
 	protected void execute() {
 		String direction = networkTable.getString("ShootDirection", "unknown");
-		System.out.println(direction);
 		if (direction.equals("left")) {
 			drive.arcadeDrive(0.0, -0.225);
 		}

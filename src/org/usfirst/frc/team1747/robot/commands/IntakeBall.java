@@ -18,7 +18,9 @@ public class IntakeBall extends Command {
 
 	@Override
 	protected void initialize() {
-		intake.intakeBall();
+		if(!intake.hasBall()){
+			intake.intakeBall();
+		}
 	}
 
 	// Pick up a ball
