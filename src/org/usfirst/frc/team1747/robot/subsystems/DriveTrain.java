@@ -36,10 +36,10 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			straightTargetDeltas.add(0.0);
 			rotationTargetDeltas.add(0.0);
 		}
-		SmartDashboard.putNumber("DriveTrain LP", .01);
+		SmartDashboard.putNumber("DriveTrain LP", .015);
 		SmartDashboard.putNumber("DriveTrain LI", 0);
 		SmartDashboard.putNumber("DriveTrain LD", 0);
-		SmartDashboard.putNumber("DriveTrain RP", .01);
+		SmartDashboard.putNumber("DriveTrain RP", .015);
 		SmartDashboard.putNumber("DriveTrain RI", 0);
 		SmartDashboard.putNumber("DriveTrain RD", 0);
 	}
@@ -284,7 +284,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 
 		public boolean isAtTarget() {
 			// TODO: Verify grace distance
-			return Math.abs(this.targetDistance - getNetDistance()) < .1;
+			return Math.abs(this.targetDistance - getNetDistance()) < 6;
 		}
 
 		public double getNetDistance() {
