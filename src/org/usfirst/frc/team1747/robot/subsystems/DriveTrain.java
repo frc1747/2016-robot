@@ -258,7 +258,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 
 		public boolean isAtTarget() {
 			// TODO: Verify grace distance
-			return Math.abs(this.targetDistance - getNetDistance()) < 6;
+			return Math.abs(this.targetDistance - getNetDistance()) < 12;
 		}
 
 		public double getNetDistance() {
