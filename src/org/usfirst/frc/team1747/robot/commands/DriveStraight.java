@@ -24,7 +24,7 @@ public class DriveStraight extends Command {
 		// driveTrain.enablePID();
 		// driveTrain.setSetpoint(distance);\
 		time = System.currentTimeMillis();
-		driveTrain.tankDrive(.5, .6);
+		driveTrain.tankDrive(.5, .5);
 	}
 
 	@Override

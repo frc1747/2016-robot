@@ -34,7 +34,7 @@ public class TeleopDrive extends Command {
 		} else {
 			driveTrain.enableRamping();
 		}
-		driveTrain.smoothDrive(leftVert, rightHoriz);
+		driveTrain.smoothDrive(leftVert, rightHoriz );//* Math.abs(rightHoriz));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

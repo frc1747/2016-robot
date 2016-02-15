@@ -36,24 +36,32 @@ public class AutoShoot extends Command {
 		if (direction.equals("left")) {
 			shoot.shoot(0);
 			drive.arcadeDrive(0.0, -0.225);
+			startTime = -1;
 		} else if (direction.equals("right")) {
 			shoot.shoot(0);
 			drive.arcadeDrive(0.0, 0.225);
+			startTime = -1;
 		} else if (direction.equals("forward")) {
 			shoot.shoot(0);
 			drive.arcadeDrive(0.25, 0.0);
+			startTime = -1;
 		} else if (direction.equals("backward")) {
 			shoot.shoot(0);
 			drive.arcadeDrive(-0.25, 0.0);
+			startTime = -1;
 		} else if (direction.equals("shoot")) {
 			drive.arcadeDrive(0, 0);
-			shoot.shoot(.6);
 			if (startTime == -1) {
 				startTime = System.currentTimeMillis();
+			}
+			if (startTime != -1 && System.currentTimeMillis() - startTime > 500) {
+				shoot.shoot(0.6);
 			}
 			if (startTime != -1 && System.currentTimeMillis() - startTime > 3000) {
 				intake.intakeBall();
 			}
+		} else if (direction.equals("unknown")) {
+			drive.arcadeDrive(0, -0.3);
 		}
 	}
 

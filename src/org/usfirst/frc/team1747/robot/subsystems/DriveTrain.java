@@ -126,13 +126,13 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	}
 
 	public void enableRamping() {
-		left.enableRamping();
-		right.enableRamping();
+		//left.enableRamping();
+		//right.enableRamping();
 	}
 
 	public void disableRamping() {
-		left.disableRamping();
-		right.disableRamping();
+		//left.disableRamping();
+		//right.disableRamping();
 	}
 
 	public boolean isAtTarget() {
@@ -167,7 +167,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			cimTwo.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 			// cimTwo.setProfile(0);
 			cimTwo.setPIDSourceType(PIDSourceType.kDisplacement);
-			cimTwo.setVoltageRampRate(18);
+			//cimTwo.setVoltageRampRate(18);
 			cimTwo.changeControlMode(TalonControlMode.Voltage);
 			cimOne.changeControlMode(TalonControlMode.Follower);
 			miniCim.changeControlMode(TalonControlMode.Follower);
@@ -180,11 +180,11 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		}
 
 		public void enableRamping() {
-			cimTwo.setVoltageRampRate(24);
+			//cimTwo.setVoltageRate(24);
 		}
 
 		public void disableRamping() {
-			cimTwo.setVoltageRampRate(0);
+			//cimTwo.setVoltageRampRate(0);
 		}
 
 		public double getP() {
@@ -200,7 +200,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		}
 
 		public double getSpeed() {
-			return cimTwo.getSpeed() * .04295 * (inverted ? 1 : -(4.0/3.0)); //Remove when encoder repaired
+			return cimTwo.getSpeed() * .04295 * (inverted ? 1 : -(4/3)); //Remove when encoder repaired
 		}
 
 		public void set(double speed) {
