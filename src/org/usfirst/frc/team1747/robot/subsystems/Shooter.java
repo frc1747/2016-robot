@@ -49,6 +49,14 @@ public class Shooter extends Subsystem implements SDLogger {
 		right.runPID();
 	}
 
+	public double getLeftSpeed(){
+		return 100 * left.getSpeed();
+	}
+	
+	public double getRightSpeed(){
+		return 100 * right.getSpeed();
+	}
+	
 	@Override
 	protected void initDefaultCommand() {
 	}

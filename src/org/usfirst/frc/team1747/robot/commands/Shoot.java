@@ -11,6 +11,7 @@ public class Shoot extends Command {
 
 	Shooter shooter;
 	Intake intake;
+	double speed;
 	double startTime;
 	double time = -1;
 	boolean pidMode;
@@ -26,6 +27,7 @@ public class Shoot extends Command {
 	protected void initialize() {
 		pidMode = SmartDashboard.getBoolean("Shooter PID Mode", true);
 		double speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
+		this.speed = speed;
 		if (pidMode) {
 			speed *= -20.0;
 			shooter.enablePID();
@@ -38,10 +40,12 @@ public class Shoot extends Command {
 
 	@Override
 	protected void execute() {
+		System.out.println(shooter.getLeftSpeed());
+		System.out.println(shooter.getRightSpeed());
 		if (pidMode) {
 			shooter.runPID();
 		}
-		if (System.currentTimeMillis() - time > 3000) {
+		if (shooter.getLeftSpeed() >= speed && shooter.getRightSpeed() >= speed) {
 			intake.intakeBall();
 		}
 	}

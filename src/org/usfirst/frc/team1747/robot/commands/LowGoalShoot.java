@@ -29,7 +29,7 @@ public class LowGoalShoot extends Command {
 
 	@Override
 	protected void execute() {
-		if (System.currentTimeMillis() - time > 2000) {
+		if (shooter.getLeftSpeed() >= 0.17 && shooter.getRightSpeed() >= 0.17) {
 			intake.intakeBall();
 		}
 	}
