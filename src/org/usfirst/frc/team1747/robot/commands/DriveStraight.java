@@ -34,7 +34,7 @@ public class DriveStraight extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return System.currentTimeMillis() - time > 3000;
+		return System.currentTimeMillis() - time > 3250;
 		// return driveTrain.isAtTarget();
 	}
 

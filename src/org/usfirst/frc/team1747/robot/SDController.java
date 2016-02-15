@@ -25,7 +25,7 @@ public class SDController {
 	}
 
 	public void refresh() {
-		oi.getController().logToSmartDashboard();
+		//oi.getController().logToSmartDashboard();
 		driveTrain.logToSmartDashboard();
 		shooter.logToSmartDashboard();
 		intake.logToSmartDashboard();

@@ -13,7 +13,6 @@ import org.usfirst.frc.team1747.robot.SDLogger;
 public class Shooter extends Subsystem implements SDLogger {
 
 	ShooterSide left, right;
-	Solenoid led;
 
 	//set up left and right sides of the shooter, puts variables onto the SmartDashbord
 	public Shooter() {
@@ -22,8 +21,6 @@ public class Shooter extends Subsystem implements SDLogger {
 				RobotMap.LEFT_COUNTER);
 		right = new ShooterSide(RobotMap.RIGHT_SHOOTER_MOTOR_ONE, RobotMap.RIGHT_SHOOTER_MOTOR_TWO, false,
 				RobotMap.RIGHT_COUNTER);
-		led = new Solenoid(RobotMap.LED);
-		turnOnLED();
 		SmartDashboard.putNumber("Target Shooter Speed", .6);
 		SmartDashboard.putNumber("Shooter LP", .05);
 		SmartDashboard.putNumber("Shooter LI", 0);
@@ -76,14 +73,6 @@ public class Shooter extends Subsystem implements SDLogger {
 	public void shoot(double speed) {
 		left.set(speed);
 		right.set(speed);
-	}
-
-	public void turnOffLED() {
-		led.set(false);
-	}
-
-	public void turnOnLED() {
-		led.set(true);
 	}
 
 	class ShooterSide {
