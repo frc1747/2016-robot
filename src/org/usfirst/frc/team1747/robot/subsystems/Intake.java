@@ -102,10 +102,12 @@ public class Intake extends Subsystem implements SDLogger {
                 SmartDashboard.getNumber("Portcullis D", kD));
     }
 
+    //returns encoder speed
     public double getSpeed() {
         return encoder.getRate();
     }
 
+    //sets up PID
     public void setPID(double p, double i, double d) {
         kP = p;
         kI = i;
@@ -118,6 +120,7 @@ public class Intake extends Subsystem implements SDLogger {
         leftLiftMotor.setSetpoint(targetDistance);
     }
 
+    //enables PID
     public void enablePID() {
         leftLiftMotor.changeControlMode(TalonControlMode.Position);
         rightLiftMotor.changeControlMode(TalonControlMode.Position);
@@ -125,6 +128,7 @@ public class Intake extends Subsystem implements SDLogger {
         rightLiftMotor.setPID(kP, kI, kD);
     }
 
+    //disables PID
     public void disablePID() {
         leftLiftMotor.changeControlMode(TalonControlMode.Voltage);
         leftLiftMotor.changeControlMode(TalonControlMode.Voltage);
@@ -132,6 +136,7 @@ public class Intake extends Subsystem implements SDLogger {
         rightLiftMotor.setPID(0, 0, 0);
     }
 
+    //returns true if at target, false if not at target
     public boolean isAtTarget() {
         return Math.abs(this.targetDistance - leftLiftMotor.get()) < .01;
     }
