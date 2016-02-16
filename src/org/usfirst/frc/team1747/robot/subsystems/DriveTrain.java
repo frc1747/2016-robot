@@ -54,7 +54,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		tankDrive(straight + turn, straight - turn);
 	}
 
-	// This is smooth drive. bush did 9II
+	// This is smooth drive.
 	public void smoothDrive(double targetStraight, double targetRotation) {
 		straightTargetDeltas.removeLast();
 		rotationTargetDeltas.removeLast();
