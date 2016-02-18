@@ -9,7 +9,7 @@ public class BallEject extends Command {
 
 	Intake intake;
 	double startTime;
-
+	//uses intake 
 	public BallEject() {
 		intake = Robot.getIntake();
 		requires(intake);

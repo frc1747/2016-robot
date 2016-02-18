@@ -22,7 +22,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	Solenoid glowLeft;
 	Solenoid glowRight;
 
-	// Sets up CANTalons for drive train
+	// Sets up CANTalons for drive train; maps the left and right LEDs
 	public DriveTrain() {
 		left = new DriveSide(RobotMap.LEFT_DRIVE_CIM_ONE, RobotMap.LEFT_DRIVE_CIM_TWO, RobotMap.LEFT_DRIVE_MINICIM,
 				true);
@@ -44,12 +44,12 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("DriveTrain RD", 0);
 	}
 
-	// Sets up the tank drive.
+	// Sets up the tank drive using left and right speed
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		left.set(leftSpeed);
 		right.set(rightSpeed);
 	}
-
+	//sets up arcade drive
 	public void arcadeDrive(double straight, double turn) {
 		tankDrive(straight + turn, straight - turn);
 	}
@@ -110,19 +110,19 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("Right Distance", right.getNetDistance());
 	}
 
-	//enables PID
+	//enables left and right PIDs
 	public void enablePID() {
 		left.enablePID();
 		right.enablePID();
 	}
 
-	//sets up setpoint
+	//sets up left and right setpoints
 	public void setSetpoint(double targetSpeed) {
 		left.setSetpoint(targetSpeed);
 		right.setSetpoint(targetSpeed);
 	}
 
-	//disables PID
+	//disables left and right PID
 	public void disablePID() {
 		left.disablePID();
 		right.disablePID();
@@ -145,17 +145,17 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		return left.isAtTarget() && right.isAtTarget();
 	}
 
-	//turns on the LED lights
+	//turns on the left and right LED lights
 	public void turnOnGlow() {
 		glowRight.set(true);
 		glowLeft.set(true);
 	}
-
+	//turns off elft and right LED lights
 	public void turnOffGlow() {
 		glowRight.set(false);
 		glowLeft.set(false);
 	}
-
+	//runs left and right PIDs
 	public void runPID() {
 		left.runPID();
 		right.runPID();
@@ -173,7 +173,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		double time;
 		boolean inverted;
 
-		//sets up the control modes for the talons
+		//sets up the control modes for the talons and inverts some cims and miniCims
 		public DriveSide(int cimOneID, int cimTwoID, int miniCimID, boolean inverted) {
 			cimOne = new CANTalon(cimOneID);
 			cimTwo = new CANTalon(cimTwoID);
@@ -258,7 +258,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			pidEnabled = false;
 		}
 
-		//runs the PID
+		//runs the PID using the constants kP, kI, and kD
 		public void runPID() {
 			if (pidEnabled) {
 				double currentDistance = getNetDistance();
@@ -281,12 +281,13 @@ public class DriveTrain extends Subsystem implements SDLogger {
 				set(0);
 			}
 		}
-
+		//returns true if robot is at target, and false if robot is not at target
+		//all I do is win, win, no matter what
 		public boolean isAtTarget() {
 			// TODO: Verify grace distance
 			return Math.abs(this.targetDistance - getNetDistance()) < 12;
 		}
-
+		//gets the net distance using input of time
 		public double getNetDistance() {
 			double pTime = time;
 			time = System.currentTimeMillis();
@@ -295,3 +296,4 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		}
 	}
 }
+//not 300 lines of code, take that DYLAN and JASON

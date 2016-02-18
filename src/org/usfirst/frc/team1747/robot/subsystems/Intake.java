@@ -120,7 +120,7 @@ public class Intake extends Subsystem implements SDLogger {
         leftLiftMotor.setSetpoint(targetDistance);
     }
 
-    //enables PID
+    //enables PID; changes the talon control mode for the left and right lift motors
     public void enablePID() {
         leftLiftMotor.changeControlMode(TalonControlMode.Position);
         rightLiftMotor.changeControlMode(TalonControlMode.Position);
@@ -128,10 +128,10 @@ public class Intake extends Subsystem implements SDLogger {
         rightLiftMotor.setPID(kP, kI, kD);
     }
 
-    //disables PID
+    //disables PID; changes the talon control modes for the left and right lift motors
     public void disablePID() {
         leftLiftMotor.changeControlMode(TalonControlMode.Voltage);
-        leftLiftMotor.changeControlMode(TalonControlMode.Voltage);
+        rightLiftMotor.changeControlMode(TalonControlMode.Voltage);
         leftLiftMotor.setPID(0, 0, 0);
         rightLiftMotor.setPID(0, 0, 0);
     }

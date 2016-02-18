@@ -15,7 +15,7 @@ public class AutoShoot extends Command {
     NetworkTable networkTable;
     double startTime;
     int position;
-
+    //sets up AutoShoot
     public AutoShoot() {
         drive = Robot.getDrive();
         shoot = Robot.getShooter();
@@ -26,12 +26,12 @@ public class AutoShoot extends Command {
         requires(intake);
         position = Robot.getSd().getAutonPosition();
     }
-
+    //initializes AutoShoot then prints out that it is running
     protected void initialize() {
         startTime = -1;
         System.out.println("Running");
     }
-
+    
     protected void execute() {
         if (position == 0)
             return;
@@ -78,11 +78,11 @@ public class AutoShoot extends Command {
                 break;
         }
     }
-
+    //returns true if auto mode is done, if not it returns false; uses startTime, position, and the current system time
     protected boolean isFinished() {
         return (startTime != -1 && System.currentTimeMillis() - startTime > 4000) || position == 0;
     }
-
+    //ends shoot and arcadeDrive
     protected void end() {
         drive.arcadeDrive(0, 0);
         shoot.shoot(0);

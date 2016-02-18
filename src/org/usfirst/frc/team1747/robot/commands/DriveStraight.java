@@ -8,14 +8,14 @@ import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 public class DriveStraight extends Command {
 	DriveTrain driveTrain;
 	double time;
-
+	
 	public DriveStraight() {
 		driveTrain = Robot.getDriveTrain();
 		// System.out.println("Constructor");
 		// SmartDashboard.putNumber("DriveStraight Distance", 100.0);
 		requires(driveTrain);
 	}
-
+	//sets up tankDrive
 	@Override
 	protected void initialize() {
 		// System.out.println("Initialize");
@@ -31,7 +31,7 @@ public class DriveStraight extends Command {
 	protected void execute() {
 		// driveTrain.runPID();
 	}
-
+	//returns true if more than 3250 time has passed
 	@Override
 	protected boolean isFinished() {
 		return System.currentTimeMillis() - time > 3250;
