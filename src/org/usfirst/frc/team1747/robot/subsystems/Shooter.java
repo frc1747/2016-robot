@@ -63,8 +63,8 @@ public class Shooter extends Subsystem implements SDLogger {
 
 	//logs variables to smartdashbord
 	public void logToSmartDashboard() {
-		SmartDashboard.putNumber("Left Shooter Speed", left.getSpeed());
-		SmartDashboard.putNumber("Right Shooter Speed", right.getSpeed());
+		SmartDashboard.putNumber("Left Shooter Speed", getLeftSpeed());
+		SmartDashboard.putNumber("Right Shooter Speed", getRightSpeed());
 		left.setPID(SmartDashboard.getNumber("Shooter LP", left.getP()),
 				SmartDashboard.getNumber("Shooter LI", left.getI()),
 				SmartDashboard.getNumber("Shooter LD", left.getD()));

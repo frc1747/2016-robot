@@ -24,10 +24,10 @@ public class AutoShoot extends Command {
         requires(shoot);
         requires(drive);
         requires(intake);
-        position = Robot.getSd().getAutonPosition();
     }
     //initializes AutoShoot then prints out that it is running
     protected void initialize() {
+        position = Robot.getSd().getAutonPosition();
         startTime = -1;
         System.out.println("Running");
     }
