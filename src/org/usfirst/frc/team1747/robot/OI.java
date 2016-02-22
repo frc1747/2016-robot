@@ -25,6 +25,10 @@ public class OI {
 		controller.getStartButton().whileHeld(new AutoShoot());
 		controller.getRightBumper().whileHeld(new LowGoalShoot());
 		controller.getBackButton().whenPressed(new DriveStraight());
+		auxController.getButtonOne().toggleWhenPressed(new IntakeBall());
+		auxController.getButtonTwo().whenPressed(new LowerLift());
+		auxController.getButtonThree().whenPressed(new BallEject());
+		auxController.getButtonFour().whenPressed(new RaiseLift());
 	}
 
 	public CyborgController getController() {

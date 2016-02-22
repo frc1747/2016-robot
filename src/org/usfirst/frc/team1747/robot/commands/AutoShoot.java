@@ -33,49 +33,49 @@ public class AutoShoot extends Command {
     }
     
     protected void execute() {
-        if (position == 0)
-            return;
-        String direction = networkTable.getString("ShootDirection", "robotUnknown");
-        switch (direction) {
-            case "left":
-                shoot.shoot(0);
-                drive.arcadeDrive(0.0, -0.225);
-                startTime = -1;
-                break;
-            case "right":
-                shoot.shoot(0);
-                drive.arcadeDrive(0.0, 0.225);
-                startTime = -1;
-                break;
-            case "forward":
-                shoot.shoot(0);
-                drive.arcadeDrive(0.25, 0.0);
-                startTime = -1;
-                break;
-            case "backward":
-                shoot.shoot(0);
-                drive.arcadeDrive(-0.25, 0.0);
-                startTime = -1;
-                break;
-            case "shoot":
-                drive.arcadeDrive(0, 0);
-                if (startTime == -1) {
-                    startTime = System.currentTimeMillis();
-                }
-                if (startTime != -1 && System.currentTimeMillis() - startTime > 500) {
-                    shoot.shoot(0.6);
-                }
-                if (startTime != -1 && System.currentTimeMillis() - startTime > 3000) {
-                    intake.intakeBall();
-                }
-                break;
-            case "unknown":
-                if (position <= 3) {
-                    drive.arcadeDrive(0, 0.3);
-                } else {
-                    drive.arcadeDrive(0, -0.3);
-                }
-                break;
+        if (position == 0) {
+        	String direction = networkTable.getString("ShootDirection", "robotUnknown");
+        	switch (direction) {
+            	case "left":
+            		shoot.shoot(0);
+            		drive.arcadeDrive(0.0, -0.225);
+            		startTime = -1;
+            		break;
+            	case "right":
+            		shoot.shoot(0);
+            		drive.arcadeDrive(0.0, 0.225);
+            		startTime = -1;
+            		break;
+            	case "forward":
+            		shoot.shoot(0);
+            		drive.arcadeDrive(0.25, 0.0);
+            		startTime = -1;
+            		break;
+            	case "backward":
+            		shoot.shoot(0);
+            		drive.arcadeDrive(-0.25, 0.0);
+            		startTime = -1;
+            		break;
+            	case "shoot":
+            		drive.arcadeDrive(0, 0);
+            		if (startTime == -1) {
+            			startTime = System.currentTimeMillis();
+            		}
+            		if (startTime != -1 && System.currentTimeMillis() - startTime > 500) {
+            			shoot.shoot(0.6);
+            		}
+            		if (startTime != -1 && System.currentTimeMillis() - startTime > 3000) {
+            			intake.intakeBall();
+            		}
+            		break;
+            	case "unknown":
+            		if (position <= 3) {
+            			drive.arcadeDrive(0, 0.3);
+            		} else {
+            			drive.arcadeDrive(0, -0.3);
+            		}
+            		break;
+        	}
         }
     }
     //returns true if auto mode is done, if not it returns false; uses startTime, position, and the current system time
