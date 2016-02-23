@@ -29,7 +29,7 @@ public class TeleopDrive extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		turnDampening = driveTrain.getTurnDampener();
+		turnDampening = driveTrain.getTeleopTurnDampener();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

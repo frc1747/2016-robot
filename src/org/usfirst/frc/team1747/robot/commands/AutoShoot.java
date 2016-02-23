@@ -15,6 +15,7 @@ public class AutoShoot extends Command {
     NetworkTable networkTable;
     double startTime;
     int position;
+    double turnValue;
     //sets up AutoShoot
     public AutoShoot() {
         drive = Robot.getDrive();
@@ -30,6 +31,7 @@ public class AutoShoot extends Command {
         position = Robot.getSd().getAutonPosition();
         startTime = -1;
         System.out.println("Running");
+        turnValue = drive.getAutonTurn();
     }
     
     protected void execute() {
@@ -38,12 +40,12 @@ public class AutoShoot extends Command {
         	switch (direction) {
             	case "left":
             		shoot.shoot(0);
-            		drive.arcadeDrive(0.0, -0.200);
+            		drive.arcadeDrive(0.0, -turnValue);
             		startTime = -1;
             		break;
             	case "right":
             		shoot.shoot(0);
-            		drive.arcadeDrive(0.0, 0.200);
+            		drive.arcadeDrive(0.0, turnValue);
             		startTime = -1;
             		break;
             	case "forward":
