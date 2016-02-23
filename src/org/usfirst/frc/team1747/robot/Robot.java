@@ -39,9 +39,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
+		//Camera code hidden until camera is ready
 		//server = CameraServer.getInstance();
         //server.setQuality(50);
-        //the camera name (ex "cam0") can be found through the roborio web interface
         //server.startAutomaticCapture("cam0");
 	}
 

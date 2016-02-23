@@ -29,7 +29,7 @@ public class BallEject extends Command {
 	// After 2000milliseconds, stop the motors
 	@Override
 	protected boolean isFinished() {
-		return (System.currentTimeMillis() - startTime >= 1000);
+		return false;
 	}
 
 	@Override

@@ -20,14 +20,14 @@ public class OI {
 		controller.getRightTrigger().whileHeld(new Shoot());
 		controller.getLeftBumper().toggleWhenPressed(new IntakeBall());
 		controller.getButtonTwo().whenPressed(new LowerLift());
-		controller.getButtonThree().whenPressed(new BallEject());
+		controller.getButtonThree().toggleWhenPressed(new BallEject());
 		controller.getButtonFour().whenPressed(new RaiseLift());
 		controller.getStartButton().whileHeld(new AutoShoot());
 		controller.getRightBumper().whileHeld(new LowGoalShoot());
 		controller.getBackButton().whenPressed(new DriveStraight());
 		auxController.getButtonOne().toggleWhenPressed(new IntakeBall());
 		auxController.getButtonTwo().whenPressed(new LowerLift());
-		auxController.getButtonThree().whenPressed(new BallEject());
+		auxController.getButtonThree().toggleWhenPressed(new BallEject());
 		auxController.getButtonFour().whenPressed(new RaiseLift());
 	}
 
