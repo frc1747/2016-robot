@@ -1,10 +1,12 @@
 package org.usfirst.frc.team1747.robot.commands;
 
 import org.usfirst.frc.team1747.robot.CyborgController;
+import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -13,16 +15,21 @@ public class TeleopDrive extends Command {
 
 	DriveTrain driveTrain;
 	CyborgController controller;
+	PrecisionCyborgController auxController;
+	double turnDampening;
+	SmartDashboard smartDashboard;
 
 	public TeleopDrive() {
 		driveTrain = Robot.getDriveTrain();
 		controller = Robot.getOi().getController();
+		auxController = Robot.getOi().getAuxController();
 		requires(driveTrain);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		turnDampening = driveTrain.getTurnDampener();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -34,7 +41,9 @@ public class TeleopDrive extends Command {
 		} else {
 			driveTrain.enableRamping();
 		}
-		driveTrain.smoothDrive(leftVert, rightHoriz );//* Math.abs(rightHoriz));
+		
+		
+		driveTrain.smoothDrive(auxController.getRightBumper().get() ? leftVert*turnDampening : leftVert, auxController.getLeftBumper().get() ? rightHoriz*turnDampening : rightHoriz );//* Math.abs(rightHoriz));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

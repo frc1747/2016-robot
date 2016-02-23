@@ -33,17 +33,17 @@ public class AutoShoot extends Command {
     }
     
     protected void execute() {
-        if (position == 0) {
+        if (position != 0) {
         	String direction = networkTable.getString("ShootDirection", "robotUnknown");
         	switch (direction) {
             	case "left":
             		shoot.shoot(0);
-            		drive.arcadeDrive(0.0, -0.225);
+            		drive.arcadeDrive(0.0, -0.200);
             		startTime = -1;
             		break;
             	case "right":
             		shoot.shoot(0);
-            		drive.arcadeDrive(0.0, 0.225);
+            		drive.arcadeDrive(0.0, 0.200);
             		startTime = -1;
             		break;
             	case "forward":

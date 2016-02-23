@@ -19,6 +19,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	LinkedList<Double> straightTargetDeltas = new LinkedList<Double>();
 	LinkedList<Double> rotationTargetDeltas = new LinkedList<Double>();
 	double pStraightTarget = 0.0, pRotationTarget = 0.0, prevTargetStraight = 0.0, prevTargetRotation = 0.0;
+	double turnDampening;
 	Solenoid glowLeft;
 	Solenoid glowRight;
 
@@ -95,6 +96,10 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	public void initDefaultCommand() {
 		setDefaultCommand(new TeleopDrive());
 	}
+	
+	public double getTurnDampener(){
+		return turnDampening;
+	}
 
 	// This is a public void that logs smart dashboard.
 	public void logToSmartDashboard() {
@@ -108,6 +113,8 @@ public class DriveTrain extends Subsystem implements SDLogger {
 				SmartDashboard.getNumber("DriveTrain RD", right.getD()));
 		SmartDashboard.putNumber("Left Distance", left.getNetDistance());
 		SmartDashboard.putNumber("Right Distance", right.getNetDistance());
+		SmartDashboard.putNumber("Turn Dampening", 0.9);
+		turnDampening = SmartDashboard.getNumber("Turn Dampening");
 	}
 
 	//enables left and right PIDs
