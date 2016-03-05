@@ -72,9 +72,9 @@ public class AutoShoot extends Command {
             		break;
             	case "unknown":
             		if (position <= 3) {
-            			drive.arcadeDrive(0, 0.3);
-            		} else {
             			drive.arcadeDrive(0, -0.3);
+            		} else {
+            			drive.arcadeDrive(0, 0.3);
             		}
             		break;
         	}
