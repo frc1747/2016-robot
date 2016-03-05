@@ -8,6 +8,7 @@ import org.usfirst.frc.team1747.robot.commands.LowGoalShoot;
 import org.usfirst.frc.team1747.robot.commands.LowerLift;
 import org.usfirst.frc.team1747.robot.commands.RaiseLift;
 import org.usfirst.frc.team1747.robot.commands.Shoot;
+import org.usfirst.frc.team1747.robot.commands.TurnToAngle;
 
 public class OI {
 
@@ -29,6 +30,7 @@ public class OI {
 		auxController.getButtonTwo().whenPressed(new LowerLift());
 		auxController.getButtonThree().toggleWhenPressed(new BallEject());
 		auxController.getButtonFour().whenPressed(new RaiseLift());
+		auxController.getRightTrigger().whenPressed(new TurnToAngle());
 	}
 
 	public CyborgController getController() {

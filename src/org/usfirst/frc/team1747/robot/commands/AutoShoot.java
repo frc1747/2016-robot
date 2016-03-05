@@ -16,9 +16,10 @@ public class AutoShoot extends Command {
     double startTime;
     int position;
     double turnValue;
+    
     //sets up AutoShoot
     public AutoShoot() {
-        drive = Robot.getDrive();
+        drive = Robot.getDriveTrain();
         shoot = Robot.getShooter();
         intake = Robot.getIntake();
         networkTable = NetworkTable.getTable("imageProcessing");

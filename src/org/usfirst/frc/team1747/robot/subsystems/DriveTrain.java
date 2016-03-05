@@ -120,7 +120,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("Right Distance", right.getNetDistance());
 		SmartDashboard.putNumber("Turn Dampening", 0.9);
 		teleopTurnDampening = SmartDashboard.getNumber("Turn Dampening");
-		SmartDashboard.putNumber("Auton Turning", 0.200);
+		SmartDashboard.putNumber("Auton Turning", 0.250);
 		autonTurn = SmartDashboard.getNumber("Auton Turning");
 	}
 
@@ -174,7 +174,23 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		left.runPID();
 		right.runPID();
 	}
+	
+	public double getRightDistance(){
+		return right.getNetDistance();
+	}
+	
+	public double getLeftDistance(){
+		return left.getNetDistance();
+	}
 
+	public void resetRightDistance(){
+		right.resetNetDistance();
+	}
+	
+	public void resetLeftDistance(){
+		left.resetNetDistance();
+	}
+	
 	//sets up constants for DriveSide
 	class DriveSide {
 		CANTalon cimOne, cimTwo, miniCim;
@@ -307,6 +323,10 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			time = System.currentTimeMillis();
 			netDistance += (getSpeed() * (time - pTime)) / 1000.0;
 			return netDistance;
+		}
+		
+		public void resetNetDistance() {
+			netDistance = 0;
 		}
 	}
 }

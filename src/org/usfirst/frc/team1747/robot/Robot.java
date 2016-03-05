@@ -39,10 +39,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
-		//Camera code hidden until camera is ready
-		//server = CameraServer.getInstance();
-        //server.setQuality(50);
-        //server.startAutomaticCapture("cam0");
+		server = CameraServer.getInstance();
+        server.setQuality(50);
+        server.startAutomaticCapture("cam0");
 	}
 
 	/**
@@ -115,10 +114,6 @@ public class Robot extends IterativeRobot {
 
 	public static OI getOi() {
 		return oi;
-	}
-
-	public static DriveTrain getDrive() {
-		return drive;
 	}
 
 	public static SDController getSd() {
