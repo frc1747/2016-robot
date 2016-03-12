@@ -6,6 +6,7 @@ import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +22,7 @@ public class AutoShoot extends Command {
 	double startTime;
 	int position;
 	double turnValue;
+	DriverStation driverStation;
 
 	// sets up AutoShoot
 	public AutoShoot() {
@@ -29,6 +31,7 @@ public class AutoShoot extends Command {
 		intake = Robot.getIntake();
 		speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
 		networkTable = NetworkTable.getTable("imageProcessing");
+		driverStation = DriverStation.getInstance();
 		requires(shoot);
 		requires(drive);
 		requires(intake);
@@ -45,28 +48,26 @@ public class AutoShoot extends Command {
 		if (position != 0) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
-			switch (direction) {
-			case "left":
+			if (driverStation.getMatchTime() < 3 && !direction.equals("robotUnknown")) {
+				direction = "shoot";
+			}
+			if (direction.equals("left")) {
 				shoot.shoot(0);
 				drive.arcadeDrive(0.0, (-turnValue));
 				startTime = -1;
-				break;
-			case "right":
+			} else if (direction.equals("right")) {
 				shoot.shoot(0);
 				drive.arcadeDrive(0.0, turnValue);
 				startTime = -1;
-				break;
-			case "forward":
+			} else if (direction.equals("forward")) {
 				shoot.shoot(0);
 				drive.arcadeDrive(0.25, 0.0);
 				startTime = -1;
-				break;
-			case "backward":
+			} else if (direction.equals("backward")) {
 				shoot.shoot(0);
 				drive.arcadeDrive(-0.25, 0.0);
 				startTime = -1;
-				break;
-			case "shoot":
+			} else if (direction.equals("shoot")) {
 				drive.arcadeDrive(0, 0);
 				if (startTime == -1) {
 					startTime = System.currentTimeMillis();
@@ -77,19 +78,14 @@ public class AutoShoot extends Command {
 				if (startTime != -1 && shoot.getRightSpeed() >= speed) {
 					intake.intakeBall();
 				}
-				break;
-			case "unknown":
+			} else if (direction.equals("unknown")) {
 				// Add Lift If 1
 				if (position < 3) {
-					System.out.println("Lesser");
 					drive.arcadeDrive(0, 0.25);
 				} else {
-					System.out.println("Greater");
 					drive.arcadeDrive(0, -0.25);
 				}
-				break;
 			}
-
 		}
 	}
 
