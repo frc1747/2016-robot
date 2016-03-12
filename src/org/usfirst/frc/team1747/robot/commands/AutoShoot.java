@@ -29,7 +29,6 @@ public class AutoShoot extends Command {
 		drive = Robot.getDriveTrain();
 		shoot = Robot.getShooter();
 		intake = Robot.getIntake();
-		speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
 		networkTable = NetworkTable.getTable("imageProcessing");
 		driverStation = DriverStation.getInstance();
 		requires(shoot);
@@ -39,6 +38,7 @@ public class AutoShoot extends Command {
 
 	// initializes AutoShoot then prints out that it is running
 	protected void initialize() {
+		speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
 		position = Robot.getSd().getAutonPosition();
 		startTime = -1;
 		turnValue = drive.getAutonTurn();
@@ -48,7 +48,7 @@ public class AutoShoot extends Command {
 		if (position != 0) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
-			if (driverStation.getMatchTime() < 3 && !direction.equals("robotUnknown")) {
+			if (driverStation.getMatchTime() < 3 && !direction.equals("robotUnknown") && driverStation.isAutonomous()) {
 				direction = "shoot";
 			}
 			if (direction.equals("left")) {

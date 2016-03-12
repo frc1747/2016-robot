@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,8 +23,6 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	double pStraightTarget = 0.0, pRotationTarget = 0.0, prevTargetStraight = 0.0, prevTargetRotation = 0.0;
 	double autonTurn;
 	double teleopTurnDampening;
-	Solenoid glowLeft;
-	Solenoid glowRight;
 
 	// Sets up CANTalons for drive train; maps the left and right LEDs
 	public DriveTrain() {
@@ -33,9 +30,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 				true);
 		right = new DriveSide(RobotMap.RIGHT_DRIVE_CIM_ONE, RobotMap.RIGHT_DRIVE_CIM_TWO, RobotMap.RIGHT_DRIVE_MINICIM,
 				false);
-		glowLeft = new Solenoid(RobotMap.ROBOT_GLOW_LEFT);
-		glowRight = new Solenoid(RobotMap.ROBOT_GLOW_RIGHT);
-		turnOnGlow();
+
 		// Left and right motors face each other, left is inverted
 		for (int j = 0; j < SIGMOIDSTRETCH.length; j++) {
 			straightTargetDeltas.add(0.0);
@@ -164,16 +159,6 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	}
 
 	// turns on the left and right LED lights
-	public void turnOnGlow() {
-		glowRight.set(true);
-		glowLeft.set(true);
-	}
-
-	// turns off elft and right LED lights
-	public void turnOffGlow() {
-		glowRight.set(false);
-		glowLeft.set(false);
-	}
 
 	// runs left and right PIDs
 	public void runPID() {

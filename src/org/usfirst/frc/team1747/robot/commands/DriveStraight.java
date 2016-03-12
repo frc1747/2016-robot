@@ -1,21 +1,23 @@
 package org.usfirst.frc.team1747.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveStraight extends Command {
 	DriveTrain driveTrain;
 	double time;
-	
+	int position;
+
 	public DriveStraight() {
 		driveTrain = Robot.getDriveTrain();
 		// System.out.println("Constructor");
 		// SmartDashboard.putNumber("DriveStraight Distance", 100.0);
 		requires(driveTrain);
 	}
-	//sets up tankDrive
+
+	// sets up tankDrive
 	@Override
 	protected void initialize() {
 		// System.out.println("Initialize");
@@ -23,6 +25,7 @@ public class DriveStraight extends Command {
 		// 1000000.0);
 		// driveTrain.enablePID();
 		// driveTrain.setSetpoint(distance);\
+		position = Robot.getSd().getAutonPosition();
 		time = System.currentTimeMillis();
 		driveTrain.tankDrive(.5, .5);
 	}
@@ -31,10 +34,15 @@ public class DriveStraight extends Command {
 	protected void execute() {
 		// driveTrain.runPID();
 	}
-	//returns true if more than 3250 time has passed
+
+	// returns true if more than 3250 time has passed
 	@Override
 	protected boolean isFinished() {
-		return System.currentTimeMillis() - time > 3250;
+		if (position == 1 || position == 5) {
+			return System.currentTimeMillis() - time > 3750;
+		} else {
+			return System.currentTimeMillis() - time > 3250;
+		}
 		// return driveTrain.isAtTarget();
 	}
 

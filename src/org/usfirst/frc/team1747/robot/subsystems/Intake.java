@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,6 +21,8 @@ public class Intake extends Subsystem implements SDLogger {
 	Encoder encoder;
 	double kP, kI, kD;
 	double targetDistance;
+	Solenoid glowLeft;
+	Solenoid glowRight;
 
 	public Intake() {
 		leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
@@ -30,6 +33,8 @@ public class Intake extends Subsystem implements SDLogger {
 		leftLiftMotor.changeControlMode(TalonControlMode.Voltage);
 		rightLiftMotor.changeControlMode(TalonControlMode.Follower);
 		rightLiftMotor.set(RobotMap.LEFT_LIFT_MOTOR);
+		glowLeft = new Solenoid(RobotMap.ROBOT_GLOW_LEFT);
+		glowRight = new Solenoid(RobotMap.ROBOT_GLOW_RIGHT);
 		// SmartDashboard.putNumber("Portcullis P", kP);
 		// SmartDashboard.putNumber("Portcullis I", kI);
 		// SmartDashboard.putNumber("Portcullis D", kD);
@@ -98,6 +103,11 @@ public class Intake extends Subsystem implements SDLogger {
 		SmartDashboard.putBoolean("BottomIntake", isAtBottom());
 		SmartDashboard.putBoolean("BallIntake", hasBall());
 		SmartDashboard.putNumber("Intake Lift Speed", getSpeed());
+		if (hasBall()) {
+			turnOnGlow();
+		} else {
+			turnOffGlow();
+		}
 		// setPID(SmartDashboard.getNumber("Portcullis P", kP),
 		// SmartDashboard.getNumber("Portcullis I", kI),
 		// SmartDashboard.getNumber("Portcullis D", kD));
@@ -142,6 +152,17 @@ public class Intake extends Subsystem implements SDLogger {
 	// returns true if at target, false if not at target
 	public boolean isAtTarget() {
 		return Math.abs(this.targetDistance - leftLiftMotor.get()) < .01;
+	}
+
+	public void turnOnGlow() {
+		glowRight.set(true);
+		glowLeft.set(true);
+	}
+
+	// turns off left and right LED lights
+	public void turnOffGlow() {
+		glowRight.set(false);
+		glowLeft.set(false);
 	}
 
 }
