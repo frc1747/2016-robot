@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
 import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.SDLogger;
 import org.usfirst.frc.team1747.robot.commands.TeleopDrive;
@@ -16,10 +18,10 @@ import java.util.LinkedList;
 public class DriveTrain extends Subsystem implements SDLogger {
 	static final double[] SIGMOIDSTRETCH = { 0.03, 0.06, 0.09, 0.1, 0.11, 0.12, 0.11, 0.1, 0.09, 0.06, 0.03 };
 	DriveSide left, right;
+	PrecisionCyborgController auxController;
 	LinkedList<Double> straightTargetDeltas = new LinkedList<Double>();
 	LinkedList<Double> rotationTargetDeltas = new LinkedList<Double>();
 	double pStraightTarget = 0.0, pRotationTarget = 0.0, prevTargetStraight = 0.0, prevTargetRotation = 0.0;
-	double teleopTurnDampening;
 	double autonTurn;
 	Solenoid glowLeft;
 	Solenoid glowRight;
@@ -44,6 +46,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("DriveTrain RP", .015);
 		SmartDashboard.putNumber("DriveTrain RI", 0);
 		SmartDashboard.putNumber("DriveTrain RD", 0);
+		SmartDashboard.putNumber("Turn Dampening", 0.5);
 	}
 
 	// Sets up the tank drive using left and right speed
@@ -99,7 +102,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	}
 	
 	public double getTeleopTurnDampener(){
-		return teleopTurnDampening;
+		return SmartDashboard.getNumber("Turn Dampening");
 	}
 	
 	public double getAutonTurn(){
@@ -118,8 +121,6 @@ public class DriveTrain extends Subsystem implements SDLogger {
 				SmartDashboard.getNumber("DriveTrain RD", right.getD()));
 		SmartDashboard.putNumber("Left Distance", left.getNetDistance());
 		SmartDashboard.putNumber("Right Distance", right.getNetDistance());
-		SmartDashboard.putNumber("Turn Dampening", 0.9);
-		teleopTurnDampening = SmartDashboard.getNumber("Turn Dampening");
 		SmartDashboard.putNumber("Auton Turning", 0.250);
 		autonTurn = SmartDashboard.getNumber("Auton Turning");
 	}

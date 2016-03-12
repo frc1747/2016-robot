@@ -45,7 +45,7 @@ public class Shoot extends Command {
 		if (pidMode) {
 			shooter.runPID();
 		}
-		if (shooter.getRightSpeed() >= speed) {			
+		if (shooter.getRightSpeed() >= speed) {	
 			intake.intakeBall();
 		}
 	}

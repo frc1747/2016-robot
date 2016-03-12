@@ -21,6 +21,7 @@ public class IntakeBall extends Command {
 		if(!intake.hasBall()){
 			intake.intakeBall();
 		}
+		
 	}
 
 	// Pick up a ball

@@ -1,12 +1,10 @@
 package org.usfirst.frc.team1747.robot;
 
-import org.usfirst.frc.team1747.robot.commands.AutoShoot;
 import org.usfirst.frc.team1747.robot.commands.BasicAuton;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -25,7 +23,6 @@ public class Robot extends IterativeRobot {
 	private static DriveTrain drive;
 	private static SDController sd;
 	private static Intake intake;
-	private static CameraServer server;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -39,9 +36,10 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
-		server = CameraServer.getInstance();
-        server.setQuality(50);
-        server.startAutomaticCapture("cam0");
+		/*
+		 * CameraServer camera = CameraServer.getInstance();
+		 * camera.setQuality(50); camera.startAutomaticCapture("cam0");
+		 */
 	}
 
 	/**
