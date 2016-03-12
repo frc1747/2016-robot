@@ -9,15 +9,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TurnToAngle extends Command {
 	DriveTrain driveTrain;
 	double angle, time;
-	
+
 	public TurnToAngle() {
 		driveTrain = Robot.getDriveTrain();
-		SmartDashboard.putNumber("Turn Angle", Math.PI/2);
+		// SmartDashboard.putNumber("Turn Angle", Math.PI/2);
 		requires(driveTrain);
 	}
 
 	protected void initialize() {
-		angle=SmartDashboard.getNumber("Turn Angle");
+		angle = SmartDashboard.getNumber("Turn Angle");
 		driveTrain.resetLeftDistance();
 		driveTrain.resetRightDistance();
 		driveTrain.arcadeDrive(0.0, 0.25);
@@ -25,11 +25,11 @@ public class TurnToAngle extends Command {
 	}
 
 	protected void execute() {
-		
+
 	}
 
 	protected boolean isFinished() {
-		return 0 >= (angle*(16)-(-driveTrain.getRightDistance()+driveTrain.getLeftDistance())/2);
+		return 0 >= (angle * (16) - (-driveTrain.getRightDistance() + driveTrain.getLeftDistance()) / 2);
 	}
 
 	@Override

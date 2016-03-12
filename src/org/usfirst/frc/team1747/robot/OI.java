@@ -2,41 +2,39 @@ package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.commands.AutoShoot;
 import org.usfirst.frc.team1747.robot.commands.BallEject;
-import org.usfirst.frc.team1747.robot.commands.DriveStraight;
 import org.usfirst.frc.team1747.robot.commands.IntakeBall;
 import org.usfirst.frc.team1747.robot.commands.LowerLift;
 import org.usfirst.frc.team1747.robot.commands.RaiseLift;
 import org.usfirst.frc.team1747.robot.commands.Shoot;
-import org.usfirst.frc.team1747.robot.commands.TurnToAngle;
 
 public class OI {
 
-	private Cyborg controller;
-	private Cyborg auxController;
+	private LogitechController controller;
+	private LogitechController auxController;
 
 	public OI() {
-		controller = new CyborgController(0);
-		auxController = new PrecisionCyborgController(1);
-		controller.getRightTrigger().whileHeld(new Shoot());
+		controller = new LogitechController(0);
+		auxController = new LogitechController(1);
+		controller.getStart().whileHeld(new Shoot());
 		controller.getLeftBumper().toggleWhenPressed(new IntakeBall());
-		controller.getButtonTwo().whenPressed(new LowerLift());
-		controller.getButtonThree().toggleWhenPressed(new BallEject());
-		controller.getButtonFour().whenPressed(new RaiseLift());
-		controller.getStartButton().whileHeld(new AutoShoot());
+		controller.getA().whenPressed(new LowerLift());
+		controller.getB().toggleWhenPressed(new BallEject());
+		controller.getY().whenPressed(new RaiseLift());
+		controller.getRightBumper().whileHeld(new AutoShoot());
 		// controller.getRightBumper().whileHeld(new AutoShoot());
-		controller.getBackButton().whenPressed(new DriveStraight());
-		auxController.getButtonOne().toggleWhenPressed(new IntakeBall());
-		auxController.getButtonTwo().whenPressed(new LowerLift());
-		auxController.getButtonThree().toggleWhenPressed(new BallEject());
-		auxController.getButtonFour().whenPressed(new RaiseLift());
-		auxController.getRightTrigger().whenPressed(new TurnToAngle());
+		// controller.getBack().whenPressed(new DriveStraight());
+		auxController.getX().toggleWhenPressed(new IntakeBall());
+		auxController.getA().whenPressed(new LowerLift());
+		auxController.getB().toggleWhenPressed(new BallEject());
+		auxController.getY().whenPressed(new RaiseLift());
+		// auxController.getRightTrigger().whenPressed(new TurnToAngle());
 	}
 
-	public Cyborg getController() {
+	public LogitechController getController() {
 		return controller;
 	}
 
-	public Cyborg getAuxController() {
+	public LogitechController getAuxController() {
 		return auxController;
 	}
 

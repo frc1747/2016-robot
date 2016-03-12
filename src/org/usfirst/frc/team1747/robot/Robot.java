@@ -36,10 +36,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
-		/*
-		 * CameraServer camera = CameraServer.getInstance();
-		 * camera.setQuality(50); camera.startAutomaticCapture("cam0");
-		 */
+		// CameraServer camera = CameraServer.getInstance();
+		// camera.setQuality(50);
+		// camera.startAutomaticCapture("cam0");
 	}
 
 	/**

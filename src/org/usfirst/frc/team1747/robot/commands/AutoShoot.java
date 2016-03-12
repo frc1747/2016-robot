@@ -28,7 +28,6 @@ public class AutoShoot extends Command {
 		shoot = Robot.getShooter();
 		intake = Robot.getIntake();
 		speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
-		this.speed = speed;
 		networkTable = NetworkTable.getTable("imageProcessing");
 		requires(shoot);
 		requires(drive);
@@ -39,7 +38,6 @@ public class AutoShoot extends Command {
 	protected void initialize() {
 		position = Robot.getSd().getAutonPosition();
 		startTime = -1;
-		System.out.println("Running");
 		turnValue = drive.getAutonTurn();
 	}
 

@@ -41,12 +41,12 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			straightTargetDeltas.add(0.0);
 			rotationTargetDeltas.add(0.0);
 		}
-		SmartDashboard.putNumber("DriveTrain LP", .015);
-		SmartDashboard.putNumber("DriveTrain LI", 0);
-		SmartDashboard.putNumber("DriveTrain LD", 0);
-		SmartDashboard.putNumber("DriveTrain RP", .015);
-		SmartDashboard.putNumber("DriveTrain RI", 0);
-		SmartDashboard.putNumber("DriveTrain RD", 0);
+		// SmartDashboard.putNumber("DriveTrain LP", .015);
+		// SmartDashboard.putNumber("DriveTrain LI", 0);
+		// SmartDashboard.putNumber("DriveTrain LD", 0);
+		// SmartDashboard.putNumber("DriveTrain RP", .015);
+		// SmartDashboard.putNumber("DriveTrain RI", 0);
+		// SmartDashboard.putNumber("DriveTrain RD", 0);
 		SmartDashboard.putNumber("Turn Dampening", 0.9);
 		SmartDashboard.putNumber("Auton Turning", 0.250);
 	}
@@ -116,12 +116,12 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	public void logToSmartDashboard() {
 		SmartDashboard.putNumber("Left DriveTrain Speed", left.getSpeed());
 		SmartDashboard.putNumber("Right DriveTrain Speed", right.getSpeed());
-		left.setPID(SmartDashboard.getNumber("DriveTrain LP", left.getP()),
-				SmartDashboard.getNumber("DriveTrain LI", left.getI()),
-				SmartDashboard.getNumber("DriveTrain LD", left.getD()));
-		right.setPID(SmartDashboard.getNumber("DriveTrain RP", right.getP()),
-				SmartDashboard.getNumber("DriveTrain RI", right.getI()),
-				SmartDashboard.getNumber("DriveTrain RD", right.getD()));
+		// left.setPID(SmartDashboard.getNumber("DriveTrain LP", left.getP()),
+		// SmartDashboard.getNumber("DriveTrain LI", left.getI()),
+		// SmartDashboard.getNumber("DriveTrain LD", left.getD()));
+		// right.setPID(SmartDashboard.getNumber("DriveTrain RP", right.getP()),
+		// SmartDashboard.getNumber("DriveTrain RI", right.getI()),
+		// SmartDashboard.getNumber("DriveTrain RD", right.getD()));
 		SmartDashboard.putNumber("Left Distance", left.getNetDistance());
 		SmartDashboard.putNumber("Right Distance", right.getNetDistance());
 		teleopTurnDampening = SmartDashboard.getNumber("Turn Dampening", teleopTurnDampening);

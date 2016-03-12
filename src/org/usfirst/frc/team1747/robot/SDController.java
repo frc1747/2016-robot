@@ -40,7 +40,7 @@ public class SDController {
 		shooter.logToSmartDashboard();
 		intake.logToSmartDashboard();
 		SmartDashboard.putString("ShooterDirection", networkTable.getString("ShootDirection", "robotUnknown"));
-		SmartDashboard.putNumber("ShooertRads", networkTable.getNumber("ShootRads", 0.0));
+		SmartDashboard.putNumber("ShooterRads", networkTable.getNumber("ShootRads", 0.0));
 	}
 
 	public int getAutonPosition() {
