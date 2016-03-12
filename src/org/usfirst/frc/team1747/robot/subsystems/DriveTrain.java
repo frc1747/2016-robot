@@ -1,5 +1,12 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import java.util.LinkedList;
+
+import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
+import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
+import org.usfirst.frc.team1747.robot.commands.TeleopDrive;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
@@ -7,13 +14,6 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
-import org.usfirst.frc.team1747.robot.RobotMap;
-import org.usfirst.frc.team1747.robot.SDLogger;
-import org.usfirst.frc.team1747.robot.commands.TeleopDrive;
-
-import java.util.LinkedList;
 
 public class DriveTrain extends Subsystem implements SDLogger {
 	static final double[] SIGMOIDSTRETCH = { 0.03, 0.06, 0.09, 0.1, 0.11, 0.12, 0.11, 0.1, 0.09, 0.06, 0.03 };
@@ -23,6 +23,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	LinkedList<Double> rotationTargetDeltas = new LinkedList<Double>();
 	double pStraightTarget = 0.0, pRotationTarget = 0.0, prevTargetStraight = 0.0, prevTargetRotation = 0.0;
 	double autonTurn;
+	double teleopTurnDampening;
 	Solenoid glowLeft;
 	Solenoid glowRight;
 
@@ -46,7 +47,8 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("DriveTrain RP", .015);
 		SmartDashboard.putNumber("DriveTrain RI", 0);
 		SmartDashboard.putNumber("DriveTrain RD", 0);
-		SmartDashboard.putNumber("Turn Dampening", 0.5);
+		SmartDashboard.putNumber("Turn Dampening", 0.9);
+		SmartDashboard.putNumber("Auton Turning", 0.250);
 	}
 
 	// Sets up the tank drive using left and right speed
@@ -54,7 +56,8 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		left.set(leftSpeed);
 		right.set(rightSpeed);
 	}
-	//sets up arcade drive
+
+	// sets up arcade drive
 	public void arcadeDrive(double straight, double turn) {
 		tankDrive(straight + turn, straight - turn);
 	}
@@ -100,12 +103,12 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	public void initDefaultCommand() {
 		setDefaultCommand(new TeleopDrive());
 	}
-	
-	public double getTeleopTurnDampener(){
-		return SmartDashboard.getNumber("Turn Dampening");
+
+	public double getTeleopTurnDampener() {
+		return teleopTurnDampening;
 	}
-	
-	public double getAutonTurn(){
+
+	public double getAutonTurn() {
 		return autonTurn;
 	}
 
@@ -121,78 +124,80 @@ public class DriveTrain extends Subsystem implements SDLogger {
 				SmartDashboard.getNumber("DriveTrain RD", right.getD()));
 		SmartDashboard.putNumber("Left Distance", left.getNetDistance());
 		SmartDashboard.putNumber("Right Distance", right.getNetDistance());
-		SmartDashboard.putNumber("Auton Turning", 0.250);
-		autonTurn = SmartDashboard.getNumber("Auton Turning");
+		teleopTurnDampening = SmartDashboard.getNumber("Turn Dampening", teleopTurnDampening);
+		autonTurn = SmartDashboard.getNumber("Auton Turning", autonTurn);
 	}
 
-	//enables left and right PIDs
+	// enables left and right PIDs
 	public void enablePID() {
 		left.enablePID();
 		right.enablePID();
 	}
 
-	//sets up left and right setpoints
+	// sets up left and right setpoints
 	public void setSetpoint(double targetSpeed) {
 		left.setSetpoint(targetSpeed);
 		right.setSetpoint(targetSpeed);
 	}
 
-	//disables left and right PID
+	// disables left and right PID
 	public void disablePID() {
 		left.disablePID();
 		right.disablePID();
 	}
 
-	//enables Ramping
+	// enables Ramping
 	public void enableRamping() {
-		//left.enableRamping();
-		//right.enableRamping();
+		// left.enableRamping();
+		// right.enableRamping();
 	}
 
-	//disables ramping
+	// disables ramping
 	public void disableRamping() {
-		//left.disableRamping();
-		//right.disableRamping();
+		// left.disableRamping();
+		// right.disableRamping();
 	}
 
-	//determines if robot is at target
+	// determines if robot is at target
 	public boolean isAtTarget() {
 		return left.isAtTarget() && right.isAtTarget();
 	}
 
-	//turns on the left and right LED lights
+	// turns on the left and right LED lights
 	public void turnOnGlow() {
 		glowRight.set(true);
 		glowLeft.set(true);
 	}
-	//turns off elft and right LED lights
+
+	// turns off elft and right LED lights
 	public void turnOffGlow() {
 		glowRight.set(false);
 		glowLeft.set(false);
 	}
-	//runs left and right PIDs
+
+	// runs left and right PIDs
 	public void runPID() {
 		left.runPID();
 		right.runPID();
 	}
-	
-	public double getRightDistance(){
+
+	public double getRightDistance() {
 		return right.getNetDistance();
 	}
-	
-	public double getLeftDistance(){
+
+	public double getLeftDistance() {
 		return left.getNetDistance();
 	}
 
-	public void resetRightDistance(){
+	public void resetRightDistance() {
 		right.resetNetDistance();
 	}
-	
-	public void resetLeftDistance(){
+
+	public void resetLeftDistance() {
 		left.resetNetDistance();
 	}
-	
-	//sets up constants for DriveSide
+
+	// sets up constants for DriveSide
 	class DriveSide {
 		CANTalon cimOne, cimTwo, miniCim;
 		double kP, kI, kD;
@@ -204,7 +209,8 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		double time;
 		boolean inverted;
 
-		//sets up the control modes for the talons and inverts some cims and miniCims
+		// sets up the control modes for the talons and inverts some cims and
+		// miniCims
 		public DriveSide(int cimOneID, int cimTwoID, int miniCimID, boolean inverted) {
 			cimOne = new CANTalon(cimOneID);
 			cimTwo = new CANTalon(cimTwoID);
@@ -212,7 +218,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			cimTwo.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 			// cimTwo.setProfile(0);
 			cimTwo.setPIDSourceType(PIDSourceType.kDisplacement);
-			//cimTwo.setVoltageRampRate(18);
+			// cimTwo.setVoltageRampRate(18);
 			cimTwo.changeControlMode(TalonControlMode.Voltage);
 			cimOne.changeControlMode(TalonControlMode.Follower);
 			miniCim.changeControlMode(TalonControlMode.Follower);
@@ -224,50 +230,53 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			this.inverted = inverted;
 		}
 
-		//enables ramping
+		// enables ramping
 		public void enableRamping() {
-			//cimTwo.setVoltageRate(24);
+			// cimTwo.setVoltageRate(24);
 		}
 
-		//disables ramping
+		// disables ramping
 		public void disableRamping() {
-			//cimTwo.setVoltageRampRate(0);
+			// cimTwo.setVoltageRampRate(0);
 		}
 
-		//gets P
+		// gets P
 		public double getP() {
 			return kP;
 		}
 
-		//gets I
+		// gets I
 		public double getI() {
 			return kI;
 		}
 
-		//gets D
+		// gets D
 		public double getD() {
 			return kD;
 		}
 
-		//returns the speed of cimtwo
+		// returns the speed of cimtwo
 		public double getSpeed() {
-			return cimTwo.getSpeed() * .04295 * (inverted ? 1 : -(4/3)); //Remove when encoder repaired
+			return cimTwo.getSpeed() * .04295 * (inverted ? 1 : -(4 / 3)); // Remove
+																			// when
+																			// encoder
+																			// repaired
 		}
 
-		//sets speed of cimTwo
+		// sets speed of cimTwo
 		public void set(double speed) {
 			speed *= 12.0;
 			cimTwo.set(speed);
 		}
 
-		//sets kP, kI, and kD
+		// sets kP, kI, and kD
 		public void setPID(double p, double i, double d) {
 			kP = p;
 			kI = i;
 			kD = d;
 		}
 
-		//sets the target distance
+		// sets the target distance
 		public void setSetpoint(double targetDistance) {
 			this.targetDistance = targetDistance;
 			cimTwo.setSetpoint(targetDistance);
@@ -289,7 +298,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			pidEnabled = false;
 		}
 
-		//runs the PID using the constants kP, kI, and kD
+		// runs the PID using the constants kP, kI, and kD
 		public void runPID() {
 			if (pidEnabled) {
 				double currentDistance = getNetDistance();
@@ -312,23 +321,26 @@ public class DriveTrain extends Subsystem implements SDLogger {
 				set(0);
 			}
 		}
-		//returns true if robot is at target, and false if robot is not at target
-		//all I do is win, win, no matter what
+
+		// returns true if robot is at target, and false if robot is not at
+		// target
+		// all I do is win, win, no matter what
 		public boolean isAtTarget() {
 			// TODO: Verify grace distance
 			return Math.abs(this.targetDistance - getNetDistance()) < 12;
 		}
-		//gets the net distance using input of time
+
+		// gets the net distance using input of time
 		public double getNetDistance() {
 			double pTime = time;
 			time = System.currentTimeMillis();
 			netDistance += (getSpeed() * (time - pTime)) / 1000.0;
 			return netDistance;
 		}
-		
+
 		public void resetNetDistance() {
 			netDistance = 0;
 		}
 	}
 }
-//not 300 lines of code, take that DYLAN and JASON
+// not 300 lines of code, take that DYLAN and JASON
