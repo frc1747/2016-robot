@@ -21,6 +21,7 @@ public class AutoShoot extends Command {
 	double speed;
 	double startTime;
 	int position;
+	double fTurnValue;
 	double turnValue;
 	DriverStation driverStation;
 
@@ -41,10 +42,14 @@ public class AutoShoot extends Command {
 		speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
 		position = Robot.getSd().getAutonPosition();
 		startTime = -1;
-		turnValue = drive.getAutonTurn();
+		fTurnValue = drive.getAutonTurn();
+		turnValue = fTurnValue;
 	}
 
 	protected void execute() {
+		/*if(driverStation.isAutonomous()){
+			turnValue = (-0.05/ 12) * driverStation.getMatchTime() + fTurnValue;
+		}*/
 		if (position != 0) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
@@ -81,9 +86,9 @@ public class AutoShoot extends Command {
 			} else if (direction.equals("unknown")) {
 				// Add Lift If 1
 				if (position < 3) {
-					drive.arcadeDrive(0, 0.25);
+					drive.arcadeDrive(0, turnValue);
 				} else {
-					drive.arcadeDrive(0, -0.25);
+					drive.arcadeDrive(0, -turnValue);
 				}
 			}
 		}
