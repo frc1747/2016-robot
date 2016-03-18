@@ -38,4 +38,6 @@ public class RobotMap {
 
 	public static final int ROBOT_GLOW_LEFT = 1;
 	public static final int ROBOT_GLOW_RIGHT = 2;
+
+	public static final int GYRO = 6;
 }

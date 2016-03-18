@@ -2,16 +2,19 @@ package org.usfirst.frc.team1747.robot.commands;
 
 import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
 import org.usfirst.frc.team1747.robot.Robot;
+import org.usfirst.frc.team1747.robot.SetAblePIDOutput;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1747.robot.subsystems.GyroITG3200;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AutoShoot extends Command {
+public class GyroAutoShoot extends Command {
 
 	DriveTrain drive;
 	Shooter shoot;
@@ -24,14 +27,24 @@ public class AutoShoot extends Command {
 	double fTurnValue;
 	double turnValue;
 	DriverStation driverStation;
+	GyroITG3200 gyro;
+	PIDController pid;
+	SetAblePIDOutput output;
+
+	public enum State {
+		START, GETIMAGE, SHOOT, END
+	}
 
 	// sets up AutoShoot
-	public AutoShoot() {
+	public GyroAutoShoot() {
 		drive = Robot.getDriveTrain();
 		shoot = Robot.getShooter();
 		intake = Robot.getIntake();
 		networkTable = NetworkTable.getTable("imageProcessing");
 		driverStation = DriverStation.getInstance();
+		gyro = Robot.getGyro();
+		output = new SetAblePIDOutput();
+		pid = new PIDController(0, 0, 0, 0, gyro, output);
 		requires(shoot);
 		requires(drive);
 		requires(intake);
@@ -93,6 +106,19 @@ public class AutoShoot extends Command {
 				}
 			}
 		}
+		/*
+		 * if (position != 0) { String direction =
+		 * networkTable.getString("ShootDirection", "robotUnknown"); if(){
+		 * 
+		 * }
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
 	}
 
 	// returns true if auto mode is done, if not it returns false; uses

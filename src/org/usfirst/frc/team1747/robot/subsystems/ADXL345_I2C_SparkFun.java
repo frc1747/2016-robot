@@ -4,8 +4,10 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-package org.usfirst.frc.team2521.robot.subsystems;
+package org.usfirst.frc.team1747.robot.subsystems;
 
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tInstances;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tResourceType;
 import edu.wpi.first.wpilibj.communication.UsageReporting;
@@ -14,25 +16,24 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.SensorBase;
-import edu.wpi.first.wpilibj.I2C;
-
 /**
  *
  * @author dtjones
  */
 public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, LiveWindowSendable {
 
-	// private static final byte kAddress = 0x1D; // ADXL345 address when ALT is connected to HIGH
-	private static final byte kAddress = 0x53; // ADXL345 address when ALT is connected to LOW
+	// private static final byte kAddress = 0x1D; // ADXL345 address when ALT is
+	// connected to HIGH
+	private static final byte kAddress = 0x53; // ADXL345 address when ALT is
+												// connected to LOW
 	private static final byte kPowerCtlRegister = 0x2D;
 	private static final byte kDataFormatRegister = 0x31;
 	private static final byte kDataRegister = 0x32;
 	private static final double kGsPerLSB = 0.00390625;
-	private static final byte kPowerCtl_Link = 0x20, kPowerCtl_AutoSleep = 0x10, kPowerCtl_Measure = 0x08, kPowerCtl_Sleep = 0x04;
-	private static final byte kDataFormat_SelfTest = (byte) 0x80, kDataFormat_SPI = 0x40, kDataFormat_IntInvert = 0x20, kDataFormat_FullRes = 0x08, kDataFormat_Justify = 0x04;
+	private static final byte kPowerCtl_Link = 0x20, kPowerCtl_AutoSleep = 0x10, kPowerCtl_Measure = 0x08,
+			kPowerCtl_Sleep = 0x04;
+	private static final byte kDataFormat_SelfTest = (byte) 0x80, kDataFormat_SPI = 0x40, kDataFormat_IntInvert = 0x20,
+			kDataFormat_FullRes = 0x08, kDataFormat_Justify = 0x04;
 
 	public static class Axes {
 
@@ -58,12 +59,16 @@ public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, L
 		public double YAxis;
 		public double ZAxis;
 	}
+
 	private I2C m_i2c;
 
 	/**
 	 * Constructor.
-	 * @param port The I2C port the accelerometer is attached to
-	 * @param range The range (+ or -) that the accelerometer will measure.
+	 * 
+	 * @param port
+	 *            The I2C port the accelerometer is attached to
+	 * @param range
+	 *            The range (+ or -) that the accelerometer will measure.
 	 */
 	public ADXL345_I2C_SparkFun(I2C.Port port, Range range) {
 		m_i2c = new I2C(port, kAddress);
@@ -82,7 +87,7 @@ public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, L
 	public void setRange(Range range) {
 		byte value = 0;
 
-		switch(range) {
+		switch (range) {
 		case k2G:
 			value = 0;
 			break;
@@ -122,7 +127,8 @@ public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, L
 	/**
 	 * Get the acceleration of one axis in Gs.
 	 *
-	 * @param axis The axis to read from.
+	 * @param axis
+	 *            The axis to read from.
 	 * @return Acceleration of the ADXL345 in Gs.
 	 */
 	public double getAcceleration(Axes axis) {
@@ -142,7 +148,8 @@ public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, L
 	/**
 	 * Get the acceleration of all axes in Gs.
 	 *
-	 * @return An object containing the acceleration measured on each axis of the ADXL345 in Gs.
+	 * @return An object containing the acceleration measured on each axis of
+	 *         the ADXL345 in Gs.
 	 */
 	public AllAxes getAccelerations() {
 		AllAxes data = new AllAxes();
@@ -156,7 +163,7 @@ public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, L
 		return data;
 	}
 
-	public String getSmartDashboardType(){
+	public String getSmartDashboardType() {
 		return "3AxisAccelerometer";
 	}
 
@@ -178,10 +185,13 @@ public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, L
 	}
 
 	/** {@inheritDoc} */
-	public ITable getTable(){
+	public ITable getTable() {
 		return m_table;
 	}
 
-	public void startLiveWindowMode() {}
-	public void stopLiveWindowMode() {}
+	public void startLiveWindowMode() {
+	}
+
+	public void stopLiveWindowMode() {
+	}
 }
