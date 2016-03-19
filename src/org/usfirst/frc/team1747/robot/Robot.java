@@ -4,6 +4,7 @@ import org.usfirst.frc.team1747.robot.commands.BasicAuton;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.GyroITG3200;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
+import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.I2C;
@@ -26,6 +27,7 @@ public class Robot extends IterativeRobot {
 	private static SDController sd;
 	private static Intake intake;
 	private static GyroITG3200 gyro;
+	private static Scooper scooper;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -37,6 +39,7 @@ public class Robot extends IterativeRobot {
 		drive = new DriveTrain();
 		intake = new Intake();
 		oi = new OI();
+		scooper = new Scooper();
 		sd = new SDController();
 		gyro = new GyroITG3200(I2C.Port.kOnboard);
 		sd.refresh();
@@ -131,5 +134,9 @@ public class Robot extends IterativeRobot {
 
 	public static GyroITG3200 getGyro() {
 		return gyro;
+	}
+
+	public static Scooper getScooper() {
+		return scooper;
 	}
 }

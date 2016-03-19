@@ -2,6 +2,7 @@ package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
+import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -16,6 +17,7 @@ public class SDController {
 	private DriveTrain driveTrain;
 	private Shooter shooter;
 	private Intake intake;
+	private Scooper scooper;
 	private NetworkTable networkTable = NetworkTable.getTable("imageProcessing");
 
 	public SDController() {
@@ -23,6 +25,7 @@ public class SDController {
 		driveTrain = Robot.getDriveTrain();
 		shooter = Robot.getShooter();
 		intake = Robot.getIntake();
+		scooper = Robot.getScooper();
 		SmartDashboard.putData(Scheduler.getInstance());
 		autonPosition = new SendableChooser();
 		autonPosition.addObject("Don't shoot", 0);
@@ -39,6 +42,7 @@ public class SDController {
 		driveTrain.logToSmartDashboard();
 		shooter.logToSmartDashboard();
 		intake.logToSmartDashboard();
+		scooper.logToSmartDashboard();
 		SmartDashboard.putString("ShooterDirection", networkTable.getString("ShootDirection", "robotUnknown"));
 		SmartDashboard.putNumber("ShooterRads", networkTable.getNumber("ShootRads", 0.0));
 	}

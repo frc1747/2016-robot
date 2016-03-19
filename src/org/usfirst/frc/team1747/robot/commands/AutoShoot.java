@@ -47,10 +47,10 @@ public class AutoShoot extends Command {
 	}
 
 	protected void execute() {
-		/*
-		 * if(driverStation.isAutonomous()){ turnValue = (-0.05/ 12) *
-		 * driverStation.getMatchTime() + fTurnValue; }
-		 */
+		// if (driverStation.isAutonomous()) {
+		// turnValue = (-0.05 / 12) * driverStation.getMatchTime() + fTurnValue;
+		// k}
+
 		if (position != 0) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);

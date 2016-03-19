@@ -7,6 +7,7 @@ public class BasicAuton extends CommandGroup {
 	public BasicAuton() {
 		addSequential(new DriveStraight());
 		addSequential(new RaiseLift());
+		addSequential(new LowerScooper());
 		addSequential(new AutoShoot());
 	}
 }
