@@ -28,7 +28,7 @@ public class LowerScooper extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return (scooper.isAtLowerLimit() || (System.currentTimeMillis() - startTime >= 2000));
+		return (scooper.isAtLowerLimit() || (System.currentTimeMillis() - startTime >= 300));
 	}
 
 	@Override
