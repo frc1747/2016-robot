@@ -35,6 +35,7 @@ public class SDController {
 		autonPosition.addObject("4", 4);
 		autonPosition.addObject("5", 5);
 		SmartDashboard.putData("Auton Position", autonPosition);
+		SmartDashboard.putBoolean("LowerScooperAuto", false);
 	}
 
 	public void refresh() {
