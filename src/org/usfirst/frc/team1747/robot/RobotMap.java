@@ -28,6 +28,10 @@ public class RobotMap {
 	public static final int RIGHT_CLIMB_CIM = 0;
 	public static final int LEFT_CLIMB_CIM = 0;
 
+	public static final int SCOOPER_MOTOR = 1;
+	public static final int UPPER_SCOOPER_LIMIT = 7;
+	public static final int LOWER_SCOOPER_LIMIT = 6;
+
 	public static final int LEFT_COUNTER = 3;
 	public static final int RIGHT_COUNTER = 1;
 
@@ -38,4 +42,6 @@ public class RobotMap {
 
 	public static final int ROBOT_GLOW_LEFT = 1;
 	public static final int ROBOT_GLOW_RIGHT = 2;
+
+	public static final int GYRO = 6;
 }

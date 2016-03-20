@@ -3,6 +3,7 @@ package org.usfirst.frc.team1747.robot;
 import org.usfirst.frc.team1747.robot.commands.BasicAuton;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
+import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -23,6 +24,7 @@ public class Robot extends IterativeRobot {
 	private static DriveTrain drive;
 	private static SDController sd;
 	private static Intake intake;
+	private static Scooper scooper;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -34,6 +36,7 @@ public class Robot extends IterativeRobot {
 		drive = new DriveTrain();
 		intake = new Intake();
 		oi = new OI();
+		scooper = new Scooper();
 		sd = new SDController();
 		sd.refresh();
 		// CameraServer camera = CameraServer.getInstance();
@@ -123,5 +126,9 @@ public class Robot extends IterativeRobot {
 
 	public static Intake getIntake() {
 		return intake;
+	}
+
+	public static Scooper getScooper() {
+		return scooper;
 	}
 }
