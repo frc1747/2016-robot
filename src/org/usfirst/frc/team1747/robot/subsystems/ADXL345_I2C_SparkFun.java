@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import org.usfirst.frc.team1747.robot.SDLogger;
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tInstances;
@@ -14,13 +16,14 @@ import edu.wpi.first.wpilibj.communication.UsageReporting;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 /**
  *
  * @author dtjones
  */
-public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, LiveWindowSendable {
+public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, LiveWindowSendable, SDLogger {
 
 	// private static final byte kAddress = 0x1D; // ADXL345 address when ALT is
 	// connected to HIGH
@@ -193,5 +196,12 @@ public class ADXL345_I2C_SparkFun extends SensorBase implements Accelerometer, L
 	}
 
 	public void stopLiveWindowMode() {
+	}
+
+	@Override
+	public void logToSmartDashboard() {
+		SmartDashboard.putNumber("xAccel", getX());
+		SmartDashboard.putNumber("yAccel", getY());
+		SmartDashboard.putNumber("zAccel", getZ());
 	}
 }

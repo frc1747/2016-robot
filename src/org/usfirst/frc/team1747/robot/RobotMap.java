@@ -1,5 +1,9 @@
 package org.usfirst.frc.team1747.robot;
 
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -43,5 +47,7 @@ public class RobotMap {
 	public static final int ROBOT_GLOW_LEFT = 1;
 	public static final int ROBOT_GLOW_RIGHT = 2;
 
-	public static final int GYRO = 6;
+	public static final Port ACCEL_PORT = I2C.Port.kOnboard;
+	public static final Range ACCEL_RANGE = edu.wpi.first.wpilibj.interfaces.Accelerometer.Range.k2G;
+	public static final Port GYRO_PORT = I2C.Port.kOnboard;
 }

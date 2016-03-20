@@ -35,6 +35,8 @@ package org.usfirst.frc.team1747.robot.subsystems;
 
 import java.util.Arrays;
 
+import org.usfirst.frc.team1747.robot.SDLogger;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -42,6 +44,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 /**
@@ -49,7 +52,7 @@ import edu.wpi.first.wpilibj.tables.ITable;
  *         at: https://github.com/jrowberg/i2cdevlib/tree/master/Arduino/ITG3200
  *
  */
-public class GyroITG3200 extends SensorBase implements PIDSource, LiveWindowSendable {
+public class GyroITG3200 extends SensorBase implements PIDSource, LiveWindowSendable, SDLogger {
 	int devAddr;
 	byte buffer[] = new byte[7];
 
@@ -1025,5 +1028,12 @@ public class GyroITG3200 extends SensorBase implements PIDSource, LiveWindowSend
 	public PIDSourceType getPIDSourceType() {
 		// TODO Auto-generated method stub
 		return PIDSourceType.kDisplacement;
+	}
+
+	@Override
+	public void logToSmartDashboard() {
+		SmartDashboard.putNumber("xRot", getRotationX());
+		SmartDashboard.putNumber("yRot", getRotationY());
+		SmartDashboard.putNumber("zRot", getRotationZ());
 	}
 }
