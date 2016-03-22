@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class BasicAuton extends CommandGroup {
 	// auto mode uses DriveStraight and AutoShoot
 	public BasicAuton() {
-		if (SmartDashboard.getBoolean("LowerScooperAuto")) {
+		if (SmartDashboard.getBoolean("LowerScooperAuto", false)) {
 			addSequential(new LowerScooper());
 		}
 		addSequential(new DriveStraight());

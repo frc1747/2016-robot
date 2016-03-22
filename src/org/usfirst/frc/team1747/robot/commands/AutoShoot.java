@@ -50,11 +50,11 @@ public class AutoShoot extends Command {
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
 			if (direction.equals("left")) {
 				shoot.shoot(0);
-				drive.arcadeDrive(0.0, (-turnValue) * (driverStation.isAutonomous() ? 1 : 1.2));
+				drive.arcadeDrive(0.0, (-turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
 				startTime = -1;
 			} else if (direction.equals("right")) {
 				shoot.shoot(0);
-				drive.arcadeDrive(0.0, turnValue * (driverStation.isAutonomous() ? 1 : 1.2));
+				drive.arcadeDrive(0.0, turnValue * (driverStation.isAutonomous() ? 1 : 1.1));
 				startTime = -1;
 			} else if (direction.equals("forward")) {
 				shoot.shoot(0);

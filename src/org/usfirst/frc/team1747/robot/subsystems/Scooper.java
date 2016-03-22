@@ -19,6 +19,7 @@ public class Scooper extends Subsystem implements SDLogger {
 		scooperMotor = new Talon(RobotMap.SCOOPER_MOTOR);
 		upperLimitSwitch = new DigitalInput(RobotMap.UPPER_SCOOPER_LIMIT);
 		lowerLimitSwitch = new DigitalInput(RobotMap.LOWER_SCOOPER_LIMIT);
+		SmartDashboard.putBoolean("LowerScooperAuto", false);
 	}
 
 	private void scooperControl(double speed) {
