@@ -5,6 +5,7 @@ import org.usfirst.frc.team1747.robot.commands.BallEject;
 import org.usfirst.frc.team1747.robot.commands.IntakeBall;
 import org.usfirst.frc.team1747.robot.commands.LowerLift;
 import org.usfirst.frc.team1747.robot.commands.RaiseLift;
+import org.usfirst.frc.team1747.robot.commands.ResetGyro;
 import org.usfirst.frc.team1747.robot.commands.Shoot;
 
 public class OI {
@@ -27,6 +28,7 @@ public class OI {
 		auxController.getA().whenPressed(new LowerLift());
 		auxController.getB().toggleWhenPressed(new BallEject());
 		auxController.getY().whenPressed(new RaiseLift());
+		auxController.startButton.whenPressed(new ResetGyro());
 		// auxController.getRightTrigger().whenPressed(new TurnToAngle());
 	}
 

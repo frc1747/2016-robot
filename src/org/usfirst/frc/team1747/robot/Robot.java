@@ -39,10 +39,11 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		drive = new DriveTrain();
 		intake = new Intake();
-		oi = new OI();
 		scooper = new Scooper();
 		accel = new ADXL345_I2C_SparkFun(RobotMap.ACCEL_PORT, RobotMap.ACCEL_RANGE);
 		gyro = new GyroITG3200(RobotMap.GYRO_PORT);
+		gyro.initialize();
+		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
 		// CameraServer camera = CameraServer.getInstance();
