@@ -34,7 +34,8 @@ public class AutoShoot extends Command {
 		intake = Robot.getIntake();
 		scooper = Robot.getScooper();
 		networkTable = NetworkTable.getTable("imageProcessing");
-		SmartDashboard.putNumber("StallTime", 1400);
+		SmartDashboard.putNumber("StallTime", 600);
+		SmartDashboard.putNumber("RadsThreshhold", 0.95);
 		driverStation = DriverStation.getInstance();
 		requires(shoot);
 		requires(drive);
@@ -51,13 +52,21 @@ public class AutoShoot extends Command {
 		turnValue = drive.getAutonTurn();
 	}
 
+	boolean reset = false;
+
 	protected void execute() {
+		if (!intake.isAtTop()) {
+			intake.moveLiftUp();
+		} else {
+			intake.liftStop();
+		}
 		if (position != 0) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
-			if (turnTime < 0) {
+			if (turnTime - System.currentTimeMillis() <= -100) {
 				double shooterRads = networkTable.getNumber("ShootRads", 0.0);
 				turnTime = System.currentTimeMillis() + angleToTime(shooterRads);
 				SmartDashboard.putNumber("angleToTime", angleToTime(shooterRads));
+				reset = false;
 			}
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
 			SmartDashboard.putNumber("TimeLeftofTurn", turnTime - System.currentTimeMillis());
@@ -67,8 +76,11 @@ public class AutoShoot extends Command {
 					drive.arcadeDrive(0.0, (-turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
 				} else {
 					drive.arcadeDrive(0, 0);
-					networkTable.putNumber("ShootRads", 0.0);
-					turnTime = -1;
+					if (!reset) {
+						networkTable.putNumber("ShootRads", 0.0);
+						reset = true;
+					}
+					// turnTime = -1;
 				}
 				startTime = -1;
 			} else if (direction.equals("right")) {
@@ -76,8 +88,11 @@ public class AutoShoot extends Command {
 					drive.arcadeDrive(0.0, (turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
 				} else {
 					drive.arcadeDrive(0, 0);
-					networkTable.putNumber("ShootRads", 0.0);
-					turnTime = -1;
+					if (!reset) {
+						networkTable.putNumber("ShootRads", 0.0);
+						reset = true;
+					}
+					// turnTime = -1;
 				}
 				shoot.shoot(0);
 				startTime = -1;
@@ -101,9 +116,10 @@ public class AutoShoot extends Command {
 					startTime = System.currentTimeMillis();
 				}
 				if (startTime != -1 && System.currentTimeMillis() - startTime > 500) {
-					shoot.shoot(0.6);
+					shoot.shoot(speed);
 				}
-				if (startTime != -1 && System.currentTimeMillis() - startTime > 750 && shoot.getLeftSpeed() >= 0.6) {// Speed
+				if (startTime != -1 && System.currentTimeMillis() - startTime > 750 && shoot.getLeftSpeed() >= speed
+						&& shoot.getRightSpeed() >= speed) {// Speed
 					intake.intakeBall();
 				}
 			} else if (direction.equals("unknown")) {
@@ -135,9 +151,10 @@ public class AutoShoot extends Command {
 
 	public double angleToTime(double shooterRads) {
 		if (shooterRads == 0.0) {
-			return 0;
+			return -100;
 		}
-		return (1.0 - shooterRads) * SmartDashboard.getNumber("StallTime", 1400);
+		return (SmartDashboard.getNumber("RadsThreshold", 0.95) - shooterRads)
+				* SmartDashboard.getNumber("StallTime", 600);
 	}
 
 }
