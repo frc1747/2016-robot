@@ -5,12 +5,12 @@ import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveStraight extends Command {
+public class DriveStraightForward extends Command {
 	DriveTrain driveTrain;
 	double time;
 	int position;
 
-	public DriveStraight() {
+	public DriveStraightForward() {
 		driveTrain = Robot.getDriveTrain();
 		// System.out.println("Constructor");
 		// SmartDashboard.putNumber("DriveStraight Distance", 100.0);

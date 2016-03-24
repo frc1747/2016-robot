@@ -44,6 +44,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		// SmartDashboard.putNumber("DriveTrain RD", 0);
 		SmartDashboard.putNumber("Turn Dampening", 0.9);
 		SmartDashboard.putNumber("Auton Turning", 0.300);
+		SmartDashboard.putBoolean("BackUpInAuto", false);
 	}
 
 	// Sets up the tank drive using left and right speed

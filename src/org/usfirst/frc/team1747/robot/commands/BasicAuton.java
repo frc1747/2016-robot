@@ -9,9 +9,12 @@ public class BasicAuton extends CommandGroup {
 		if (SmartDashboard.getBoolean("LowerScooperAuto", false)) {
 			addSequential(new LowerScooper());
 		}
-		addSequential(new DriveStraight());
+		addSequential(new DriveStraightForward());
 		addSequential(new RaiseLift());
 		addSequential(new LowerScooper());
 		addSequential(new AutoShoot());
+		if (SmartDashboard.getBoolean("BackUpInAuto", false)) {
+			addSequential(new DriveStraightBack());
+		}
 	}
 }
