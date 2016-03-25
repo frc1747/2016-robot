@@ -1,10 +1,12 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
 import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Gyro {
+public class Gyro implements SDLogger {
 
 	private AnalogGyro gyro;
 
@@ -18,5 +20,10 @@ public class Gyro {
 
 	public void resetGyro() {
 		gyro.reset();
+	}
+
+	@Override
+	public void logToSmartDashboard() {
+		SmartDashboard.putNumber("Gyro Angle", getGyroAngle());
 	}
 }
