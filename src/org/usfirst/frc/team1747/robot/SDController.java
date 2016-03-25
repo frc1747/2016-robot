@@ -47,6 +47,7 @@ public class SDController {
 		intake.logToSmartDashboard();
 		accel.logToSmartDashboard();
 		gyro.logToSmartDashboard();
+		SmartDashboard.putBoolean("LastSecondShot", false);
 		SmartDashboard.putString("ShooterDirection", networkTable.getString("ShootDirection", "robotUnknown"));
 		SmartDashboard.putNumber("ShooterRads", networkTable.getNumber("ShootRads", 0.0));
 	}

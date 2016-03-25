@@ -34,7 +34,7 @@ public class AutoShoot extends Command {
 		intake = Robot.getIntake();
 		scooper = Robot.getScooper();
 		networkTable = NetworkTable.getTable("imageProcessing");
-		SmartDashboard.putNumber("StallTime", 600);
+		SmartDashboard.putNumber("StallTime", 800);
 		SmartDashboard.putNumber("RadsThreshhold", 0.95);
 		driverStation = DriverStation.getInstance();
 		requires(shoot);
@@ -67,6 +67,10 @@ public class AutoShoot extends Command {
 				turnTime = System.currentTimeMillis() + angleToTime(shooterRads);
 				SmartDashboard.putNumber("angleToTime", angleToTime(shooterRads));
 				reset = false;
+			}
+			if (SmartDashboard.getBoolean("LastSecondShot", false) && driverStation.isAutonomous()
+					&& !direction.equals("robotUnknown") && driverStation.getMatchTime() < 3) {
+				direction = "shoot";
 			}
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
 			SmartDashboard.putNumber("TimeLeftofTurn", turnTime - System.currentTimeMillis());
@@ -125,9 +129,9 @@ public class AutoShoot extends Command {
 			} else if (direction.equals("unknown")) {
 				// Add Lift If 1
 				if (position < 3) {
-					drive.arcadeDrive(0, 0.25);
+					drive.arcadeDrive(0, 1.5 * turnValue);
 				} else {
-					drive.arcadeDrive(0, -0.25);
+					drive.arcadeDrive(0, 1.5 * -turnValue);
 				}
 			}
 		}
@@ -154,7 +158,7 @@ public class AutoShoot extends Command {
 			return -100;
 		}
 		return (SmartDashboard.getNumber("RadsThreshold", 0.95) - shooterRads)
-				* SmartDashboard.getNumber("StallTime", 600);
+				* SmartDashboard.getNumber("StallTime", 800);
 	}
 
 }
