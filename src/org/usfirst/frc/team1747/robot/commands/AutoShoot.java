@@ -2,16 +2,14 @@ package org.usfirst.frc.team1747.robot.commands;
 
 import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
 import org.usfirst.frc.team1747.robot.Robot;
-import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1747.robot.subsystems.Gyro;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -30,7 +28,7 @@ public class AutoShoot extends Command {
 	double turnTime;
 	double gyroAngle;
 	double turnAngle;
-	private Gyro gyro;
+	public Gyro gyro;
 	DriverStation driverStation;
 
 	// sets up AutoShoot
@@ -39,7 +37,7 @@ public class AutoShoot extends Command {
 		shoot = Robot.getShooter();
 		intake = Robot.getIntake();
 		scooper = Robot.getScooper();
-		gyro = new AnalogGyro(RobotMap.GYRO);
+		gyro = Robot.getGyro();
 		networkTable = NetworkTable.getTable("imageProcessing");
 		SmartDashboard.putNumber("StallTime", 600);
 		SmartDashboard.putNumber("RadsThreshhold", 1.0);
@@ -58,14 +56,14 @@ public class AutoShoot extends Command {
 		startTime = -1;
 		turnTime = -1;
 		turnValue = drive.getAutonTurn();
-		gyroAngle = gyro.getAngle();
+		gyroAngle = gyro.getGyroAngle();
 		turnAngle = 0.0;
 	}
 
 	boolean reset = false;
 
 	protected void execute() {
-		gyroAngle = gyro.getAngle();
+		gyroAngle = gyro.getGyroAngle();
 		SmartDashboard.putNumber("Gyro Angle", gyroAngle);
 		if (!intake.isAtTop()) {
 			intake.moveLiftUp();
@@ -75,7 +73,7 @@ public class AutoShoot extends Command {
 		if (position != 0) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
 			if (!reset) {
-				gyro.reset();
+				gyro.resetGyro();
 				reset = true;
 			}
 			/*
