@@ -59,7 +59,7 @@ public class AutoShoot extends Command {
 		turnTime = -1;
 		turnValue = drive.getAutonTurn();
 		gyroAngle = gyro.getAngle();
-		turnAngle = 0;
+		turnAngle = 0.0;
 	}
 
 	boolean reset = false;
@@ -74,6 +74,10 @@ public class AutoShoot extends Command {
 		}
 		if (position != 0) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
+			if (!reset) {
+				gyro.reset();
+				reset = true;
+			}
 			/*
 			 * if (turnTime - System.currentTimeMillis() <= -100) { double
 			 * shooterRads = networkTable.getNumber("ShootRads", 0.0); turnTime
@@ -86,25 +90,26 @@ public class AutoShoot extends Command {
 			// System.currentTimeMillis());
 			if (direction.equals("left")) {
 				shoot.shoot(0);
-				if (turnTime - System.currentTimeMillis() >= 0) {
+
+				if (gyroAngle - turnAngle > 0) {
 					drive.arcadeDrive(0.0, (-turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
 				} else {
 					drive.arcadeDrive(0, 0);
 					if (!reset) {
 						networkTable.putNumber("ShootRads", 0.0);
-						reset = true;
+						reset = false;
 					}
 					// turnTime = -1;
 				}
 				startTime = -1;
 			} else if (direction.equals("right")) {
-				if (turnTime - System.currentTimeMillis() >= 0) {
+				if (gyroAngle - turnAngle > 0) {
 					drive.arcadeDrive(0.0, (turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
 				} else {
 					drive.arcadeDrive(0, 0);
 					if (!reset) {
 						networkTable.putNumber("ShootRads", 0.0);
-						reset = true;
+						reset = false;
 					}
 					// turnTime = -1;
 				}
