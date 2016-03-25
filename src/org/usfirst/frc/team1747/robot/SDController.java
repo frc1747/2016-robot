@@ -1,8 +1,7 @@
 package org.usfirst.frc.team1747.robot;
 
-import org.usfirst.frc.team1747.robot.subsystems.ADXL345_I2C_SparkFun;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1747.robot.subsystems.GyroITG3200;
+import org.usfirst.frc.team1747.robot.subsystems.Gyro;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
@@ -19,15 +18,13 @@ public class SDController {
 	private Shooter shooter;
 	private Intake intake;
 	private NetworkTable networkTable = NetworkTable.getTable("imageProcessing");
-	private ADXL345_I2C_SparkFun accel;
-	private GyroITG3200 gyro;
+	private Gyro gyro;
 
 	public SDController() {
 		oi = Robot.getOi();
 		driveTrain = Robot.getDriveTrain();
 		shooter = Robot.getShooter();
 		intake = Robot.getIntake();
-		accel = Robot.getAccel();
 		gyro = Robot.getGyro();
 		SmartDashboard.putData(Scheduler.getInstance());
 		autonPosition = new SendableChooser();
@@ -45,8 +42,6 @@ public class SDController {
 		driveTrain.logToSmartDashboard();
 		shooter.logToSmartDashboard();
 		intake.logToSmartDashboard();
-		accel.logToSmartDashboard();
-		gyro.logToSmartDashboard();
 		SmartDashboard.putString("ShooterDirection", networkTable.getString("ShootDirection", "robotUnknown"));
 		SmartDashboard.putNumber("ShooterRads", networkTable.getNumber("ShootRads", 0.0));
 	}

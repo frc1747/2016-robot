@@ -1,9 +1,8 @@
 package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.commands.BasicAuton;
-import org.usfirst.frc.team1747.robot.subsystems.ADXL345_I2C_SparkFun;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1747.robot.subsystems.GyroITG3200;
+import org.usfirst.frc.team1747.robot.subsystems.Gyro;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
@@ -27,8 +26,7 @@ public class Robot extends IterativeRobot {
 	private static SDController sd;
 	private static Intake intake;
 	private static Scooper scooper;
-	private static ADXL345_I2C_SparkFun accel;
-	private static GyroITG3200 gyro;
+	private static Gyro gyro;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -40,9 +38,7 @@ public class Robot extends IterativeRobot {
 		drive = new DriveTrain();
 		intake = new Intake();
 		scooper = new Scooper();
-		accel = new ADXL345_I2C_SparkFun(RobotMap.ACCEL_PORT, RobotMap.ACCEL_RANGE);
-		gyro = new GyroITG3200(RobotMap.GYRO_PORT);
-		gyro.initialize();
+		gyro = new Gyro();
 		oi = new OI();
 		sd = new SDController();
 		sd.refresh();
@@ -139,11 +135,8 @@ public class Robot extends IterativeRobot {
 		return scooper;
 	}
 
-	public static ADXL345_I2C_SparkFun getAccel() {
-		return accel;
-	}
-
-	public static GyroITG3200 getGyro() {
+	public static Gyro getGyro() {
 		return gyro;
 	}
+
 }
