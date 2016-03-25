@@ -2,13 +2,16 @@ package org.usfirst.frc.team1747.robot.commands;
 
 import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
 import org.usfirst.frc.team1747.robot.Robot;
+import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,6 +28,9 @@ public class AutoShoot extends Command {
 	int position;
 	double turnValue;
 	double turnTime;
+	double gyroAngle;
+	double turnAngle;
+	private Gyro gyro;
 	DriverStation driverStation;
 
 	// sets up AutoShoot
@@ -33,9 +39,11 @@ public class AutoShoot extends Command {
 		shoot = Robot.getShooter();
 		intake = Robot.getIntake();
 		scooper = Robot.getScooper();
+		gyro = new AnalogGyro(RobotMap.GYRO);
 		networkTable = NetworkTable.getTable("imageProcessing");
 		SmartDashboard.putNumber("StallTime", 600);
-		SmartDashboard.putNumber("RadsThreshhold", 0.95);
+		SmartDashboard.putNumber("RadsThreshhold", 1.0);
+		SmartDashboard.putNumber("Gyro Angle", 0.0);
 		driverStation = DriverStation.getInstance();
 		requires(shoot);
 		requires(drive);
@@ -50,11 +58,15 @@ public class AutoShoot extends Command {
 		startTime = -1;
 		turnTime = -1;
 		turnValue = drive.getAutonTurn();
+		gyroAngle = gyro.getAngle();
+		turnAngle = 0;
 	}
 
 	boolean reset = false;
 
 	protected void execute() {
+		gyroAngle = gyro.getAngle();
+		SmartDashboard.putNumber("Gyro Angle", gyroAngle);
 		if (!intake.isAtTop()) {
 			intake.moveLiftUp();
 		} else {
@@ -62,14 +74,16 @@ public class AutoShoot extends Command {
 		}
 		if (position != 0) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
-			if (turnTime - System.currentTimeMillis() <= -100) {
-				double shooterRads = networkTable.getNumber("ShootRads", 0.0);
-				turnTime = System.currentTimeMillis() + angleToTime(shooterRads);
-				SmartDashboard.putNumber("angleToTime", angleToTime(shooterRads));
-				reset = false;
-			}
+			/*
+			 * if (turnTime - System.currentTimeMillis() <= -100) { double
+			 * shooterRads = networkTable.getNumber("ShootRads", 0.0); turnTime
+			 * = System.currentTimeMillis() + angleToTime(shooterRads);
+			 * SmartDashboard.putNumber("angleToTime",
+			 * angleToTime(shooterRads)); reset = false; }
+			 */
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
-			SmartDashboard.putNumber("TimeLeftofTurn", turnTime - System.currentTimeMillis());
+			// SmartDashboard.putNumber("TimeLeftofTurn", turnTime -
+			// System.currentTimeMillis());
 			if (direction.equals("left")) {
 				shoot.shoot(0);
 				if (turnTime - System.currentTimeMillis() >= 0) {
@@ -153,7 +167,7 @@ public class AutoShoot extends Command {
 		if (shooterRads == 0.0) {
 			return -100;
 		}
-		return (SmartDashboard.getNumber("RadsThreshold", 0.95) - shooterRads)
+		return (SmartDashboard.getNumber("RadsThreshold", 1.0) - shooterRads)
 				* SmartDashboard.getNumber("StallTime", 600);
 	}
 

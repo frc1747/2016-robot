@@ -50,4 +50,6 @@ public class RobotMap {
 	public static final Port ACCEL_PORT = I2C.Port.kOnboard;
 	public static final Range ACCEL_RANGE = edu.wpi.first.wpilibj.interfaces.Accelerometer.Range.k16G;
 	public static final Port GYRO_PORT = I2C.Port.kOnboard;
+
+	public static final int GYRO = 0;
 }
