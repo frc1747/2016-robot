@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RaiseLift extends Command {
 
 	Intake intake;
+	double startTime;
 
 	public RaiseLift() {
 		intake = Robot.getIntake();
@@ -20,6 +21,7 @@ public class RaiseLift extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		startTime = System.currentTimeMillis();
 		intake.moveLiftUp();
 	}
 
@@ -31,7 +33,7 @@ public class RaiseLift extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return intake.isAtTop();
+		return intake.isAtTop() || (System.currentTimeMillis() - startTime >= 2000);
 	}
 
 	// Called once after isFinished returns true

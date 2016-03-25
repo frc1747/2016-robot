@@ -41,7 +41,7 @@ public class DriveStraightForward extends Command {
 		if (position == 1 || position == 5) {
 			return System.currentTimeMillis() - time > 3250;
 		} else {
-			return System.currentTimeMillis() - time > 2750;
+			return System.currentTimeMillis() - time > 2850;
 		}
 		// return driveTrain.isAtTarget();
 	}

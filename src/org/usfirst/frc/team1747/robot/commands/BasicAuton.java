@@ -11,10 +11,10 @@ public class BasicAuton extends CommandGroup {
 		}
 		addSequential(new DriveStraightForward());
 		addSequential(new RaiseLift());
-		addSequential(new LowerScooper());
 		addSequential(new AutoShoot());
-		if (SmartDashboard.getBoolean("BackUpInAuto", false)) {
-			addSequential(new DriveStraightBack());
-		}
+		// if (SmartDashboard.getBoolean("BackUpInAuto", false) &&
+		// Robot.getSd().getAutonPosition() == 3) {
+		// addSequential(new DriveStraightBack());
+		// }
 	}
 }
