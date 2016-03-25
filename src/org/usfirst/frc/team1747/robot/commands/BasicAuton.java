@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1747.robot.commands;
 
+import org.usfirst.frc.team1747.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -12,9 +14,10 @@ public class BasicAuton extends CommandGroup {
 		addSequential(new DriveStraightForward());
 		addSequential(new RaiseLift());
 		addSequential(new AutoShoot());
-		// if (SmartDashboard.getBoolean("BackUpInAuto", false) &&
-		// Robot.getSd().getAutonPosition() == 3) {
-		// addSequential(new DriveStraightBack());
-		// }
+		if (SmartDashboard.getBoolean("BackUpInAuto", false) && Robot.getSd().getAutonPosition() == 3) {
+			addSequential(new RaiseScooper());
+			addSequential(new RaiseLift());
+			addSequential(new DriveStraightBack());
+		}
 	}
 }
