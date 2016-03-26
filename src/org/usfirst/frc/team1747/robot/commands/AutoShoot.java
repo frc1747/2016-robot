@@ -138,9 +138,9 @@ public class AutoShoot extends Command {
 			} else if (direction.equals("unknown")) {
 				// Add Lift If 1
 				if (position < 3) {
-					drive.arcadeDrive(0, 0.25);
+					drive.arcadeDrive(0, turnValue);
 				} else {
-					drive.arcadeDrive(0, -0.25);
+					drive.arcadeDrive(0, -turnValue);
 				}
 			}
 		}
