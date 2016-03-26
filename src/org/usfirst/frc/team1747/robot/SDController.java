@@ -42,6 +42,7 @@ public class SDController {
 		driveTrain.logToSmartDashboard();
 		shooter.logToSmartDashboard();
 		intake.logToSmartDashboard();
+		gyro.logToSmartDashboard();
 		SmartDashboard.putString("ShooterDirection", networkTable.getString("ShootDirection", "robotUnknown"));
 		SmartDashboard.putNumber("ShooterRads", networkTable.getNumber("ShootRads", 0.0));
 	}

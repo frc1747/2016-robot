@@ -24,6 +24,6 @@ public class Gyro implements SDLogger {
 
 	@Override
 	public void logToSmartDashboard() {
-		SmartDashboard.putNumber("Gyro Angle", getGyroAngle());
+		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
 	}
 }
