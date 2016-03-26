@@ -72,6 +72,7 @@ public class AutoShoot extends Command {
 		if (position != 0) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
 			if (!reset) {
+				turnAngle = networkTable.getNumber("GyroAngle", 0.0);
 				double shooterRads = networkTable.getNumber("ShootRads", 0.0);
 				gyro.resetGyro();
 				reset = true;
