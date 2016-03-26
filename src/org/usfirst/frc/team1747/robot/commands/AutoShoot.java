@@ -140,7 +140,7 @@ public class AutoShoot extends Command {
 	// returns true if auto mode is done, if not it returns false; uses
 	// startTime, position, and the current system time
 	protected boolean isFinished() {
-		return (startTime != -1 && System.currentTimeMillis() - startTime > 4000) || position == 0;
+		return (startTime != -1 && System.currentTimeMillis() - startTime > 2250) || position == 0;
 	}
 
 	// ends shoot and arcadeDrive
