@@ -51,11 +51,11 @@ public class Shooter extends Subsystem implements SDLogger {
 	}
 
 	public double getLeftSpeed() {
-		return 100 * left.getSpeed();
+		return left.getSpeed();
 	}
 
 	public double getRightSpeed() {
-		return 100 * right.getSpeed();
+		return right.getSpeed();
 	}
 
 	@Override
@@ -82,6 +82,10 @@ public class Shooter extends Subsystem implements SDLogger {
 	public void shoot(double speed) {
 		left.set(speed);
 		right.set(speed);
+	}
+
+	public boolean isAtTarget() {
+		return left.isAtTarget() && right.isAtTarget();
 	}
 
 	class ShooterSide {
@@ -112,6 +116,10 @@ public class Shooter extends Subsystem implements SDLogger {
 			previousError = 0;
 		}
 
+		public boolean isAtTarget() {
+			return Math.abs(getSpeed() - targetSpeed) < .025;
+		}
+
 		public double getP() {
 			return kP;
 		}
@@ -126,7 +134,7 @@ public class Shooter extends Subsystem implements SDLogger {
 
 		// makes function getspeed which returns the counter rate/10,000
 		public double getSpeed() {
-			return counter.getRate() / 10000.0;
+			return counter.getRate() / 100.0;
 		}
 
 		// runs PID and puts left and right speeds on smart dashboard

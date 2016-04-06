@@ -28,7 +28,7 @@ public class RaiseScooper extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return (scooper.isAtUpperLimit() || (System.currentTimeMillis() - startTime >= 2000));
+		return (scooper.isAtUpperLimit() || (System.currentTimeMillis() - startTime >= 1000));
 	}
 
 	@Override

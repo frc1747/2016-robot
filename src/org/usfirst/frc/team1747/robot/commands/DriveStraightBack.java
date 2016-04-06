@@ -20,7 +20,7 @@ public class DriveStraightBack extends Command {
 	protected void initialize() {
 		position = Robot.getSd().getAutonPosition();
 		time = System.currentTimeMillis();
-		driveTrain.tankDrive(-.5, .5);
+		driveTrain.tankDrive(-.5, -.5);
 	}
 
 	@Override
