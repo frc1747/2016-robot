@@ -1,35 +1,35 @@
 package org.usfirst.frc.team1747.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.SDController;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1747.robot.subsystems.Gyro;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class AutoShoot extends Command {
 
-    PrecisionCyborgController auxController;
-    private DriveTrain drive;
-    private Shooter shoot;
-    private Intake intake;
-    private Scooper scooper;
-    private NetworkTable networkTable;
-    private double speed;
-    private double startTime;
-    private SDController.Positions position;
-    private double turnValue;
-    private double turnTime;
-    private DriverStation driverStation;
-    private boolean reset = false;
-	private	double gyroAngle;
-	private	double turnAngle;
+	PrecisionCyborgController auxController;
+	private DriveTrain drive;
+	private Shooter shoot;
+	private Intake intake;
+	private Scooper scooper;
+	private NetworkTable networkTable;
+	private double speed;
+	private double startTime;
+	private SDController.Positions position;
+	private double turnValue;
+	private double turnTime;
+	private DriverStation driverStation;
+	private boolean reset = false;
+	private double gyroAngle;
+	private double turnAngle;
 
 	// sets up AutoShoot
 	public AutoShoot() {
@@ -39,7 +39,7 @@ public class AutoShoot extends Command {
 		scooper = Robot.getScooper();
 		networkTable = NetworkTable.getTable("imageProcessing");
 		SmartDashboard.putNumber("StallTime", 800);
-		SmartDashboard.putNumber("RadsThreshhold",.95) ;
+		SmartDashboard.putNumber("RadsThreshhold", .95);
 		SmartDashboard.putNumber("Gyro Angle", 0.0);
 		driverStation = DriverStation.getInstance();
 		requires(shoot);
@@ -55,11 +55,12 @@ public class AutoShoot extends Command {
 		startTime = -1;
 		turnTime = -1;
 		turnValue = drive.getAutonTurn();
-		gyro.resetGyro();
+		drive.resetGyro();
 		turnAngle = 0.0;
 	}
+
 	protected void execute() {
-		gyroAngle = gyro.getGyroAngle();
+		gyroAngle = drive.getTurnAngle();
 		if (!intake.isAtTop()) {
 			intake.moveLiftUp();
 		} else {
@@ -68,16 +69,16 @@ public class AutoShoot extends Command {
 		if (position != SDController.Positions.NOTHING) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
 
-            if (reset) {
+			if (reset) {
 				turnAngle = networkTable.getNumber("GyroAngle", 0.0);
-                double shooterRads = networkTable.getNumber("ShootRads", 0.0);
-				gyro.resetGyro();
-                reset = false;
-            }
+				double shooterRads = networkTable.getNumber("ShootRads", 0.0);
+				drive.resetGyro();
+				reset = false;
+			}
 			if (SmartDashboard.getBoolean("LastSecondShot", false) && driverStation.isAutonomous()
-				&& !direction.equals("robotUnknown") && driverStation.getMatchTime() < 3) {
-                direction = "shoot";
-            }
+					&& !direction.equals("robotUnknown") && driverStation.getMatchTime() < 3) {
+				direction = "shoot";
+			}
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
 			// SmartDashboard.putNumber("TimeLeftofTurn", turnTime -
 			// System.currentTimeMillis());
@@ -125,43 +126,43 @@ public class AutoShoot extends Command {
 					shoot.shoot(speed);
 				}
 				if (startTime != -1 && System.currentTimeMillis() - startTime > 750 && shoot.getLeftSpeed() >= speed
-					&& shoot.getRightSpeed() >= speed) {// Speed
+						&& shoot.getRightSpeed() >= speed) {// Speed
 					intake.intakeBall();
 				}
 			} else if (direction.equals("unknown")) {
 				// Add Lift If 1
-				if (position == SDController.Positions.ONE || position == SDController.Positions.TWO ||
-					position == SDController.Positions.THREE) {
-                    drive.arcadeDrive(0, 1.5 * turnValue);
-                } else {
-                    drive.arcadeDrive(0, 1.5 * -turnValue);
-                }
+				if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
+						|| position == SDController.Positions.THREE) {
+					drive.arcadeDrive(0, 1.5 * turnValue);
+				} else {
+					drive.arcadeDrive(0, 1.5 * -turnValue);
+				}
 			}
 		}
 	}
 
-    // returns true if auto mode is done, if not it returns false; uses
-    // startTime, position, and the current system time
-    protected boolean isFinished() {
-        return (startTime != -1 && System.currentTimeMillis() - startTime > 2250) ||
-			position == SDController.Positions.NOTHING;
-    }
+	// returns true if auto mode is done, if not it returns false; uses
+	// startTime, position, and the current system time
+	protected boolean isFinished() {
+		return (startTime != -1 && System.currentTimeMillis() - startTime > 2250)
+				|| position == SDController.Positions.NOTHING;
+	}
 
-    // ends shoot and arcadeDrive
-    protected void end() {
-        drive.arcadeDrive(0, 0);
-        shoot.shoot(0);
-    }
+	// ends shoot and arcadeDrive
+	protected void end() {
+		drive.arcadeDrive(0, 0);
+		shoot.shoot(0);
+	}
 
-    protected void interrupted() {
-        end();
-    }
+	protected void interrupted() {
+		end();
+	}
 
-    private double angleToTime(double shooterRads) {
-        if (shooterRads == 0.0) {
-            return -100;
-        }
-        return (SmartDashboard.getNumber("RadsThreshold", 0.95) - shooterRads)
-			* SmartDashboard.getNumber("StallTime", 800);
-    }
+	private double angleToTime(double shooterRads) {
+		if (shooterRads == 0.0) {
+			return -100;
+		}
+		return (SmartDashboard.getNumber("RadsThreshold", 0.95) - shooterRads)
+				* SmartDashboard.getNumber("StallTime", 800);
+	}
 }
