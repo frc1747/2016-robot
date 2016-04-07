@@ -18,7 +18,10 @@ public class CyborgController extends Cyborg {
 	private static final int JOY_B_BUTTON = 3;
 	private static final int JOY_Y_BUTTON = 4;
 
-	JoystickButton buttonA, buttonB, buttonX, buttonY;
+	private JoystickButton buttonA;
+	private JoystickButton buttonB;
+	private JoystickButton buttonX;
+	private JoystickButton buttonY;
 
 	public CyborgController(int portNum) {
 		super(portNum);

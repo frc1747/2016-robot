@@ -1,60 +1,53 @@
 package org.usfirst.frc.team1747.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
+import org.usfirst.frc.team1747.robot.SDController;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 public class DriveStraightForward extends Command {
-	DriveTrain driveTrain;
-	double time;
-	int position;
+    private DriveTrain driveTrain;
+    private double startTime;
+    private long defaultTime;
 
-	public DriveStraightForward() {
-		driveTrain = Robot.getDriveTrain();
-		// System.out.println("Constructor");
-		// SmartDashboard.putNumber("DriveStraight Distance", 100.0);
-		requires(driveTrain);
-	}
+    public DriveStraightForward() {
+        driveTrain = Robot.getDriveTrain();
+        requires(driveTrain);
+    }
 
-	// sets up tankDrive
-	@Override
-	protected void initialize() {
-		// System.out.println("Initialize");
-		// double distance = SmartDashboard.getNumber("DriveStraight Distance",
-		// 1000000.0);
-		// driveTrain.enablePID();
-		// driveTrain.setSetpoint(distance);\
-		position = Robot.getSd().getAutonPosition();
-		time = System.currentTimeMillis();
-		driveTrain.tankDrive(.5, .5);
-	}
+    // sets up tankDrive
+    @Override
+    protected void initialize() {
+        SDController.Positions position = Robot.getSd().getAutonPosition();
+        SDController.Defense defenseType = Robot.getSd().getDefenseType();
+        defaultTime = 3250;
+        if (position == SDController.Positions.ONE || position == SDController.Positions.FIVE) {
+            defaultTime += 50;
+        }
+        if (defenseType == SDController.Defense.ROUGH_TERRAIN || defenseType == SDController.Defense.MOAT) {
+            defaultTime -= 50;
+        }
+        driveTrain.tankDrive(.5, .5);
+        startTime = System.currentTimeMillis();
+    }
 
-	@Override
-	protected void execute() {
-		// driveTrain.runPID();
-	}
+    @Override
+    protected void execute() {
+    }
 
-	// returns true if more than 3250 time has passed
-	@Override
-	protected boolean isFinished() {
-		if (position == 1 || position == 5) {
-			return System.currentTimeMillis() - time > 3300;
-		} else {
-			return System.currentTimeMillis() - time > 3250;
-		}
-		// return driveTrain.isAtTarget();
-	}
+    // returns true if more than 3250 startTime has passed
+    @Override
+    protected boolean isFinished() {
+        return System.currentTimeMillis() - startTime > defaultTime;
+    }
 
-	@Override
-	protected void end() {
-		// System.out.println("End");
-		// driveTrain.disablePID();
-		driveTrain.tankDrive(0.0, 0.0);
-	}
+    @Override
+    protected void end() {
+        driveTrain.tankDrive(0.0, 0.0);
+    }
 
-	@Override
-	protected void interrupted() {
-		end();
-	}
+    @Override
+    protected void interrupted() {
+        end();
+    }
 }

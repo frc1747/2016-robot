@@ -1,14 +1,13 @@
 package org.usfirst.frc.team1747.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 public class LowerScooper extends Command {
 
-	Scooper scooper;
-	double startTime;
+	private Scooper scooper;
+	private double startTime;
 
 	public LowerScooper() {
 		scooper = Robot.getScooper();

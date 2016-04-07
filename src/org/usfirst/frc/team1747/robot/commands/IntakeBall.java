@@ -1,13 +1,12 @@
 package org.usfirst.frc.team1747.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 public class IntakeBall extends Command {
 
-	Intake intake;
+	private Intake intake;
 
 	// liftInput senses if the arm is low enough to get the ball
 	// intakeInput senses if we have a ball

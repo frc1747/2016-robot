@@ -1,28 +1,26 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.SDLogger;
 import org.usfirst.frc.team1747.robot.commands.IntakeManual;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class Intake extends Subsystem implements SDLogger {
 
-	CANTalon leftLiftMotor, rightLiftMotor;
-	Talon rollerMotor;
-	DigitalInput ballIntake;
-	Encoder encoder;
-	double kP, kI, kD;
-	double targetDistance;
-	Solenoid glowLeft;
-	Solenoid glowRight;
+	private CANTalon leftLiftMotor;
+	private CANTalon rightLiftMotor;
+	private Talon rollerMotor;
+	private DigitalInput ballIntake;
+	private Encoder encoder;
+	private double kP;
+	private double kI;
+	private double kD;
+	private double targetDistance;
+	private Solenoid glowLeft;
+	private Solenoid glowRight;
 
 	public Intake() {
 		leftLiftMotor = new CANTalon(RobotMap.LEFT_LIFT_MOTOR);
@@ -114,7 +112,7 @@ public class Intake extends Subsystem implements SDLogger {
 	}
 
 	// returns encoder speed
-	public double getSpeed() {
+	private double getSpeed() {
 		return encoder.getRate();
 	}
 
@@ -154,13 +152,13 @@ public class Intake extends Subsystem implements SDLogger {
 		return Math.abs(this.targetDistance - leftLiftMotor.get()) < .01;
 	}
 
-	public void turnOnGlow() {
+	private void turnOnGlow() {
 		glowRight.set(true);
 		glowLeft.set(true);
 	}
 
 	// turns off left and right LED lights
-	public void turnOffGlow() {
+	private void turnOffGlow() {
 		glowRight.set(false);
 		glowLeft.set(false);
 	}

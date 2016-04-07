@@ -1,17 +1,16 @@
 package org.usfirst.frc.team1747.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
-
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
 public class LowerLift extends Command {
 
-	Intake intake;
-	double startTime;
+	private Intake intake;
+	private double startTime;
 
 	public LowerLift() {
 		intake = Robot.getIntake();
