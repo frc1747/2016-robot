@@ -12,12 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends Subsystem implements SDLogger {
 
-	ShooterSide left, right;
+	private ShooterSide left, right;
 
 	// set up left and right sides of the shooter, puts variables onto the
 	// SmartDashbord
 	public Shooter() {
-		System.out.println("ShooterMotor created");
 		left = new ShooterSide(RobotMap.LEFT_SHOOTER_MOTOR_ONE, RobotMap.LEFT_SHOOTER_MOTOR_TWO, true,
 				RobotMap.LEFT_COUNTER);
 		right = new ShooterSide(RobotMap.RIGHT_SHOOTER_MOTOR_ONE, RobotMap.RIGHT_SHOOTER_MOTOR_TWO, false,
@@ -30,6 +29,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("Shooter RI", 0);
 		SmartDashboard.putNumber("Shooter RD", 0);
 		SmartDashboard.putBoolean("Shooter PID Mode", true);
+		SmartDashboard.putNumber("Shooter error margin", .025);
 	}
 
 	// enables PID
@@ -51,11 +51,11 @@ public class Shooter extends Subsystem implements SDLogger {
 	}
 
 	public double getLeftSpeed() {
-		return 100 * left.getSpeed();
+		return left.getSpeed();
 	}
 
 	public double getRightSpeed() {
-		return 100 * right.getSpeed();
+		return right.getSpeed();
 	}
 
 	@Override
@@ -82,6 +82,10 @@ public class Shooter extends Subsystem implements SDLogger {
 	public void shoot(double speed) {
 		left.set(speed);
 		right.set(speed);
+	}
+
+	public boolean isAtTarget() {
+		return left.isAtTarget() && right.isAtTarget();
 	}
 
 	class ShooterSide {
@@ -112,6 +116,10 @@ public class Shooter extends Subsystem implements SDLogger {
 			previousError = 0;
 		}
 
+		public boolean isAtTarget() {
+			return Math.abs(getSpeed() - targetSpeed) < SmartDashboard.getNumber("Shooter error margin", .025);
+		}
+
 		public double getP() {
 			return kP;
 		}
@@ -126,7 +134,7 @@ public class Shooter extends Subsystem implements SDLogger {
 
 		// makes function getspeed which returns the counter rate/10,000
 		public double getSpeed() {
-			return counter.getRate() / 10000.0;
+			return counter.getRate() / 100.0;
 		}
 
 		// runs PID and puts left and right speeds on smart dashboard
@@ -137,10 +145,16 @@ public class Shooter extends Subsystem implements SDLogger {
 			// Motor Voltage = Kp*error + Ki*error_sum + Kd*(error-error_last)
 			double speed = kP * currentError + kI * integralError + kD * (currentError - previousError);
 			previousError = currentError;
-			// if (motorOne.getInverted())
-			// SmartDashboard.putNumber("left", speed);
-			// else
-			// SmartDashboard.putNumber("right", speed);
+			if (speed > 1.0) {
+				speed = 1.0;
+			} else if (speed < -1.0) {
+				speed = -1.0;
+			}
+			if (motorOne.getInverted()) {
+				SmartDashboard.putNumber("Shooter pid left", speed);
+			} else {
+				SmartDashboard.putNumber("Shooter pid right", speed);
+			}
 			set(speed);
 		}
 
@@ -160,6 +174,7 @@ public class Shooter extends Subsystem implements SDLogger {
 
 		// sets the target speed
 		public void setSetpoint(double targetSpeed) {
+			this.targetSpeed = targetSpeed *= 12.0;
 			this.targetSpeed = targetSpeed;
 		}
 

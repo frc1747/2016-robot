@@ -1,24 +1,24 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
-import org.usfirst.frc.team1747.robot.RobotMap;
-import org.usfirst.frc.team1747.robot.SDLogger;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
 
 /**
  *
  */
 public class Climber extends Subsystem implements SDLogger {
 
-	CANTalon rightClimberTalon, leftClimberTalon;
+	private CANTalon rightClimberTalon;
+	private CANTalon leftClimberTalon;
 	//maps the left and right climber talons
 	public Climber() {
 		rightClimberTalon = new CANTalon(RobotMap.RIGHT_CLIMB_CIM);
 		leftClimberTalon = new CANTalon(RobotMap.LEFT_CLIMB_CIM);
 	}
 	//sets the speed of the left and right climber talons
-	public void climbControl(double speed) {
+	private void climbControl(double speed) {
 		rightClimberTalon.set(speed);
 		leftClimberTalon.set(speed);
 	}

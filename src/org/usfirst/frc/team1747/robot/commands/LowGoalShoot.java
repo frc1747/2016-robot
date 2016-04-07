@@ -1,18 +1,17 @@
 package org.usfirst.frc.team1747.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 public class LowGoalShoot extends Command {
 
-	Shooter shooter;
-	Intake intake;
 	double startTime;
-	double time = -1;
 	boolean pidMode;
+	private Shooter shooter;
+	private Intake intake;
+	private double time = -1;
 
 	public LowGoalShoot() {
 		shooter = Robot.getShooter();

@@ -29,11 +29,17 @@ public class LogitechController implements SDLogger {
 	private static final int JOY_B_BUTTON = 2;
 	private static final int JOY_Y_BUTTON = 4;
 
-	Joystick controller;
-	JoystickButton buttonA, buttonB, buttonX, buttonY;
-	JoystickButton leftBumper, rightBumper;
-	JoystickButton backButton, startButton;
-	JoystickButton leftJoystickButton, rightJoystickButton;
+	private Joystick controller;
+	private JoystickButton buttonA;
+	private JoystickButton buttonB;
+	private JoystickButton buttonX;
+	private JoystickButton buttonY;
+	private JoystickButton leftBumper;
+	private JoystickButton rightBumper;
+	private JoystickButton backButton;
+	private JoystickButton startButton;
+	private JoystickButton leftJoystickButton;
+	private JoystickButton rightJoystickButton;
 
 	public LogitechController(int portNum) {
 		controller = new Joystick(portNum);
@@ -89,11 +95,11 @@ public class LogitechController implements SDLogger {
 		return -controller.getRawAxis(LEFT_JOY_VERT_AXIS);
 	}
 
-	public double getLeftHoriz() {
+	private double getLeftHoriz() {
 		return controller.getRawAxis(LEFT_JOY_HORIZ_AXIS);
 	}
 
-	public double getRightVert() {
+	private double getRightVert() {
 		return -controller.getRawAxis(RIGHT_JOY_VERT_AXIS);
 	}
 

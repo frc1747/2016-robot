@@ -18,14 +18,18 @@ public abstract class Cyborg {
 	private static final int RIGHT_JOY_PRESS = 12;
 
 	private static final int FPS_BUTTON = 13;
-
-	JoystickButton leftBumper, rightBumper, leftTrigger, rightTrigger;
-	JoystickButton leftJoystickPress, rightJoystickPress;
-	JoystickButton fpsButton, backButton, startButton;
-
 	Joystick controller;
+	private JoystickButton leftBumper;
+	private JoystickButton rightBumper;
+	private JoystickButton leftTrigger;
+	private JoystickButton rightTrigger;
+	private JoystickButton leftJoystickPress;
+	private JoystickButton rightJoystickPress;
+	private JoystickButton fpsButton;
+	private JoystickButton backButton;
+	private JoystickButton startButton;
 
-	public Cyborg(int portNum) {
+	protected Cyborg(int portNum) {
 		controller = new Joystick(portNum);
 		leftBumper = new JoystickButton(controller, JOY_LEFT_BUMPER);
 		rightBumper = new JoystickButton(controller, JOY_RIGHT_BUMPER);
@@ -74,7 +78,7 @@ public abstract class Cyborg {
 		return backButton;
 	}
 
-	public int getDPad() {
+	private int getDPad() {
 		return controller.getPOV();
 	}
 
@@ -96,7 +100,7 @@ public abstract class Cyborg {
 
 	abstract public double getTriggerAxis();
 
-	public void logToSmartDashboard() {
+	protected void logToSmartDashboard() {
 		SmartDashboard.putBoolean("Left Bumper", leftBumper.get());
 		SmartDashboard.putBoolean("Right Bumper", rightBumper.get());
 		SmartDashboard.putBoolean("Left Trigger", leftTrigger.get());

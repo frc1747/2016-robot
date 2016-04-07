@@ -1,14 +1,13 @@
 package org.usfirst.frc.team1747.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 public class RaiseScooper extends Command {
 
-	Scooper scooper;
-	double startTime;
+	private Scooper scooper;
+	private double startTime;
 
 	public RaiseScooper() {
 		scooper = Robot.getScooper();
@@ -28,7 +27,7 @@ public class RaiseScooper extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return (scooper.isAtUpperLimit() || (System.currentTimeMillis() - startTime >= 300));
+		return (scooper.isAtUpperLimit() || (System.currentTimeMillis() - startTime >= 1000));
 	}
 
 	@Override
