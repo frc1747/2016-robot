@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
 import org.usfirst.frc.team1747.robot.Robot;
+import org.usfirst.frc.team1747.robot.SDController;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
@@ -21,7 +22,7 @@ public class AutoShoot extends Command {
     private NetworkTable networkTable;
     private double speed;
     private double startTime;
-    private int position;
+    private SDController.Positions position;
     private double turnValue;
     private double turnTime;
     private DriverStation driverStation;
@@ -58,7 +59,7 @@ public class AutoShoot extends Command {
         } else {
             intake.liftStop();
         }
-        if (position != 0) {
+        if (position != SDController.Positions.NOTHING) {
             String direction = networkTable.getString("ShootDirection", "robotUnknown");
             if (turnTime - System.currentTimeMillis() <= -100) {
                 double shooterRads = networkTable.getNumber("ShootRads", 0.0);
@@ -126,7 +127,8 @@ public class AutoShoot extends Command {
                 }
             } else if (direction.equals("unknown")) {
                 // Add Lift If 1
-                if (position < 3) {
+                if (position == SDController.Positions.ONE || position == SDController.Positions.TWO ||
+                        position == SDController.Positions.THREE) {
                     drive.arcadeDrive(0, 1.5 * turnValue);
                 } else {
                     drive.arcadeDrive(0, 1.5 * -turnValue);
@@ -138,7 +140,8 @@ public class AutoShoot extends Command {
     // returns true if auto mode is done, if not it returns false; uses
     // startTime, position, and the current system time
     protected boolean isFinished() {
-        return (startTime != -1 && System.currentTimeMillis() - startTime > 2250) || position == 0;
+        return (startTime != -1 && System.currentTimeMillis() - startTime > 2250) ||
+                position == SDController.Positions.NOTHING;
     }
 
     // ends shoot and arcadeDrive
