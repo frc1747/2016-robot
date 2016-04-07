@@ -38,6 +38,7 @@ public class Robot extends IterativeRobot {
 		scooper = new Scooper();
 		oi = new OI();
 		sd = new SDController();
+		drive.resetGyro();
 		sd.refresh();
 		// CameraServer camera = CameraServer.getInstance();
 		// camera.setQuality(50);
