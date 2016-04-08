@@ -1,21 +1,19 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
-import org.usfirst.frc.team1747.robot.RobotMap;
-import org.usfirst.frc.team1747.robot.SDLogger;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
 
 public class Shooter extends Subsystem implements SDLogger {
 
 	private ShooterSide left, right;
 
-	// set up left and right sides of the shooter, puts variables onto the
-	// SmartDashbord
+	// set up left and right sides of the shooter, puts variables onto the SmartDashboard
 	public Shooter() {
 		left = new ShooterSide(RobotMap.LEFT_SHOOTER_MOTOR_ONE, RobotMap.LEFT_SHOOTER_MOTOR_TWO, true,
 				RobotMap.LEFT_COUNTER);
@@ -62,7 +60,7 @@ public class Shooter extends Subsystem implements SDLogger {
 	protected void initDefaultCommand() {
 	}
 
-	// logs variables to smartdashbord
+	// logs variables to SmartDashboard
 	public void logToSmartDashboard() {
 		SmartDashboard.putNumber("Left Shooter Speed", getLeftSpeed());
 		SmartDashboard.putNumber("Right Shooter Speed", getRightSpeed());
@@ -88,14 +86,12 @@ public class Shooter extends Subsystem implements SDLogger {
 		return left.isAtTarget() && right.isAtTarget();
 	}
 
-	class ShooterSide {
+	private class ShooterSide {
 		CANTalon motorOne, motorTwo;
 		Counter counter;
-		double kP, kI, kD;
+		double kP, kI, kD, targetSpeed, integralError, previousError;
 		boolean pidEnabled;
-		double targetSpeed;
-		double integralError;
-		double previousError;
+		long previousTime;
 
 		// sets up both sides of the shooter
 		public ShooterSide(int motorOneId, int motorTwoId, boolean inverted, int counterId) {
@@ -114,10 +110,13 @@ public class Shooter extends Subsystem implements SDLogger {
 			targetSpeed = 0;
 			integralError = 0;
 			previousError = 0;
+			previousTime = 0;
 		}
 
+		//TODO:Check this % tolerance
 		public boolean isAtTarget() {
-			return Math.abs(getSpeed() - targetSpeed) < SmartDashboard.getNumber("Shooter error margin", .025);
+			return Math.abs((getSpeed() - targetSpeed) / targetSpeed) < SmartDashboard.getNumber("Shooter error " +
+					"margin", .025);
 		}
 
 		public double getP() {
@@ -140,11 +139,13 @@ public class Shooter extends Subsystem implements SDLogger {
 		// runs PID and puts left and right speeds on smart dashboard
 		public void runPID() {
 			double currentSpeed = getSpeed();
-			double currentError = (currentSpeed - targetSpeed);
-			integralError += currentError;
-			// Motor Voltage = Kp*error + Ki*error_sum + Kd*(error-error_last)
-			double speed = kP * currentError + kI * integralError + kD * (currentError - previousError);
+			long deltaTime = System.currentTimeMillis() - previousTime;
+			double currentError = targetSpeed - currentSpeed;
+			integralError += currentError * deltaTime;
+			double derivative = (currentError - previousError) / deltaTime;
+			double speed = kP * currentError + kI * integralError + kD * derivative;
 			previousError = currentError;
+			previousTime = System.currentTimeMillis();
 			if (speed > 1.0) {
 				speed = 1.0;
 			} else if (speed < -1.0) {
@@ -181,6 +182,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		// enables the PID
 		public void enablePID() {
 			pidEnabled = true;
+			previousTime = System.currentTimeMillis();
 		}
 
 		// turns off the PID and clears target speed
@@ -189,6 +191,7 @@ public class Shooter extends Subsystem implements SDLogger {
 			targetSpeed = 0;
 			integralError = 0;
 			previousError = 0;
+			previousTime = 0;
 		}
 	}
 }
