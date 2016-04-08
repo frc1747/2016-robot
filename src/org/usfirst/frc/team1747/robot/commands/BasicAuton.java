@@ -23,9 +23,9 @@ public class BasicAuton extends CommandGroup {
         addSequential(new DriveStraightForward());
         addSequential(new RaiseLift());
         addSequential(new AutoShoot());
-        if (SmartDashboard.getBoolean("BackUpInAuto", false) && (pos == SDController.Positions.THREE ||
-                pos == SDController.Positions.FOUR) && (def == SDController.Defense.ROCK_WALL || def ==
-                SDController.Defense.ROUGH_TERRAIN || def == SDController.Defense.MOAT)) {
+        if ((pos == SDController.Positions.THREE || pos == SDController.Positions.FOUR) &&
+                (def == SDController.Defense.ROCK_WALL || def == SDController.Defense.ROUGH_TERRAIN
+                        || def == SDController.Defense.MOAT)) {
             addParallel(new RaiseScooper());
             addSequential(new RaiseLift());
             addSequential(new DriveStraightBack());
