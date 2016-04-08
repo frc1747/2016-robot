@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -35,7 +36,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 				true);
 		right = new DriveSide(RobotMap.RIGHT_DRIVE_CIM_ONE, RobotMap.RIGHT_DRIVE_CIM_TWO, RobotMap.RIGHT_DRIVE_MINICIM,
 				false);
-
+		gyro = new AHRS(SPI.Port.kMXP);
 		// Left and right motors face each other, left is inverted
 		for (double ignored : SIGMOIDSTRETCH) {
 			straightTargetDeltas.add(0.0);
