@@ -22,10 +22,10 @@ public class Shooter extends Subsystem implements SDLogger {
 		right = new ShooterSide(RobotMap.RIGHT_SHOOTER_MOTOR_ONE, RobotMap.RIGHT_SHOOTER_MOTOR_TWO, false,
 				RobotMap.RIGHT_COUNTER);
 		SmartDashboard.putNumber("Target Shooter Speed", .6);
-		SmartDashboard.putNumber("Shooter LP", .05);
+		SmartDashboard.putNumber("Shooter LP", .068);
 		SmartDashboard.putNumber("Shooter LI", 0);
 		SmartDashboard.putNumber("Shooter LD", 0);
-		SmartDashboard.putNumber("Shooter RP", .05);
+		SmartDashboard.putNumber("Shooter RP", .071);
 		SmartDashboard.putNumber("Shooter RI", 0);
 		SmartDashboard.putNumber("Shooter RD", 0);
 		SmartDashboard.putBoolean("Shooter PID Mode", true);
@@ -175,7 +175,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		// sets the target speed
 		public void setSetpoint(double targetSpeed) {
 			this.targetSpeed = targetSpeed *= 12.0;
-			this.targetSpeed = targetSpeed;
+			this.targetSpeed = -targetSpeed;
 		}
 
 		// enables the PID
