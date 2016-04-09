@@ -1,23 +1,19 @@
 package org.usfirst.frc.team1747.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.SDController;
 
 public class BasicAuton extends CommandGroup {
-    // auto mode uses DriveStraight and AutoShoot
-    SDController sd;
-    SDController.Positions pos;
-    SDController.Defense def;
 
     public BasicAuton() {
-        sd = Robot.getSd();
-        pos = sd.getAutonPosition();
-        def = sd.getDefenseType();
-
-        if (SmartDashboard.getBoolean("LowerScooperAuto", false)) {
+        SDController sd = Robot.getSd();
+        SDController.Positions pos = sd.getAutonPosition();
+        SDController.Defense def = sd.getDefenseType();
+        if (def == SDController.Defense.PORTICULLIS || def == SDController.Defense.LOW_BAR) {
             addParallel(new LowerLift());
+            addSequential(new LowerScooper());
+        } else if (def == SDController.Defense.CHEVAL_DE_FRISE) {
             addSequential(new LowerScooper());
         }
         addSequential(new DriveStraightForward());
