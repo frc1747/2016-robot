@@ -140,7 +140,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		// runs PID and puts left and right speeds on smart dashboard
 		public void runPID() {
 			double currentSpeed = getSpeed();
-			long deltaTime = System.currentTimeMillis() - previousTime;
+			double deltaTime = (System.currentTimeMillis() - previousTime) / 1000.0;
 			double currentError = targetSpeed - currentSpeed;
 			integralError += currentError * deltaTime;
 			double derivative = (currentError - previousError) / deltaTime;
