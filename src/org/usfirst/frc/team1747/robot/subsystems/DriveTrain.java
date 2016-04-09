@@ -67,8 +67,12 @@ public class DriveTrain extends Subsystem implements SDLogger {
 
 	// This is smooth drive.
 	public void smoothDrive(double targetStraight, double targetRotation) {
-		straightTargetDeltas.removeLast();
-		rotationTargetDeltas.removeLast();
+		if (straightTargetDeltas.size() > SIGMOIDSTRETCH.length) {
+			straightTargetDeltas.removeLast();
+		}
+		if (rotationTargetDeltas.size() > SIGMOIDSTRETCH.length) {
+			rotationTargetDeltas.removeLast();
+		}
 		straightTargetDeltas.addFirst(targetStraight - prevTargetStraight);
 		rotationTargetDeltas.addFirst(targetRotation - prevTargetRotation);
 		prevTargetStraight = targetStraight;
