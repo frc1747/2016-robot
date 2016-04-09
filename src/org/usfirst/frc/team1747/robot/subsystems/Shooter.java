@@ -147,13 +147,13 @@ public class Shooter extends Subsystem implements SDLogger {
 			double speed = previousSpeed + kP * currentError + kI * integralError + kD * derivative;
 			previousError = currentError;
 			previousTime = System.currentTimeMillis();
-			previousSpeed = speed;
 			if (speed > 1.0) {
 				speed = 1.0;
 			} else if (speed < -1.0) {
 				speed = -1.0;
 			}
-			if (motorOne.getInverted()) {
+            previousSpeed = speed;
+            if (motorOne.getInverted()) {
 				SmartDashboard.putNumber("Shooter pid left", speed);
 			} else {
 				SmartDashboard.putNumber("Shooter pid right", speed);
