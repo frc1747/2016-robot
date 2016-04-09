@@ -89,7 +89,7 @@ public class Shooter extends Subsystem implements SDLogger {
 	private class ShooterSide {
 		CANTalon motorOne, motorTwo;
 		Counter counter;
-		double kP, kI, kD, targetSpeed, integralError, previousError;
+		double kP, kI, kD, targetSpeed, integralError, previousError, previousSpeed;
 		boolean pidEnabled;
 		long previousTime;
 
@@ -136,6 +136,7 @@ public class Shooter extends Subsystem implements SDLogger {
 			return counter.getRate() / 100.0;
 		}
 
+		// Variation of http://www.chiefdelphi.com/forums/showpost.php?p=690837&postcount=13
 		// runs PID and puts left and right speeds on smart dashboard
 		public void runPID() {
 			double currentSpeed = getSpeed();
@@ -143,9 +144,10 @@ public class Shooter extends Subsystem implements SDLogger {
 			double currentError = targetSpeed - currentSpeed;
 			integralError += currentError * deltaTime;
 			double derivative = (currentError - previousError) / deltaTime;
-			double speed = kP * currentError + kI * integralError + kD * derivative;
+			double speed = previousSpeed + kP * currentError + kI * integralError + kD * derivative;
 			previousError = currentError;
 			previousTime = System.currentTimeMillis();
+			previousSpeed = speed;
 			if (speed > 1.0) {
 				speed = 1.0;
 			} else if (speed < -1.0) {
@@ -192,6 +194,7 @@ public class Shooter extends Subsystem implements SDLogger {
 			integralError = 0;
 			previousError = 0;
 			previousTime = 0;
+			previousSpeed = 0;
 		}
 	}
 }
