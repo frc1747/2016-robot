@@ -175,13 +175,13 @@ public class Shooter extends Subsystem implements SDLogger {
 			double currentSpeed = getSpeed();
 			double deltaTime = (System.currentTimeMillis() - previousTime) / 1000.0;
 			double currentError = targetSpeed - currentSpeed;
+			double derivative = 0;
 			errorBuffer.addFirst(currentError);
 			totalError += currentError;
 			if (errorBuffer.size() > errBuffSize) {
 				totalError -= errorBuffer.removeLast();
 			}
 			integralError += currentError * deltaTime;
-			double derivative = 0;
 			if (deltaTime > .0001) {
 				derivative = (currentError - previousError) / deltaTime;
 			}
@@ -190,17 +190,24 @@ public class Shooter extends Subsystem implements SDLogger {
 			previousTime = System.currentTimeMillis();
 			if (speed > 1.0) {
 				speed = 1.0;
+				System.out.println("Speed > 1.0");
 			} else if (speed < -1.0) {
 				speed = -1.0;
+				System.out.println("Speed < -1.0");
 			}
 			if (motorOne.getInverted()) {
-				SmartDashboard.putNumber("Shooter pid left", speed);
+				SmartDashboard.putNumber("Shooter PID Speed Left", speed);
 				SmartDashboard.putNumber("Left Delta Time", deltaTime);
-				System.out.println("P: " + (kP * currentError) + "\nI: " + (kI * integralError) + "\nD: "
-						+ (kD * derivative) + "\ndeltaTime: " + deltaTime + "\ncurrentError: " + currentError
-						+ "\npreviousError:" + previousError);
+				System.out.println("P: " + (kP * currentError));
+				System.out.println("I: " + (kI * integralError));
+				System.out.println("D: " + (kD * derivative));
+				System.out.println("F: " + (kF * targetSpeed));
+				//System.out.println("deltaTime: " + deltaTime);
+				System.out.println("currentError: " + currentError);
+				System.out.println("previousError: " + previousError);
+				System.out.println("targetSpeed: " + targetSpeed);
 			} else {
-				SmartDashboard.putNumber("Shooter pid right", speed);
+				SmartDashboard.putNumber("Shooter PID Speed Right", speed);
 			}
 			set(speed);
 		}
@@ -210,6 +217,7 @@ public class Shooter extends Subsystem implements SDLogger {
 			speed *= 12.0;
 			motorOne.set(speed);
 			motorTwo.set(speed);
+			System.out.println("Setting speed to " + speed);
 		}
 
 		// sets kP, kI, kD, and kF
@@ -223,6 +231,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		// sets the target speed
 		public void setSetpoint(double targetSpeed) {
 			this.targetSpeed *= 12.0;
+			System.out.println("Setting setpoint to " + targetSpeed);
 		}
 
 		// enables the PID
