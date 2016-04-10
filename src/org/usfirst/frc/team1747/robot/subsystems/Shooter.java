@@ -1,10 +1,5 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
-import java.util.LinkedList;
-
-import org.usfirst.frc.team1747.robot.RobotMap;
-import org.usfirst.frc.team1747.robot.SDLogger;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Counter;
@@ -12,6 +7,10 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
+
+import java.util.LinkedList;
 
 public class Shooter extends Subsystem implements SDLogger {
 
@@ -106,13 +105,12 @@ public class Shooter extends Subsystem implements SDLogger {
 	}
 
 	private class ShooterSide {
+		private static final int errBuffSize = 10;
 		CANTalon motorOne, motorTwo;
 		Counter counter;
 		double kP, kI, kD, kF, targetSpeed, integralError, previousError, totalError;
 		LinkedList<Double> errorBuffer;
-		boolean pidEnabled;
 		long previousTime;
-		private static final int errBuffSize = 10;
 
 		// sets up both sides of the shooter
 		public ShooterSide(int motorOneId, int motorTwoId, boolean inverted, int counterId) {
@@ -132,8 +130,7 @@ public class Shooter extends Subsystem implements SDLogger {
 			previousError = 0;
 			previousTime = 0;
 			totalError = 0;
-			previousSpeed = 0;
-			errorBuffer = new LinkedList<Double>();
+			errorBuffer = new LinkedList<>();
 		}
 
 		// TODO:Check this % tolerance
@@ -196,7 +193,7 @@ public class Shooter extends Subsystem implements SDLogger {
 			} else if (speed < -1.0) {
 				speed = -1.0;
 			}
-            if (motorOne.getInverted()) {
+			if (motorOne.getInverted()) {
 				SmartDashboard.putNumber("Shooter pid left", speed);
 				SmartDashboard.putNumber("Left Delta Time", deltaTime);
 				System.out.println("P: " + (kP * currentError) + "\nI: " + (kI * integralError) + "\nD: "
@@ -225,23 +222,20 @@ public class Shooter extends Subsystem implements SDLogger {
 
 		// sets the target speed
 		public void setSetpoint(double targetSpeed) {
-			this.targetSpeed = targetSpeed *= 12.0;
+			this.targetSpeed *= 12.0;
 		}
 
 		// enables the PID
 		public void enablePID() {
-			pidEnabled = true;
 			previousTime = System.currentTimeMillis();
 		}
 
 		// turns off the PID and clears target speed
 		public void disablePID() {
-			pidEnabled = false;
 			targetSpeed = 0;
 			integralError = 0;
 			previousError = 0;
 			previousTime = 0;
-			previousSpeed = 0;
 		}
 	}
 }
