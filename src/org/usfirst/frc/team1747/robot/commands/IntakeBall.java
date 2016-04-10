@@ -1,8 +1,9 @@
 package org.usfirst.frc.team1747.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 public class IntakeBall extends Command {
 
@@ -17,10 +18,10 @@ public class IntakeBall extends Command {
 
 	@Override
 	protected void initialize() {
-		if(!intake.hasBall()){
+		if (!intake.hasBall()) {
 			intake.intakeBall();
 		}
-		
+
 	}
 
 	// Pick up a ball
@@ -37,7 +38,7 @@ public class IntakeBall extends Command {
 	// The intake stops when a ball is sensed in the robot
 	@Override
 	protected void end() {
-		intake.rollerControl(0);
+		intake.rollerStop();
 	}
 
 	@Override
