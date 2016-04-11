@@ -1,14 +1,13 @@
 package org.usfirst.frc.team1747.robot;
 
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team1747.robot.commands.BasicAuton;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
-
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,6 +25,30 @@ public class Robot extends IterativeRobot {
 	private static Intake intake;
 	private static Scooper scooper;
 
+	public static DriveTrain getDriveTrain() {
+		return drive;
+	}
+
+	public static OI getOi() {
+		return oi;
+	}
+
+	public static SDController getSd() {
+		return sd;
+	}
+
+	public static Shooter getShooter() {
+		return shooter;
+	}
+
+	public static Intake getIntake() {
+		return intake;
+	}
+
+	public static Scooper getScooper() {
+		return scooper;
+	}
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -38,11 +61,9 @@ public class Robot extends IterativeRobot {
 		scooper = new Scooper();
 		oi = new OI();
 		sd = new SDController();
+		sd.addSystems(shooter, drive, intake, scooper);
 		drive.resetGyro();
 		sd.refresh();
-		// CameraServer camera = CameraServer.getInstance();
-		// camera.setQuality(50);
-		// camera.startAutomaticCapture("cam0");
 	}
 
 	/**
@@ -107,30 +128,6 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 		sd.refresh();
-	}
-
-	public static DriveTrain getDriveTrain() {
-		return drive;
-	}
-
-	public static OI getOi() {
-		return oi;
-	}
-
-	public static SDController getSd() {
-		return sd;
-	}
-
-	public static Shooter getShooter() {
-		return shooter;
-	}
-
-	public static Intake getIntake() {
-		return intake;
-	}
-
-	public static Scooper getScooper() {
-		return scooper;
 	}
 
 }

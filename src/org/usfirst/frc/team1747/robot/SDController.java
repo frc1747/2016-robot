@@ -1,32 +1,24 @@
 package org.usfirst.frc.team1747.robot;
 
-import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1747.robot.subsystems.Intake;
-import org.usfirst.frc.team1747.robot.subsystems.Scooper;
-import org.usfirst.frc.team1747.robot.subsystems.Shooter;
-
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SDController {
 
 	private SendableChooser autonPosition;
 	private SendableChooser defenseType;
-	private DriveTrain driveTrain;
-	private Shooter shooter;
-	private Intake intake;
-	private Scooper scooper;
 	private NetworkTable networkTable = NetworkTable.getTable("imageProcessing");
+	private List<SDLogger> sdLoggers;
 
 	public SDController() {
-		driveTrain = Robot.getDriveTrain();
-		shooter = Robot.getShooter();
-		intake = Robot.getIntake();
-		scooper = Robot.getScooper();
 		SmartDashboard.putData(Scheduler.getInstance());
-		autonPosition = new SendableChooser();
+        SmartDashboard.putBoolean("LastSecondShot", false);
+        autonPosition = new SendableChooser();
 		autonPosition.addObject("Don't shoot", Positions.NOTHING);
 		autonPosition.addObject("1", Positions.ONE);
 		autonPosition.addObject("2", Positions.TWO);
@@ -45,15 +37,21 @@ public class SDController {
 		defenseType.addObject("Low Bar", Defense.LOW_BAR);
 		SmartDashboard.putData("Defense", defenseType);
 		SmartDashboard.putData("Auton Position", autonPosition);
+		sdLoggers = new ArrayList<>();
+	}
+
+	public void addSystem(SDLogger system) {
+		sdLoggers.add(system);
+	}
+
+	public void addSystems(SDLogger... systems) {
+		for (SDLogger system : systems) {
+			addSystem(system);
+		}
 	}
 
 	public void refresh() {
-		// oi.getController().logToSmartDashboard();
-		driveTrain.logToSmartDashboard();
-		shooter.logToSmartDashboard();
-		intake.logToSmartDashboard();
-		scooper.logToSmartDashboard();
-		SmartDashboard.putBoolean("LastSecondShot", false);
+		sdLoggers.forEach(SDLogger::logToSmartDashboard);
 		SmartDashboard.putString("ShooterDirection", networkTable.getString("ShootDirection", "robotUnknown"));
 		SmartDashboard.putNumber("ShooterRads", networkTable.getNumber("ShootRads", 0.0));
 	}
