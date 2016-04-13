@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team1747.robot.PrecisionCyborgController;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.SDController;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
@@ -14,13 +13,12 @@ import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 public class AutoShoot extends Command {
 
-    PrecisionCyborgController auxController;
+    private static final double stallTime = 800, radsThreshold = .95;
     private DriveTrain drive;
     private Shooter shoot;
     private Intake intake;
     private Scooper scooper;
     private NetworkTable networkTable;
-    private double speed;
     private double startTime;
     private SDController.Positions position;
     private double turnValue;
@@ -35,8 +33,8 @@ public class AutoShoot extends Command {
         intake = Robot.getIntake();
         scooper = Robot.getScooper();
         networkTable = NetworkTable.getTable("imageProcessing");
-        SmartDashboard.putNumber("StallTime", 800);
-        SmartDashboard.putNumber("RadsThreshhold", 0.95);
+        SmartDashboard.putNumber("StallTime", stallTime);
+        SmartDashboard.putNumber("RadsThreshold", radsThreshold);
         driverStation = DriverStation.getInstance();
         requires(shoot);
         requires(drive);
@@ -46,7 +44,6 @@ public class AutoShoot extends Command {
 
     // initializes AutoShoot then prints out that it is running
     protected void initialize() {
-        speed = SmartDashboard.getNumber("Target Shooter Speed", .6);
         position = Robot.getSd().getAutonPosition();
         startTime = -1;
         turnTime = -1;
@@ -108,21 +105,24 @@ public class AutoShoot extends Command {
                 drive.arcadeDrive(-0.25, 0.0);
                 startTime = -1;
             } else if (direction.equals("shoot")) {
-                if (!scooper.isAtLowerLimit()) { // Lowers scooper if not at
-                    // lower limit
+                drive.arcadeDrive(0, 0);
+                // Lowers scooper if not at lower limit
+                if (!scooper.isAtLowerLimit()) {
                     scooper.moveScooperDown();
                 } else {
                     scooper.scooperStop();
                 }
-                drive.arcadeDrive(0, 0);
                 if (startTime == -1) {
                     startTime = System.currentTimeMillis();
                 }
-                if (startTime != -1 && System.currentTimeMillis() - startTime > 500) {
-                    shoot.shoot(speed);
+                if (startTime != -1 && System.currentTimeMillis() - startTime > 500 && !shoot.isPidEnabled()) {
+                    shoot.setSetpoint(shoot.getTargetShooterSpeed());
+                    shoot.enablePID();
                 }
-                if (startTime != -1 && System.currentTimeMillis() - startTime > 750 && shoot.getLeftSpeed() >= speed
-                        && shoot.getRightSpeed() >= speed) {
+                if (shoot.isPidEnabled()) {
+                    shoot.runPID();
+                }
+                if (startTime != -1 && System.currentTimeMillis() - startTime > 750 && shoot.isAtTarget()) {
                     intake.intakeBall();
                 }
             } else if (direction.equals("unknown")) {
@@ -158,8 +158,8 @@ public class AutoShoot extends Command {
         if (shooterRads == 0.0) {
             return -100;
         }
-        return (SmartDashboard.getNumber("RadsThreshold", 0.95) - shooterRads)
-                * SmartDashboard.getNumber("StallTime", 800);
+        return (SmartDashboard.getNumber("RadsThreshold", radsThreshold) - shooterRads)
+                * SmartDashboard.getNumber("StallTime", stallTime);
     }
 
 }
