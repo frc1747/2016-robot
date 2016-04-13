@@ -1,12 +1,12 @@
 package org.usfirst.frc.team1747.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SDController {
 
@@ -17,14 +17,15 @@ public class SDController {
 
 	public SDController() {
 		SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putBoolean("LastSecondShot", false);
-        autonPosition = new SendableChooser();
+		SmartDashboard.putBoolean("LastSecondShot", false);
+		autonPosition = new SendableChooser();
 		autonPosition.addObject("Don't shoot", Positions.NOTHING);
 		autonPosition.addObject("1", Positions.ONE);
 		autonPosition.addObject("2", Positions.TWO);
 		autonPosition.addDefault("3", Positions.THREE);
 		autonPosition.addObject("4", Positions.FOUR);
 		autonPosition.addObject("5", Positions.FIVE);
+		SmartDashboard.putData("Auton Position", autonPosition);
 		defenseType = new SendableChooser();
 		defenseType.addObject("Portcullis", Defense.PORTICULLIS);
 		defenseType.addObject("CHEVAL DE FRISE", Defense.CHEVAL_DE_FRISE);
@@ -36,7 +37,6 @@ public class SDController {
 		defenseType.addObject("Rough Terrain", Defense.ROUGH_TERRAIN);
 		defenseType.addObject("Low Bar", Defense.LOW_BAR);
 		SmartDashboard.putData("Defense", defenseType);
-		SmartDashboard.putData("Auton Position", autonPosition);
 		sdLoggers = new ArrayList<>();
 	}
 

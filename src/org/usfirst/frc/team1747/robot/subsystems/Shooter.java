@@ -1,5 +1,10 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import java.util.LinkedList;
+
+import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Counter;
@@ -7,10 +12,6 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team1747.robot.RobotMap;
-import org.usfirst.frc.team1747.robot.SDLogger;
-
-import java.util.LinkedList;
 
 public class Shooter extends Subsystem implements SDLogger {
 
@@ -25,15 +26,15 @@ public class Shooter extends Subsystem implements SDLogger {
 		right = new ShooterSide(RobotMap.RIGHT_SHOOTER_MOTOR_ONE, RobotMap.RIGHT_SHOOTER_MOTOR_TWO, false,
 				RobotMap.RIGHT_COUNTER);
 		flashlight = new Solenoid(RobotMap.FLASHLIGHT);
-		SmartDashboard.putNumber("Target Shooter Speed", .6);
-		SmartDashboard.putNumber("Shooter LP", 0);
+		SmartDashboard.putNumber("Target Shooter Speed", .65);
+		SmartDashboard.putNumber("Shooter LP", .3);
 		SmartDashboard.putNumber("Shooter LI", 0);
-		SmartDashboard.putNumber("Shooter LD", 0);
-		SmartDashboard.putNumber("Shooter LF", .005);
-		SmartDashboard.putNumber("Shooter RP", 0);
+		SmartDashboard.putNumber("Shooter LD", .03);
+		SmartDashboard.putNumber("Shooter LF", .87);
+		SmartDashboard.putNumber("Shooter RP", .3);
 		SmartDashboard.putNumber("Shooter RI", 0);
-		SmartDashboard.putNumber("Shooter RD", 0);
-		SmartDashboard.putNumber("Shooter RF", .005);
+		SmartDashboard.putNumber("Shooter RD", .03);
+		SmartDashboard.putNumber("Shooter RF", .895);
 		SmartDashboard.putBoolean("Shooter PID Mode", true);
 		SmartDashboard.putNumber("Shooter error margin", .025);
 	}
@@ -135,8 +136,9 @@ public class Shooter extends Subsystem implements SDLogger {
 
 		// TODO:Check this % tolerance
 		public boolean isAtTarget() {
+			System.out.println("Tolerance " + Math.abs(getAvgSpeed() - targetSpeed) / targetSpeed);
 			return Math.abs((getAvgSpeed() - targetSpeed) / targetSpeed) < SmartDashboard
-					.getNumber("Shooter error margin", .025);
+					.getNumber("Shooter error margin", .02);
 		}
 
 		public double getP() {
@@ -176,8 +178,8 @@ public class Shooter extends Subsystem implements SDLogger {
 			double deltaTime = (System.currentTimeMillis() - previousTime) / 1000.0;
 			double currentError = targetSpeed - currentSpeed;
 			double derivative = 0;
-			errorBuffer.addFirst(currentError);
-			totalError += currentError;
+			errorBuffer.addFirst(currentSpeed);
+			totalError += currentSpeed;
 			if (errorBuffer.size() > errBuffSize) {
 				totalError -= errorBuffer.removeLast();
 			}
@@ -202,7 +204,7 @@ public class Shooter extends Subsystem implements SDLogger {
 				System.out.println("I: " + (kI * integralError));
 				System.out.println("D: " + (kD * derivative));
 				System.out.println("F: " + (kF * targetSpeed));
-				//System.out.println("deltaTime: " + deltaTime);
+				// System.out.println("deltaTime: " + deltaTime);
 				System.out.println("currentError: " + currentError);
 				System.out.println("previousError: " + previousError);
 				System.out.println("targetSpeed: " + targetSpeed);
@@ -230,7 +232,7 @@ public class Shooter extends Subsystem implements SDLogger {
 
 		// sets the target speed
 		public void setSetpoint(double targetSpeed) {
-			this.targetSpeed *= 12.0;
+			this.targetSpeed = targetSpeed;
 			System.out.println("Setting setpoint to " + targetSpeed);
 		}
 
