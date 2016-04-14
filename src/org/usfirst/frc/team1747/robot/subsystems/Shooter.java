@@ -148,6 +148,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		}
 
 		public boolean isAtTarget() {
+			System.out.println("Tolerance " + Math.abs(getAvgSpeed() - targetSpeed) / targetSpeed);
 			return Math.abs((getAvgSpeed() - targetSpeed) / targetSpeed) < SmartDashboard
 					.getNumber("Shooter error margin", .02);
 		}
@@ -203,8 +204,24 @@ public class Shooter extends Subsystem implements SDLogger {
 			previousTime = System.currentTimeMillis();
 			if (speed > 1.0) {
 				speed = 1.0;
+				System.out.println("Speed > 1.0");
 			} else if (speed < -1.0) {
 				speed = -1.0;
+				System.out.println("Speed < -1.0");
+			}
+			if (motorOne.getInverted()) {
+				SmartDashboard.putNumber("Shooter PID Speed Left", speed);
+				SmartDashboard.putNumber("Left Delta Time", deltaTime);
+				System.out.println("P: " + (kP * currentError));
+				System.out.println("I: " + (kI * integralError));
+				System.out.println("D: " + (kD * derivative));
+				System.out.println("F: " + (kF * targetSpeed));
+				System.out.println("deltaTime: " + deltaTime);
+				System.out.println("currentError: " + currentError);
+				System.out.println("previousError: " + previousError);
+				System.out.println("targetSpeed: " + targetSpeed);
+			} else {
+				SmartDashboard.putNumber("Shooter PID Speed Right", speed);
 			}
 			set(speed);
 		}
@@ -228,6 +245,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		// sets the target speed
 		public void setSetpoint(double targetSpeed) {
 			this.targetSpeed = targetSpeed;
+			System.out.println("Setting setpoint to " + targetSpeed);
 		}
 
 		// enables the PID
