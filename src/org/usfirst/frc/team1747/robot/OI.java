@@ -31,8 +31,8 @@ public class OI {
 		auxController.getB().toggleWhenPressed(new BallEject());
 		auxController.getY().whenPressed(new RaiseLift());
 		auxController.getBack().toggleWhenPressed(new TurnOnFlashlight());
-		auxController.getLeftBumper().whileHeld(new InflateClimber());
-		auxController.getLeftTrigger().whileHeld(new Climb());
+		auxController.getLeftTrigger().whileHeld(new InflateClimber());
+		auxController.getRightTrigger().whileHeld(new Climb());
 	}
 
 	public LogitechController getController() {
