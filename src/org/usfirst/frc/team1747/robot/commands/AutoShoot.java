@@ -81,6 +81,9 @@ public class AutoShoot extends Command {
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
 			SmartDashboard.putNumber("TimeLeftofTurn", turnTime - System.currentTimeMillis());
 			if (direction.equals("left")) {
+				if (shoot.isPidEnabled()) {
+					shoot.disablePID();
+				}
 				shoot.shoot(0);
 				if (turnTime - System.currentTimeMillis() >= 0) {
 					drive.arcadeDrive(0.0, (-turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
@@ -94,6 +97,9 @@ public class AutoShoot extends Command {
 				}
 				startTime = -1;
 			} else if (direction.equals("right")) {
+				if (shoot.isPidEnabled()) {
+					shoot.disablePID();
+				}
 				if (turnTime - System.currentTimeMillis() >= 0) {
 					drive.arcadeDrive(0.0, (turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
 				} else {
@@ -107,10 +113,16 @@ public class AutoShoot extends Command {
 				shoot.shoot(0);
 				startTime = -1;
 			} else if (direction.equals("forward")) {
+				if (shoot.isPidEnabled()) {
+					shoot.disablePID();
+				}
 				shoot.shoot(0);
 				drive.arcadeDrive(0.25, 0.0);
 				startTime = -1;
 			} else if (direction.equals("backward")) {
+				if (shoot.isPidEnabled()) {
+					shoot.disablePID();
+				}
 				shoot.shoot(0);
 				drive.arcadeDrive(-0.25, 0.0);
 				startTime = -1;
