@@ -50,6 +50,7 @@ public class AutoShoot extends Command {
 		startTime = -1;
 		turnTime = -1;
 		turnValue = drive.getAutonTurn();
+		drive.resetGyro();
 		shoot.turnOffFlashlight();
 	}
 

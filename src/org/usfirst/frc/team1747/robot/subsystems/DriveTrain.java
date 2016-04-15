@@ -119,17 +119,8 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		return autonTurn;
 	}
 
-	public void resetGyroDisplacement() {
-		gyro.resetDisplacement();
-	}
-
-	public void resetGyroRate() {
-		gyro.reset();
-	}
-
 	public void resetGyro() {
-		resetGyroRate();
-		resetGyroDisplacement();
+		gyro.zeroYaw();
 	}
 
 	public double getTurnAngle() {
