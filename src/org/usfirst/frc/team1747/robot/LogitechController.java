@@ -21,8 +21,8 @@ public class LogitechController implements SDLogger {
 	private static final int LEFT_TRIGGER = 7;
 	private static final int RIGHT_TRIGGER = 8;
 
-	private static final int RIGHT_JOY_HORIZ_AXIS = 4;
-	private static final int RIGHT_JOY_VERT_AXIS = 5;
+	private static final int RIGHT_JOY_HORIZ_AXIS = 2;
+	private static final int RIGHT_JOY_VERT_AXIS = 3;
 
 	private static final int JOY_X_BUTTON = 1;
 	private static final int JOY_A_BUTTON = 2;

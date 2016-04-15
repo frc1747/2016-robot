@@ -1,5 +1,10 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
+import java.util.LinkedList;
+
+import org.usfirst.frc.team1747.robot.RobotMap;
+import org.usfirst.frc.team1747.robot.SDLogger;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Counter;
@@ -7,19 +12,14 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team1747.robot.RobotMap;
-import org.usfirst.frc.team1747.robot.SDLogger;
-
-import java.util.LinkedList;
 
 public class Shooter extends Subsystem implements SDLogger {
 
 	private static final double kLP = .3, kLI = 0, kLD = .03, kLF = .87, kRP = .3, kRI = 0, kRD = .03, kRF = .895,
-			targetShooterSpeed = .65, shooterErrorMargin = .025;
+			targetShooterSpeed = .65, shooterErrorMargin = .020;
 	private ShooterSide left, right;
 	private Solenoid flashlight;
 	private boolean pidEnabled;
-
 
 	// set up left and right sides of the shooter, puts variables onto the
 	// SmartDashboard

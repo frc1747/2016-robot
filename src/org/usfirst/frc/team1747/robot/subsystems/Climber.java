@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
-import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.SDLogger;
 
 import edu.wpi.first.wpilibj.Talon;
@@ -16,8 +15,8 @@ public class Climber extends Subsystem implements SDLogger {
 
 	// maps the left and right climber talons
 	public Climber() {
-		climberTalon = new Talon(RobotMap.CLIMB_CIM);
-		blowerTalon = new Talon(RobotMap.BLOW_CIM);
+		// climberTalon = new Talon(RobotMap.CLIMB_CIM);
+		// blowerTalon = new Talon(RobotMap.BLOW_CIM);
 	}
 
 	// sets the speed of the left and right climber talons
