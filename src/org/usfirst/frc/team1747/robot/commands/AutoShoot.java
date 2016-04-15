@@ -49,9 +49,16 @@ public class AutoShoot extends Command {
 		startTime = -1;
 		turnTime = -1;
 		turnValue = drive.getAutonTurn();
+		shoot.turnOffFlashlight();
 	}
 
 	protected void execute() {
+		// Lowers scooper if not at lower limit
+		if (!scooper.isAtLowerLimit()) {
+			scooper.moveScooperDown();
+		} else {
+			scooper.scooperStop();
+		}
 		if (!intake.isAtTop()) {
 			intake.moveLiftUp();
 		} else {
@@ -107,12 +114,7 @@ public class AutoShoot extends Command {
 				startTime = -1;
 			} else if (direction.equals("shoot")) {
 				drive.arcadeDrive(0, 0);
-				// Lowers scooper if not at lower limit
-				if (!scooper.isAtLowerLimit()) {
-					scooper.moveScooperDown();
-				} else {
-					scooper.scooperStop();
-				}
+
 				if (startTime == -1) {
 					startTime = System.currentTimeMillis();
 				}
