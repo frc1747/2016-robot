@@ -1,13 +1,15 @@
 package org.usfirst.frc.team1747.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team1747.robot.commands.BasicAuton;
+import org.usfirst.frc.team1747.robot.subsystems.Climber;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
+
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +26,7 @@ public class Robot extends IterativeRobot {
 	private static SDController sd;
 	private static Intake intake;
 	private static Scooper scooper;
+	private static Climber climber;
 
 	public static DriveTrain getDriveTrain() {
 		return drive;
@@ -49,12 +52,17 @@ public class Robot extends IterativeRobot {
 		return scooper;
 	}
 
+	public static Climber getClimber() {
+		return climber;
+	}
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		climber = new Climber();
 		shooter = new Shooter();
 		drive = new DriveTrain();
 		intake = new Intake();

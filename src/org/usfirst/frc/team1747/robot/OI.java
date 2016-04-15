@@ -2,6 +2,8 @@ package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.commands.AutoShoot;
 import org.usfirst.frc.team1747.robot.commands.BallEject;
+import org.usfirst.frc.team1747.robot.commands.Climb;
+import org.usfirst.frc.team1747.robot.commands.InflateClimber;
 import org.usfirst.frc.team1747.robot.commands.IntakeBall;
 import org.usfirst.frc.team1747.robot.commands.LowerLift;
 import org.usfirst.frc.team1747.robot.commands.RaiseLift;
@@ -29,7 +31,8 @@ public class OI {
 		auxController.getB().toggleWhenPressed(new BallEject());
 		auxController.getY().whenPressed(new RaiseLift());
 		auxController.getBack().toggleWhenPressed(new TurnOnFlashlight());
-		// auxController.getRightTrigger().whenPressed(new TurnToAngle());
+		auxController.getLeftBumper().whileHeld(new InflateClimber());
+		auxController.getLeftTrigger().whileHeld(new Climb());
 	}
 
 	public LogitechController getController() {
