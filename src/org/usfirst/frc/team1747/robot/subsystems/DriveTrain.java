@@ -50,7 +50,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		// SmartDashboard.putNumber("DriveTrain RI", 0);
 		// SmartDashboard.putNumber("DriveTrain RD", 0);
 		SmartDashboard.putNumber("Turn Dampening", 0.9);
-		SmartDashboard.putNumber("Auton Turning", 0.310);
+		SmartDashboard.putNumber("Auton Turning", 0.350);
 		SmartDashboard.putBoolean("BackUpInAuto", false);
 	}
 
