@@ -52,8 +52,10 @@ public class SDController {
 
 	public void refresh() {
 		sdLoggers.forEach(SDLogger::logToSmartDashboard);
-		SmartDashboard.putString("ShooterDirection", networkTable.getString("ShootDirection", "robotUnknown"));
+		String direction = networkTable.getString("ShootDirection", "robotUnknown");
+		SmartDashboard.putString("ShooterDirection", direction);
 		SmartDashboard.putNumber("ShooterRads", networkTable.getNumber("ShootRads", 0.0));
+		SmartDashboard.putBoolean("OnTarget", direction.equals("shoot"));
 	}
 
 	public Positions getAutonPosition() {
