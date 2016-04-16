@@ -36,7 +36,8 @@ public class AutoShoot extends Command {
 		networkTable = NetworkTable.getTable("imageProcessing");
 		SmartDashboard.putNumber("StallTime", stallTime);
 		SmartDashboard.putNumber("RadsThreshold", radsThreshold);
-		SmartDashboard.putNumber("ShooterBaseline", 41);
+		SmartDashboard.putNumber("ShooterBaseline", 41.3);
+		SmartDashboard.putBoolean("LastSecondShot", false);
 		driverStation = DriverStation.getInstance();
 		requires(shoot);
 		requires(drive);
@@ -178,7 +179,7 @@ public class AutoShoot extends Command {
 		return Math.max(
 				(SmartDashboard.getNumber("RadsThreshold", radsThreshold) - shooterRads)
 						* SmartDashboard.getNumber("StallTime", stallTime),
-				SmartDashboard.getNumber("ShooterBaseline", 41));
+				SmartDashboard.getNumber("ShooterBaseline", 41.3));
 	}
 
 }

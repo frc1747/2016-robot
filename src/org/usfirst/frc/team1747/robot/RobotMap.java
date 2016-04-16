@@ -29,8 +29,8 @@ public class RobotMap {
 	public static final int RIGHT_SHOOTER_MOTOR_TWO = 44;
 
 	public static final int BALL_INTAKE = 0;
-	public static final int CLIMB_CIM = 0;
-	public static final int BLOW_CIM = 0;
+	public static final int CLIMB_CIM = 2;
+	public static final int BLOW_CIM = 3;
 
 	public static final int SCOOPER_MOTOR = 1;
 	public static final int UPPER_SCOOPER_LIMIT = 7;

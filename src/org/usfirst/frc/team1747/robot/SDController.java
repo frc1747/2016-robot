@@ -17,7 +17,6 @@ public class SDController {
 
 	public SDController() {
 		SmartDashboard.putData(Scheduler.getInstance());
-		SmartDashboard.putBoolean("LastSecondShot", false);
 		autonPosition = new SendableChooser();
 		autonPosition.addObject("Don't shoot", Positions.NOTHING);
 		autonPosition.addObject("1", Positions.ONE);
