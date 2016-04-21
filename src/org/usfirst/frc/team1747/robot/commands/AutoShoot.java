@@ -58,6 +58,54 @@ public class AutoShoot extends Command {
 			intake.liftStop();
 		}
 		if (position != SDController.Positions.NOTHING) {
+			/*
+			boolean move = false;
+			double curTurnValue = 0, curStraightValue = 0;
+			if (pixyCamera.shouldTurnLeft()) {
+				move = true;
+				curTurnValue = (-turnValue) * (driverStation.isAutonomous() ? 1 : 1.1);
+			} else if (pixyCamera.shouldTurnRight()) {
+				move = true;
+				curTurnValue = (turnValue) * (driverStation.isAutonomous() ? 1 : 1.1);
+			}
+			if (pixyCamera.shouldMoveForward()) {
+				move = true;
+				curStraightValue = .25;
+			} else if (pixyCamera.shouldMoveBackward()) {
+				move = true;
+				curStraightValue = -.25;
+			}
+			if (move) {
+				if (shoot.isPidEnabled()) {
+					shoot.disablePID();
+					shoot.shoot(0);
+				}
+				startTime = -1;
+				drive.arcadeDrive(curStraightValue, curTurnValue);
+			} else if (pixyCamera.shouldShoot()) {
+				drive.arcadeDrive(0, 0);
+				if (startTime == -1) {
+					startTime = System.currentTimeMillis();
+				}
+				if (startTime != -1 && System.currentTimeMillis() - startTime > 500 && !shoot.isPidEnabled()) {
+					shoot.setSetpoint(shoot.getTargetShooterSpeed());
+					shoot.enablePID();
+				}
+				if (shoot.isPidEnabled()) {
+					shoot.runPID();
+				}
+				if (startTime != -1 && System.currentTimeMillis() - startTime > 750 && shoot.isAtTarget()) {
+					intake.intakeBall();
+				}
+			} else {
+				if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
+						|| position == SDController.Positions.THREE) {
+					drive.arcadeDrive(0, 1.3 * turnValue);
+				} else {
+					drive.arcadeDrive(0, 1.3 * -turnValue);
+				}
+			}
+			*/
 			if (pixyCamera.shouldTurnLeft()) {
 				if (shoot.isPidEnabled()) {
 					shoot.disablePID();
