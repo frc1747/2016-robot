@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1747.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team1747.robot.PixyCamera;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.SDController;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
@@ -7,25 +10,17 @@ import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class AutoShoot extends Command {
 
-	private static final double stallTime = 800, radsThreshold = .95;
 	private DriveTrain drive;
 	private Shooter shoot;
 	private Intake intake;
 	private Scooper scooper;
-	private NetworkTable networkTable;
-	private double startTime;
+	private PixyCamera pixyCamera;
 	private SDController.Positions position;
 	private double turnValue;
-	private double turnTime;
 	private DriverStation driverStation;
-	private boolean reset = false;
+	private long startTime;
 
 	// sets up AutoShoot
 	public AutoShoot() {
@@ -33,10 +28,7 @@ public class AutoShoot extends Command {
 		shoot = Robot.getShooter();
 		intake = Robot.getIntake();
 		scooper = Robot.getScooper();
-		networkTable = NetworkTable.getTable("imageProcessing");
-		SmartDashboard.putNumber("StallTime", stallTime);
-		SmartDashboard.putNumber("RadsThreshold", radsThreshold);
-		SmartDashboard.putNumber("ShooterBaseline", 41);
+		pixyCamera = Robot.getPixyCamera();
 		driverStation = DriverStation.getInstance();
 		requires(shoot);
 		requires(drive);
@@ -46,9 +38,8 @@ public class AutoShoot extends Command {
 
 	// initializes AutoShoot then prints out that it is running
 	protected void initialize() {
-		position = Robot.getSd().getAutonPosition();
 		startTime = -1;
-		turnTime = -1;
+		position = Robot.getSd().getAutonPosition();
 		turnValue = drive.getAutonTurn();
 		drive.resetGyro();
 		shoot.turnOffFlashlight();
@@ -67,68 +58,36 @@ public class AutoShoot extends Command {
 			intake.liftStop();
 		}
 		if (position != SDController.Positions.NOTHING) {
-			String direction = networkTable.getString("ShootDirection", "robotUnknown");
-			if (turnTime - System.currentTimeMillis() <= -100) {
-				double shooterRads = networkTable.getNumber("ShootRads", 0.0);
-				turnTime = System.currentTimeMillis() + angleToTime(shooterRads);
-				SmartDashboard.putNumber("angleToTime", angleToTime(shooterRads));
-				reset = false;
-			}
-			if (SmartDashboard.getBoolean("LastSecondShot", false) && driverStation.isAutonomous()
-					&& !direction.equals("robotUnknown") && driverStation.getMatchTime() < 3) {
-				direction = "shoot";
-			}
-			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
-			SmartDashboard.putNumber("TimeLeftofTurn", turnTime - System.currentTimeMillis());
-			if (direction.equals("left")) {
+			if (pixyCamera.shouldTurnLeft()) {
 				if (shoot.isPidEnabled()) {
 					shoot.disablePID();
-				}
-				shoot.shoot(0);
-				if (turnTime - System.currentTimeMillis() >= 0) {
-					drive.arcadeDrive(0.0, (-turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
-				} else {
-					drive.arcadeDrive(0, 0);
-					if (!reset) {
-						networkTable.putNumber("ShootRads", 0.0);
-						reset = true;
-					}
-					// turnTime = -1;
+					shoot.shoot(0);
 				}
 				startTime = -1;
-			} else if (direction.equals("right")) {
+				drive.arcadeDrive(0.0, (-turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
+			} else if (pixyCamera.shouldTurnRight()) {
 				if (shoot.isPidEnabled()) {
 					shoot.disablePID();
+					shoot.shoot(0);
 				}
-				if (turnTime - System.currentTimeMillis() >= 0) {
-					drive.arcadeDrive(0.0, (turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
-				} else {
-					drive.arcadeDrive(0, 0);
-					if (!reset) {
-						networkTable.putNumber("ShootRads", 0.0);
-						reset = true;
-					}
-					// turnTime = -1;
-				}
-				shoot.shoot(0);
 				startTime = -1;
-			} else if (direction.equals("forward")) {
+				drive.arcadeDrive(0.0, (turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
+			} else if (pixyCamera.shouldMoveForward()) {
 				if (shoot.isPidEnabled()) {
 					shoot.disablePID();
+					shoot.shoot(0);
 				}
-				shoot.shoot(0);
+				startTime = -1;
 				drive.arcadeDrive(0.25, 0.0);
-				startTime = -1;
-			} else if (direction.equals("backward")) {
+			} else if (pixyCamera.shouldMoveBackward()) {
 				if (shoot.isPidEnabled()) {
 					shoot.disablePID();
+					shoot.shoot(0);
 				}
-				shoot.shoot(0);
-				drive.arcadeDrive(-0.25, 0.0);
 				startTime = -1;
-			} else if (direction.equals("shoot")) {
+				drive.arcadeDrive(-0.25, 0.0);
+			} else if (pixyCamera.shouldShoot()) {
 				drive.arcadeDrive(0, 0);
-
 				if (startTime == -1) {
 					startTime = System.currentTimeMillis();
 				}
@@ -142,8 +101,7 @@ public class AutoShoot extends Command {
 				if (startTime != -1 && System.currentTimeMillis() - startTime > 750 && shoot.isAtTarget()) {
 					intake.intakeBall();
 				}
-			} else if (direction.equals("unknown")) {
-				// Add Lift If 1
+			} else {
 				if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
 						|| position == SDController.Positions.THREE) {
 					drive.arcadeDrive(0, 1.3 * turnValue);
@@ -170,15 +128,4 @@ public class AutoShoot extends Command {
 	protected void interrupted() {
 		end();
 	}
-
-	private double angleToTime(double shooterRads) {
-		if (shooterRads == 0.0) {
-			return -100;
-		}
-		return Math.max(
-				(SmartDashboard.getNumber("RadsThreshold", radsThreshold) - shooterRads)
-						* SmartDashboard.getNumber("StallTime", stallTime),
-				SmartDashboard.getNumber("ShooterBaseline", 41));
-	}
-
 }
