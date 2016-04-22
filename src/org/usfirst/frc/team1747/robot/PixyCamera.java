@@ -6,8 +6,14 @@ import java.util.concurrent.Executors;
 
 public class PixyCamera implements Runnable {
 	private final static int MAX_BYTES = 64;
+	// The Pixy Camera outputs the following shape centroid values:
+	//     X centroid: Ranges from 0 to 255       (0 is the leftmost pixel from the perspective of the camera lens)
+	//	   Y centroid: ranges from 0 to 199       (0 is the topmost pixel)
+	// NOTE: that 0 is NOT the center
+	// The center is (128, 100)
+	//
 	//TODO: Verify
-	final private static double TOP_LEFT_X = 149.5, TOP_LEFT_Y = 117, BOTTOM_RIGHT_X = 164.5, BOTTOM_RIGHT_Y = 139;
+	final private static double TOP_LEFT_X = 149.5, TOP_LEFT_Y = 117, BOTTOM_RIGHT_X = 164.5, BOTTOM_RIGHT_Y = 139; // <-- these need to be changed
 	private I2C pixyCamera;
 	private PixyData pixyData;
 
