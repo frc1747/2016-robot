@@ -50,9 +50,15 @@ public class PixyCamera implements Runnable {
 				int y = parseByteData(pixyValues, i + 8, i + 9);
 				int width = parseByteData(pixyValues, i + 10, i + 11);
 				int height = parseByteData(pixyValues, i + 12, i + 13);
+
+				System.out.println("x: " + x);
+				System.out.println("y: " + y);
+				System.out.println("width: " + width);
+				System.out.println("height: " + height);
 				pixyData = new PixyData(x, y, width, height);
 			} else {
 				pixyData = null;
+				System.out.println("No Pixy Data.");
 			}
 		}
 	}
