@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1747.robot;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.concurrent.Executors;
 
@@ -55,6 +56,11 @@ public class PixyCamera implements Runnable {
 				System.out.println("y: " + y);
 				System.out.println("width: " + width);
 				System.out.println("height: " + height);
+
+				SmartDashboard.putNumber("Pixy X", x);
+				SmartDashboard.putNumber("Pixy Y", y);
+				SmartDashboard.putNumber("Pixy Width", width);
+				SmartDashboard.putNumber("Pixy Height", height);
 				pixyData = new PixyData(x, y, width, height);
 			} else {
 				pixyData = null;
