@@ -15,7 +15,7 @@ public class PixyCamera implements Runnable {
 	//
 	//TODO: Verify
 	//final private static double TOP_LEFT_X = 158, TOP_LEFT_Y = 106.5, BOTTOM_RIGHT_X = 166, BOTTOM_RIGHT_Y = 123; // Original values
-	final private static double TOP_LEFT_X = 125.9, TOP_LEFT_Y = 88.3, BOTTOM_RIGHT_X = 132.3, BOTTOM_RIGHT_Y = 102 // Converted original values from previous line to the proper scaling as specified in comments above
+	final private static double TOP_LEFT_X = 125.9, TOP_LEFT_Y = 88.3, BOTTOM_RIGHT_X = 132.3, BOTTOM_RIGHT_Y = 102; // Converted original values from previous line to the proper scaling as specified in comments above
 	private I2C pixyCamera;
 	private PixyData pixyData;
 
