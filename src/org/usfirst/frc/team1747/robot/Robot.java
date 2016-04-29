@@ -1,10 +1,15 @@
 package org.usfirst.frc.team1747.robot;
 
+import org.usfirst.frc.team1747.robot.commands.BasicAuton;
+import org.usfirst.frc.team1747.robot.subsystems.Climber;
+import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1747.robot.subsystems.Intake;
+import org.usfirst.frc.team1747.robot.subsystems.Scooper;
+import org.usfirst.frc.team1747.robot.subsystems.Shooter;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc.team1747.robot.commands.BasicAuton;
-import org.usfirst.frc.team1747.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -70,7 +75,7 @@ public class Robot extends IterativeRobot {
 		pixyCamera = new PixyCamera();
 		oi = new OI();
 		sd = new SDController();
-		sd.addSystems(shooter, drive, intake, scooper);
+		sd.addSystems(shooter, drive, intake, scooper, pixyCamera);
 		drive.resetGyro();
 		sd.refresh();
 	}
