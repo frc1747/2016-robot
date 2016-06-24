@@ -14,11 +14,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOutput {
+public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDOutput {
 
 	private Solenoid flashlight = new Solenoid(RobotMap.FLASHLIGHT);
-	private CANTalon motorOne = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_ONE);
-	private CANTalon motorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
+	private CANTalon motorOne = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_ONE);
+	private CANTalon motorTwo = new CANTalon(RobotMap.RIGHT_SHOOTER_MOTOR_TWO);
 	private Counter counter;
 	private PIDController controller;
 	private boolean pidEnabled = false;
@@ -29,14 +29,14 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 	private static final double targetShooterSpeed = 0.65;
 	private static final double shooterErrorMargin = 0.020;
 
-	public LeftShooter() {
+	public RightShooter() {
 		flashlight = new Solenoid(RobotMap.FLASHLIGHT);
 		motorOne.changeControlMode(TalonControlMode.Voltage);
 		motorTwo.changeControlMode(TalonControlMode.Voltage);
-		motorOne.setInverted(RobotMap.LEFT_SHOOTER_INVERTED);
-		motorTwo.setInverted(RobotMap.LEFT_SHOOTER_INVERTED);
+		motorOne.setInverted(RobotMap.RIGHT_SHOOTER_INVERTED);
+		motorTwo.setInverted(RobotMap.RIGHT_SHOOTER_INVERTED);
 		counter = new Counter();
-		counter.setUpSource(RobotMap.LEFT_COUNTER);
+		counter.setUpSource(RobotMap.RIGHT_COUNTER);
 		counter.setUpDownCounterMode();
 		counter.setPIDSourceType(PIDSourceType.kRate);
 		counter.setDistancePerPulse(1.0);

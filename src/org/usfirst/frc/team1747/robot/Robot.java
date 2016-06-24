@@ -6,6 +6,7 @@ import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
+import org.usfirst.frc.team1747.robot.subsystems.RightShooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,7 +22,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	private static OI oi;
-	private static LeftShooter shooter;
+	private static LeftShooter leftShooter;
+	private static RightShooter rightShooter;
 	private static DriveTrain drive;
 	private static SDController sd;
 	private static Intake intake;
@@ -40,8 +42,12 @@ public class Robot extends IterativeRobot {
 		return sd;
 	}
 
-	public static LeftShooter getShooter() {
-		return shooter;
+	public static LeftShooter getLeftShooter() {
+		return leftShooter;
+	}
+	
+	public static RightShooter getRightShooter() {
+		return rightShooter;
 	}
 
 	public static Intake getIntake() {
@@ -63,13 +69,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		climber = new Climber();
-		shooter = new LeftShooter();
+		leftShooter = new LeftShooter();
 		drive = new DriveTrain();
 		intake = new Intake();
 		scooper = new Scooper();
 		oi = new OI();
 		sd = new SDController();
-		sd.addSystems(shooter, drive, intake, scooper);
+		sd.addSystems(leftShooter, drive, intake, scooper);
 		drive.resetGyro();
 		sd.refresh();
 	}

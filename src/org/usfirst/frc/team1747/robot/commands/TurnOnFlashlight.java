@@ -10,7 +10,7 @@ public class TurnOnFlashlight extends Command {
 	LeftShooter shooter;
 
 	public TurnOnFlashlight() {
-		shooter = Robot.getShooter();
+		shooter = Robot.getLeftShooter();
 		requires(shooter);
 	}
 

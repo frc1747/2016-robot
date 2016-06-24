@@ -14,7 +14,7 @@ public class LowGoalShoot extends Command {
 	private double time = -1;
 
 	public LowGoalShoot() {
-		shooter = Robot.getShooter();
+		shooter = Robot.getLeftShooter();
 		intake = Robot.getIntake();
 		requires(shooter);
 		requires(intake);

@@ -12,7 +12,7 @@ public class Shoot extends Command {
 	private long startTime = -1;
 
 	public Shoot() {
-		shooter = Robot.getShooter();
+		shooter = Robot.getLeftShooter();
 		intake = Robot.getIntake();
 		requires(shooter);
 		requires(intake);
