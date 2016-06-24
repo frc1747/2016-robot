@@ -4,31 +4,36 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
+import org.usfirst.frc.team1747.robot.subsystems.RightShooter;
 
 public class LowGoalShoot extends Command {
 
 	double startTime;
 	boolean pidMode;
-	private LeftShooter shooter;
+	private LeftShooter leftShooter;
+	private RightShooter rightShooter;
 	private Intake intake;
 	private double time = -1;
 
 	public LowGoalShoot() {
-		shooter = Robot.getLeftShooter();
+		leftShooter = Robot.getLeftShooter();
+		rightShooter = Robot.getRightShooter();
 		intake = Robot.getIntake();
-		requires(shooter);
+		requires(leftShooter);
+		requires(rightShooter);
 		requires(intake);
 	}
 
 	@Override
 	protected void initialize() {
-		shooter.shoot(.2);
+		leftShooter.setSpeed(0.2);
+		rightShooter.setSpeed(0.2);
 		time = System.currentTimeMillis();
 	}
 
 	@Override
 	protected void execute() {
-		if (shooter.getLeftSpeed() >= 0.14 && shooter.getRightSpeed() >= 0.14) {
+		if (leftShooter.getSpeed() >= 0.14 && rightShooter.getSpeed() >= 0.14) {
 			intake.intakeBall();
 		}
 	}
@@ -40,7 +45,8 @@ public class LowGoalShoot extends Command {
 
 	@Override
 	protected void end() {
-		shooter.shoot(0.0);
+		leftShooter.setSpeed(0.0);
+		rightShooter.setSpeed(0.0);
 		intake.rollerControl(0);
 	}
 

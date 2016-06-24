@@ -24,6 +24,7 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 	private boolean pidEnabled = false;
 	private boolean atTarget = false;
 	private int count = 0;
+	private double speed = 0;
 
 	private static final double KP = .3, KI = 0, KD = .03, KF = .87;
 	private static final double targetShooterSpeed = 0.65;
@@ -62,10 +63,15 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 	protected void initDefaultCommand() {
 	}
 
-	public void setSpeed(double speed) {
-		motorOne.set(speed);
-		motorTwo.set(speed);
-		System.out.println("Setting speed to " + speed);
+	public void setSpeed(double output) {
+		motorOne.set(output);
+		motorTwo.set(output);
+		speed = output;
+		System.out.println("Setting speed to " + output);
+	}
+	
+	public double getSpeed() {
+		return speed;
 	}
 
 	public void pidEnable() {

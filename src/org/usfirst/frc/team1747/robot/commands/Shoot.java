@@ -4,29 +4,34 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
+import org.usfirst.frc.team1747.robot.subsystems.RightShooter;
 
 public class Shoot extends Command {
 
-	private LeftShooter shooter;
+	private LeftShooter leftShooter;
+	private RightShooter rightShooter;
 	private Intake intake;
 	private long startTime = -1;
 
 	public Shoot() {
-		shooter = Robot.getLeftShooter();
+		leftShooter = Robot.getLeftShooter();
+		rightShooter = Robot.getRightShooter();
 		intake = Robot.getIntake();
-		requires(shooter);
+		requires(leftShooter);
+		requires(rightShooter);
 		requires(intake);
 	}
 
 	protected void initialize() {
 		startTime = -1;
-		shooter.setSetpoint(shooter.getTargetShooterSpeed());
-		shooter.enablePID();
+		leftShooter.setSetpoint(leftShooter.getTargetShooterSpeed());
+		leftShooter.pidEnable();
+		rightShooter.setSetpoint(rightShooter.getTargetShooterSpeed());
+		rightShooter.pidEnable();
 	}
 
 	protected void execute() {
-		shooter.runPID();
-		if (shooter.isAtTarget()) {
+		if (leftShooter.isAtTarget() && rightShooter.isAtTarget()) {
 			if (startTime == -1) {
 				startTime = System.currentTimeMillis();
 			} else if (System.currentTimeMillis() - startTime > 500) {
@@ -42,8 +47,10 @@ public class Shoot extends Command {
 	}
 
 	protected void end() {
-		shooter.disablePID();
-		shooter.shoot(0.0);
+		leftShooter.pidDisable();
+		leftShooter.setSpeed(0.0);
+		rightShooter.pidDisable();
+		rightShooter.setSpeed(0.0);
 		intake.rollerStop();
 	}
 
