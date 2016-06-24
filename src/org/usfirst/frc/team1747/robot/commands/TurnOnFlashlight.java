@@ -1,13 +1,13 @@
 package org.usfirst.frc.team1747.robot.commands;
 
 import org.usfirst.frc.team1747.robot.Robot;
-import org.usfirst.frc.team1747.robot.subsystems.Shooter;
+import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnOnFlashlight extends Command {
 
-	Shooter shooter;
+	LeftShooter shooter;
 
 	public TurnOnFlashlight() {
 		shooter = Robot.getShooter();

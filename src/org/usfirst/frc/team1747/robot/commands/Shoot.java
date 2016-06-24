@@ -3,11 +3,11 @@ package org.usfirst.frc.team1747.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
-import org.usfirst.frc.team1747.robot.subsystems.Shooter;
+import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
 
 public class Shoot extends Command {
 
-	private Shooter shooter;
+	private LeftShooter shooter;
 	private Intake intake;
 	private long startTime = -1;
 

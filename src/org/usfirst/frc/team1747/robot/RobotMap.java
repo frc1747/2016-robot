@@ -25,8 +25,10 @@ public class RobotMap {
 
 	public static final int LEFT_SHOOTER_MOTOR_ONE = 41;
 	public static final int LEFT_SHOOTER_MOTOR_TWO = 42;
+	public static final boolean LEFT_SHOOTER_INVERTED = true;
 	public static final int RIGHT_SHOOTER_MOTOR_ONE = 43;
 	public static final int RIGHT_SHOOTER_MOTOR_TWO = 44;
+	public static final boolean RIGHT_SHOOTER_INVERTED = false;
 
 	public static final int BALL_INTAKE = 0;
 	public static final int CLIMB_CIM = 2;

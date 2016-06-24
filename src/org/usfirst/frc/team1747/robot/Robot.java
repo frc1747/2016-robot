@@ -5,7 +5,7 @@ import org.usfirst.frc.team1747.robot.subsystems.Climber;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
-import org.usfirst.frc.team1747.robot.subsystems.Shooter;
+import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	private static OI oi;
-	private static Shooter shooter;
+	private static LeftShooter shooter;
 	private static DriveTrain drive;
 	private static SDController sd;
 	private static Intake intake;
@@ -40,7 +40,7 @@ public class Robot extends IterativeRobot {
 		return sd;
 	}
 
-	public static Shooter getShooter() {
+	public static LeftShooter getShooter() {
 		return shooter;
 	}
 
@@ -63,7 +63,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		climber = new Climber();
-		shooter = new Shooter();
+		shooter = new LeftShooter();
 		drive = new DriveTrain();
 		intake = new Intake();
 		scooper = new Scooper();
