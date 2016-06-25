@@ -33,7 +33,7 @@ public class LowGoalShoot extends Command {
 
 	@Override
 	protected void execute() {
-		if (leftShooter.getSpeed() >= 0.14 && rightShooter.getSpeed() >= 0.14) {
+		if (leftShooter.getSpeed() >= 14 && rightShooter.getSpeed() >= 14) {
 			intake.intakeBall();
 		}
 	}
