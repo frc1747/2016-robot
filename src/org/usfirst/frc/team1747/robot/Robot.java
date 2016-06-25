@@ -3,6 +3,7 @@ package org.usfirst.frc.team1747.robot;
 import org.usfirst.frc.team1747.robot.commands.BasicAuton;
 import org.usfirst.frc.team1747.robot.subsystems.Climber;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1747.robot.subsystems.Flashlight;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
@@ -24,6 +25,7 @@ public class Robot extends IterativeRobot {
 	private static OI oi;
 	private static LeftShooter leftShooter;
 	private static RightShooter rightShooter;
+	private static Flashlight flashlight;
 	private static DriveTrain drive;
 	private static SDController sd;
 	private static Intake intake;
@@ -48,6 +50,10 @@ public class Robot extends IterativeRobot {
 	
 	public static RightShooter getRightShooter() {
 		return rightShooter;
+	}
+	
+	public static Flashlight getFlashlight() {
+		return flashlight;
 	}
 
 	public static Intake getIntake() {

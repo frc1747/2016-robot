@@ -1,21 +1,21 @@
 package org.usfirst.frc.team1747.robot.commands;
 
 import org.usfirst.frc.team1747.robot.Robot;
-import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
+import org.usfirst.frc.team1747.robot.subsystems.Flashlight;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnOnFlashlight extends Command {
 
-	LeftShooter shooter;
+	Flashlight flashlight;
 
 	public TurnOnFlashlight() {
-		shooter = Robot.getLeftShooter();
-		requires(shooter);
+		flashlight = Robot.getFlashlight();
+		requires(flashlight);
 	}
 
 	protected void initialize() {
-		shooter.turnOnFlashlight();
+		flashlight.turnOnFlashlight();
 	}
 
 	protected void execute() {
@@ -26,7 +26,7 @@ public class TurnOnFlashlight extends Command {
 	}
 
 	protected void end() {
-		shooter.turnOffFlashlight();
+		flashlight.turnOffFlashlight();
 	}
 
 	protected void interrupted() {

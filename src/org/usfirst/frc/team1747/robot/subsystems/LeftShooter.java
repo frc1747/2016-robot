@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOutput {
 
-	private Solenoid flashlight = new Solenoid(RobotMap.FLASHLIGHT);
 	private CANTalon motorOne = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_ONE);
 	private CANTalon motorTwo = new CANTalon(RobotMap.LEFT_SHOOTER_MOTOR_TWO);
 	private Counter counter;
@@ -40,7 +39,7 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 		counter.setUpDownCounterMode();
 		counter.setPIDSourceType(PIDSourceType.kRate);
 		counter.setDistancePerPulse(1.0);
-		counter.setSamplesToAverage(5);
+		counter.setSamplesToAverage(3);
 		
 		controller = new PIDController(KP, KI, KD, KF, this, this);
 		controller.setAbsoluteTolerance(1.0);
@@ -51,14 +50,6 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 
 	public double getTargetShooterSpeed() {
 		return targetShooterSpeed;
-	}
-
-	public void turnOnFlashlight() {
-		flashlight.set(true);
-	}
-
-	public void turnOffFlashlight() {
-		flashlight.set(false);
 	}
 
 	@Override
