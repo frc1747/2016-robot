@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -29,7 +28,6 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 	private static final double shooterErrorMargin = 0.020;
 
 	public RightShooter() {
-		flashlight = new Solenoid(RobotMap.FLASHLIGHT);
 		motorOne.changeControlMode(TalonControlMode.Voltage);
 		motorTwo.changeControlMode(TalonControlMode.Voltage);
 		motorOne.setInverted(RobotMap.RIGHT_SHOOTER_INVERTED);
