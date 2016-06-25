@@ -40,10 +40,13 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 		counter.setUpDownCounterMode();
 		counter.setPIDSourceType(PIDSourceType.kRate);
 		counter.setDistancePerPulse(1.0);
+		counter.setSamplesToAverage(5);
 		
 		controller = new PIDController(KP, KI, KD, KF, this, this);
 		controller.setAbsoluteTolerance(1.0);
 		controller.setOutputRange(0, 1);
+		
+		SmartDashboard.putData("Right Shooter PID", controller);
 	}
 
 	public double getTargetShooterSpeed() {
