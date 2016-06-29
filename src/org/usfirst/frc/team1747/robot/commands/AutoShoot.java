@@ -3,6 +3,7 @@ package org.usfirst.frc.team1747.robot.commands;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.SDController;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1747.robot.subsystems.Flashlight;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
@@ -19,6 +20,7 @@ public class AutoShoot extends Command {
 	private DriveTrain drive;
 	private LeftShooter leftShooter;
 	private RightShooter rightShooter;
+	private Flashlight flashlight;
 	private Intake intake;
 	private Scooper scooper;
 	private NetworkTable networkTable;
@@ -34,6 +36,7 @@ public class AutoShoot extends Command {
 		drive = Robot.getDriveTrain();
 		leftShooter = Robot.getLeftShooter();
 		rightShooter = Robot.getRightShooter();
+		flashlight = Robot.getFlashlight();
 		intake = Robot.getIntake();
 		scooper = Robot.getScooper();
 		networkTable = NetworkTable.getTable("imageProcessing");
@@ -56,7 +59,7 @@ public class AutoShoot extends Command {
 		turnTime = -1;
 		turnValue = drive.getAutonTurn();
 		drive.resetGyro();
-		leftShooter.turnOffFlashlight();
+		flashlight.turnOffFlashlight();
 	}
 
 	protected void execute() {

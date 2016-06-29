@@ -79,7 +79,7 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 	}
 	
 	public boolean isAtTarget() {
-		if(Math.abs(targetShooterSpeed - pidGet()) < shooterErrorMargin) {
+		if(Math.abs(targetShooterSpeed - this.getSpeed()) < shooterErrorMargin) {
 			count++;
 		}
 		else {
