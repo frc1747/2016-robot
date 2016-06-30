@@ -23,8 +23,8 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 	private boolean atTarget = false;
 	private int count = 0;
 
-	private static final double KP = .3, KI = 0, KD = .03, KF = .87;
-	private static final double targetShooterSpeed = 0.65;
+	private static final double KP = 0, KI = 0, KD = 0, KF = 0;
+	private static final double targetShooterSpeed = 70;
 	private static final double shooterErrorMargin = 0.020;
 
 	public LeftShooter() {
@@ -37,11 +37,11 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 		counter.setUpDownCounterMode();
 		counter.setPIDSourceType(PIDSourceType.kRate);
 		counter.setDistancePerPulse(1.0);
-		counter.setSamplesToAverage(3);
+		counter.setSamplesToAverage(1);
 		
 		controller = new PIDController(KP, KI, KD, KF, this, this);
 		controller.setAbsoluteTolerance(1.0);
-		controller.setOutputRange(0, 1);
+		controller.setOutputRange(0, 12);
 		
 		SmartDashboard.putData("Left Shooter PID", controller);
 	}
