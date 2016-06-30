@@ -11,7 +11,7 @@ public class Shoot extends Command {
 	private LeftShooter leftShooter;
 	private RightShooter rightShooter;
 	private Intake intake;
-	private long startTime = -1;
+	//private long startTime = -1;
 
 	public Shoot() {
 		leftShooter = Robot.getLeftShooter();
@@ -23,7 +23,7 @@ public class Shoot extends Command {
 	}
 
 	protected void initialize() {
-		startTime = -1;
+		//startTime = -1;
 		leftShooter.setSetpoint(leftShooter.getTargetShooterSpeed());
 		leftShooter.pidEnable();
 		rightShooter.setSetpoint(rightShooter.getTargetShooterSpeed());
@@ -32,18 +32,19 @@ public class Shoot extends Command {
 
 	protected void execute() {
 		if (leftShooter.isAtTarget() && rightShooter.isAtTarget()) {
-			if (startTime == -1) {
-				startTime = System.currentTimeMillis();
-			} else if (System.currentTimeMillis() - startTime > 500) {
+			//if (startTime == -1) {
+			//	startTime = System.currentTimeMillis();
+			//} else if (System.currentTimeMillis() - startTime > 500) {
 				intake.intakeBall();
-			}
-		} else {
-			startTime = -1;
+			//}
+		//} else {
+		//	startTime = -1;
 		}
 	}
 
 	protected boolean isFinished() {
-		return startTime != -1 && System.currentTimeMillis() - startTime > 2000;
+		//return startTime != -1 && System.currentTimeMillis() - startTime > 2000;
+		return true;
 	}
 
 	protected void end() {

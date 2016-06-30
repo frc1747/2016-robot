@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Flashlight extends Subsystem implements SDLogger {
 
-	private Solenoid flashlight = new Solenoid(RobotMap.FLASHLIGHT);
+	private Solenoid flashlight;
 
 	public Flashlight() {
-		//flashlight = new Solenoid(RobotMap.FLASHLIGHT);
+		flashlight = new Solenoid(RobotMap.FLASHLIGHT);
 	}
 
 	public void turnOnFlashlight() {

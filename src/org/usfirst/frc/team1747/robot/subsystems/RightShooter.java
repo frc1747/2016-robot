@@ -65,11 +65,13 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 	}
 
 	public void pidEnable() {
+		count = 0;
 		controller.enable();
 		pidEnabled = true;
 	}
 	
 	public void pidDisable() {
+		count = 0;
 		controller.disable();
 		pidEnabled = false;
 	}
@@ -79,7 +81,7 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 	}
 	
 	public boolean isAtTarget() {
-		if(Math.abs(targetShooterSpeed - this.getSpeed()) < shooterErrorMargin) {
+		if(Math.abs(targetShooterSpeed - getSpeed()) < shooterErrorMargin) {
 			count++;
 		}
 		else {
@@ -87,6 +89,8 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 			atTarget = false;
 		}
 		if(count > 20) atTarget = true;
+		SmartDashboard.putNumber("RIGHT SHOOTER COUNT", count);
+		SmartDashboard.putBoolean("RIGHT IS AT TARGET", atTarget);
 		
 		return atTarget;
 	}
@@ -97,7 +101,6 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 	
 	@Override
 	public void pidWrite(double output) {
-		// TODO Auto-generated method stub
 		motorOne.set(output);
 		motorTwo.set(output);
 	}
@@ -113,7 +116,6 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 
 	@Override
 	public double pidGet() {
-		// TODO Auto-generated method stub
 		return counter.getRate();
 	}
 

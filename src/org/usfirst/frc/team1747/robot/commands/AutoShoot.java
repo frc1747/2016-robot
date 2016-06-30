@@ -89,10 +89,10 @@ public class AutoShoot extends Command {
 			// double boxDistance = networkTable.getNumber("ShootDistance", 0);
 			SmartDashboard.putNumber("TimeLeftofTurn", turnTime - System.currentTimeMillis());
 			if (direction.equals("left")) {
-				if (leftShooter.isPidEnabled() || rightShooter.isPidEnabled()) {
-					leftShooter.pidDisable();
-					rightShooter.pidDisable();
-				}
+				//if (leftShooter.isPidEnabled() || rightShooter.isPidEnabled()) {
+				leftShooter.pidDisable();
+				rightShooter.pidDisable();
+				//}
 				leftShooter.setSpeed(0);
 				rightShooter.setSpeed(0);
 				if (turnTime - System.currentTimeMillis() >= 0) {
@@ -107,10 +107,12 @@ public class AutoShoot extends Command {
 				}
 				startTime = -1;
 			} else if (direction.equals("right")) {
-				if (leftShooter.isPidEnabled() || rightShooter.isPidEnabled()) {
-					leftShooter.pidDisable();
-					rightShooter.pidDisable();
-				}
+				//if (leftShooter.isPidEnabled() || rightShooter.isPidEnabled()) {
+				leftShooter.pidDisable();
+				rightShooter.pidDisable();
+				//}
+				leftShooter.setSpeed(0.0);
+				rightShooter.setSpeed(0.0);
 				if (turnTime - System.currentTimeMillis() >= 0) {
 					drive.arcadeDrive(0.0, (turnValue) * (driverStation.isAutonomous() ? 1 : 1.1));
 				} else {
@@ -125,19 +127,19 @@ public class AutoShoot extends Command {
 				rightShooter.setSpeed(0);
 				startTime = -1;
 			} else if (direction.equals("forward")) {
-				if (leftShooter.isPidEnabled() || rightShooter.isPidEnabled()) {
-					leftShooter.pidDisable();
-					rightShooter.pidDisable();
-				}
+				//if (leftShooter.isPidEnabled() || rightShooter.isPidEnabled()) {
+				leftShooter.pidDisable();
+				rightShooter.pidDisable();
+				//}
 				leftShooter.setSpeed(0);
 				rightShooter.setSpeed(0);
 				drive.arcadeDrive(0.25, 0.0);
 				startTime = -1;
 			} else if (direction.equals("backward")) {
-				if (leftShooter.isPidEnabled() || rightShooter.isPidEnabled()) {
-					leftShooter.pidDisable();
-					rightShooter.pidDisable();
-				}
+				//if (leftShooter.isPidEnabled() || rightShooter.isPidEnabled()) {
+				leftShooter.pidDisable();
+				rightShooter.pidDisable();
+				//}
 				leftShooter.setSpeed(0);
 				rightShooter.setSpeed(0);
 				drive.arcadeDrive(-0.25, 0.0);
@@ -154,7 +156,8 @@ public class AutoShoot extends Command {
 					rightShooter.setSetpoint(rightShooter.getTargetShooterSpeed());
 					rightShooter.pidEnable();
 				}
-				if (startTime != -1 && System.currentTimeMillis() - startTime > 750 && leftShooter.isAtTarget() && rightShooter.isAtTarget()) {
+				//if (startTime != -1 && System.currentTimeMillis() - startTime > 750 && leftShooter.isAtTarget() && rightShooter.isAtTarget()) {
+				if(leftShooter.isAtTarget() && rightShooter.isAtTarget()) {
 					intake.intakeBall();
 				}
 			} else if (direction.equals("unknown")) {
