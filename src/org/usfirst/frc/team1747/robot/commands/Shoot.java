@@ -1,6 +1,8 @@
 package org.usfirst.frc.team1747.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
@@ -11,7 +13,7 @@ public class Shoot extends Command {
 	private LeftShooter leftShooter;
 	private RightShooter rightShooter;
 	private Intake intake;
-	//private long startTime = -1;
+	private double timeToSettle;
 
 	public Shoot() {
 		leftShooter = Robot.getLeftShooter();
@@ -23,7 +25,7 @@ public class Shoot extends Command {
 	}
 
 	protected void initialize() {
-		//startTime = -1;
+		timeToSettle = 0;
 		leftShooter.setSetpoint(leftShooter.getTargetShooterSpeed());
 		leftShooter.pidEnable();
 		rightShooter.setSetpoint(rightShooter.getTargetShooterSpeed());
@@ -31,20 +33,17 @@ public class Shoot extends Command {
 	}
 
 	protected void execute() {
-		if (leftShooter.isAtTarget() && rightShooter.isAtTarget()) {
-			//if (startTime == -1) {
-			//	startTime = System.currentTimeMillis();
-			//} else if (System.currentTimeMillis() - startTime > 500) {
-				intake.intakeBall();
-			//}
-		//} else {
-		//	startTime = -1;
+		if(leftShooter.isAtTarget() && rightShooter.isAtTarget()) {
+			if(timeToSettle == 0) {
+				timeToSettle = timeSinceInitialized();
+				SmartDashboard.putNumber("Time to Settle", timeToSettle);
+			}
+			intake.intakeBall();
 		}
 	}
 
 	protected boolean isFinished() {
-		//return startTime != -1 && System.currentTimeMillis() - startTime > 2000;
-		return true;
+		return false;
 	}
 
 	protected void end() {

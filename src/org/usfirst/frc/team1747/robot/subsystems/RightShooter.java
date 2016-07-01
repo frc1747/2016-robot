@@ -23,13 +23,11 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 	private boolean atTarget = false;
 	private int count = 0;
 
-	private static final double KP = 0, KI = 0, KD = 0, KF = 0;
-	private static final double targetShooterSpeed = 70;
-	private static final double shooterErrorMargin = 0.020;
+	private static final double KP = 0.012, KI = 0.300, KD = 0.075, KF = 0;
+	private static final double targetShooterSpeed = 65;
+	private static final double shooterErrorMargin = 1;
 
 	public RightShooter() {
-		motorOne.changeControlMode(TalonControlMode.Voltage);
-		motorTwo.changeControlMode(TalonControlMode.Voltage);
 		motorOne.setInverted(RobotMap.RIGHT_SHOOTER_INVERTED);
 		motorTwo.setInverted(RobotMap.RIGHT_SHOOTER_INVERTED);
 		counter = new Counter();
@@ -41,7 +39,7 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 		
 		controller = new PIDController(KP, KI, KD, KF, this, this);
 		controller.setAbsoluteTolerance(1.0);
-		controller.setOutputRange(0, 12);
+		controller.setOutputRange(0, 1);
 		
 		SmartDashboard.putData("Right Shooter PID", controller);
 	}
@@ -57,11 +55,14 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 	public void setSpeed(double output) {
 		motorOne.set(output);
 		motorTwo.set(output);
-		System.out.println("Setting speed to " + output);
 	}
 	
 	public double getSpeed() {
 		return counter.getRate();
+	}
+	
+	public double getVoltage() {
+		return motorOne.getOutputVoltage();
 	}
 
 	public void pidEnable() {
@@ -88,7 +89,7 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 			count = 0;
 			atTarget = false;
 		}
-		if(count > 20) atTarget = true;
+		if(count > 5) atTarget = true;
 		SmartDashboard.putNumber("RIGHT SHOOTER COUNT", count);
 		SmartDashboard.putBoolean("RIGHT IS AT TARGET", atTarget);
 		
@@ -101,8 +102,12 @@ public class RightShooter extends Subsystem implements SDLogger, PIDSource, PIDO
 	
 	@Override
 	public void pidWrite(double output) {
+		if (getSpeed() < 20) {
+			output = Math.min(0.7, output);
+		}
 		motorOne.set(output);
 		motorTwo.set(output);
+		SmartDashboard.putNumber("Right Shooter Power", output);
 	}
 
 	@Override

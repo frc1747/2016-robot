@@ -23,13 +23,13 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 	private boolean atTarget = false;
 	private int count = 0;
 
-	private static final double KP = 0, KI = 0, KD = 0, KF = 0;
-	private static final double targetShooterSpeed = 70;
-	private static final double shooterErrorMargin = 0.020;
+	private static final double KP = 0.0114, KI = 0.300, KD = 0.075, KF = 0;
+	private static final double targetShooterSpeed = 65;
+	private static final double shooterErrorMargin = 1;
 
 	public LeftShooter() {
-		motorOne.changeControlMode(TalonControlMode.Voltage);
-		motorTwo.changeControlMode(TalonControlMode.Voltage);
+		//motorOne.changeControlMode(TalonControlMode.Voltage);
+		//motorTwo.changeControlMode(TalonControlMode.Voltage);
 		motorOne.setInverted(RobotMap.LEFT_SHOOTER_INVERTED);
 		motorTwo.setInverted(RobotMap.LEFT_SHOOTER_INVERTED);
 		counter = new Counter();
@@ -37,11 +37,11 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 		counter.setUpDownCounterMode();
 		counter.setPIDSourceType(PIDSourceType.kRate);
 		counter.setDistancePerPulse(1.0);
-		counter.setSamplesToAverage(1);
+		counter.setSamplesToAverage(3);
 		
 		controller = new PIDController(KP, KI, KD, KF, this, this);
 		controller.setAbsoluteTolerance(1.0);
-		controller.setOutputRange(0, 12);
+		controller.setOutputRange(0, 1);
 		
 		SmartDashboard.putData("Left Shooter PID", controller);
 	}
@@ -57,13 +57,16 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 	public void setSpeed(double output) {
 		motorOne.set(output);
 		motorTwo.set(output);
-		System.out.println("Setting speed to " + output);
 	}
 	
 	public double getSpeed() {
 		return counter.getRate();
 	}
 
+	public double getVoltage() {
+		return motorOne.getOutputVoltage();
+	}
+	
 	public void pidEnable() {
 		count = 0;
 		controller.enable();
@@ -88,7 +91,7 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 			count = 0;
 			atTarget = false;
 		}
-		if(count > 20) atTarget = true;
+		if(count > 5) atTarget = true;
 		SmartDashboard.putNumber("LEFT SHOOTER COUNT", count);
 		SmartDashboard.putBoolean("LEFT IS AT TARGET", atTarget);
 
@@ -101,8 +104,13 @@ public class LeftShooter extends Subsystem implements SDLogger, PIDSource, PIDOu
 	
 	@Override
 	public void pidWrite(double output) {
+		if (getSpeed() < 20) {
+			output = Math.min(0.7, output);
+		}
+
 		motorOne.set(output);
 		motorTwo.set(output);
+		SmartDashboard.putNumber("Left Shooter Power", output);
 	}
 
 	@Override
