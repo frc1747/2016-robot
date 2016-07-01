@@ -24,10 +24,10 @@ public class Shooter extends Subsystem implements SDLogger {
 
 	public Shooter() {
 		leftShooter = new ShooterSide(RobotMap.LEFT_SHOOTER_MOTOR_ONE, RobotMap.LEFT_SHOOTER_MOTOR_TWO,
-				RobotMap.LEFT_SHOOTER_INVERTED, RobotMap.LEFT_COUNTER, LKP, LKI, LKD, LKF, "LEFT SHOOTER PID");
+				RobotMap.LEFT_SHOOTER_INVERTED, RobotMap.LEFT_COUNTER, LKP, LKI, LKD, LKF, "LEFT");
 
 		rightShooter = new ShooterSide(RobotMap.RIGHT_SHOOTER_MOTOR_ONE, RobotMap.RIGHT_SHOOTER_MOTOR_TWO,
-				RobotMap.RIGHT_SHOOTER_INVERTED, RobotMap.RIGHT_COUNTER, RKP, RKI, RKD, RKF, "RIGHT SHOOTER PID");
+				RobotMap.RIGHT_SHOOTER_INVERTED, RobotMap.RIGHT_COUNTER, RKP, RKI, RKD, RKF, "RIGHT");
 	}
 
 	@Override
@@ -95,11 +95,12 @@ public class Shooter extends Subsystem implements SDLogger {
 		private PIDController controller;
 		private boolean atTarget = false;
 		private int count = 0;
+		String side;
 
 		private static final double shooterErrorMargin = 1.0;
 
 		public ShooterSide(int motorOneId, int motorTwoId, boolean motorsInverted, int counterId,
-				double KP, double KI, double KD, double KF, String SDString) {
+				double KP, double KI, double KD, double KF, String shooterSide) {
 			motorOne = new CANTalon(motorOneId);
 			motorTwo = new CANTalon(motorTwoId);
 			motorOne.setInverted(motorsInverted);
@@ -116,7 +117,9 @@ public class Shooter extends Subsystem implements SDLogger {
 			controller.setAbsoluteTolerance(1.0);
 			controller.setOutputRange(0, 1);
 			
-			SmartDashboard.putData(SDString, controller);
+			side = shooterSide;
+			
+			SmartDashboard.putData(side + "SHOOTER PID", controller);
 		}
 
 		public void setSpeed(double output) {
@@ -151,8 +154,8 @@ public class Shooter extends Subsystem implements SDLogger {
 				atTarget = false;
 			}
 			if(count > 5) atTarget = true;
-			SmartDashboard.putNumber("RIGHT SHOOTER COUNT", count);
-			SmartDashboard.putBoolean("RIGHT IS AT TARGET", atTarget);
+			SmartDashboard.putNumber(side + " SHOOTER COUNT", count);
+			SmartDashboard.putBoolean(side + " IS AT TARGET", atTarget);
 			
 			return atTarget;
 		}
@@ -168,7 +171,7 @@ public class Shooter extends Subsystem implements SDLogger {
 			}
 			motorOne.set(output);
 			motorTwo.set(output);
-			SmartDashboard.putNumber("Right Shooter Power", output);
+			SmartDashboard.putNumber(side + " SHOOTER POWER", output);
 		}
 
 		@Override
