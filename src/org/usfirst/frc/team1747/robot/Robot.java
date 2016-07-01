@@ -6,8 +6,7 @@ import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.Flashlight;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
-import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
-import org.usfirst.frc.team1747.robot.subsystems.RightShooter;
+import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -24,8 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	private static OI oi;
-	private static LeftShooter leftShooter;
-	private static RightShooter rightShooter;
+	private static Shooter shooter;
 	private static Flashlight flashlight;
 	private static DriveTrain drive;
 	private static SDController sd;
@@ -45,12 +43,8 @@ public class Robot extends IterativeRobot {
 		return sd;
 	}
 
-	public static LeftShooter getLeftShooter() {
-		return leftShooter;
-	}
-	
-	public static RightShooter getRightShooter() {
-		return rightShooter;
+	public static Shooter getShooter() {
+		return shooter;
 	}
 	
 	public static Flashlight getFlashlight() {
@@ -76,15 +70,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		climber = new Climber();
-		leftShooter = new LeftShooter();
-		rightShooter = new RightShooter();
+		shooter = new Shooter();
 		flashlight = new Flashlight();
 		drive = new DriveTrain();
 		intake = new Intake();
 		scooper = new Scooper();
 		oi = new OI();
 		sd = new SDController();
-		sd.addSystems(leftShooter, drive, intake, scooper);
+		sd.addSystems(shooter, drive, intake, scooper);
 		drive.resetGyro();
 		sd.refresh();
 	}
@@ -141,10 +134,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("LEFT SHOOTER SPEED", leftShooter.getSpeed());
-		SmartDashboard.putNumber("RIGHT SHOOTER SPEED", rightShooter.getSpeed());
-		SmartDashboard.putNumber("RIGHT SHOOTER VOLTAGE", rightShooter.getVoltage());
-		SmartDashboard.putNumber("LEFT SHOOTER VOLTAGE", leftShooter.getVoltage());
+		SmartDashboard.putNumber("LEFT SHOOTER SPEED", shooter.getLeftSpeed());
+		SmartDashboard.putNumber("RIGHT SHOOTER SPEED", shooter.getRightSpeed());
 		sd.refresh();
 	}
 

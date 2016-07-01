@@ -5,35 +5,29 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
-import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
-import org.usfirst.frc.team1747.robot.subsystems.RightShooter;
+import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 public class Shoot extends Command {
 
-	private LeftShooter leftShooter;
-	private RightShooter rightShooter;
+	private Shooter shooter;
 	private Intake intake;
 	private double timeToSettle;
 
 	public Shoot() {
-		leftShooter = Robot.getLeftShooter();
-		rightShooter = Robot.getRightShooter();
+		shooter = Robot.getShooter();
 		intake = Robot.getIntake();
-		requires(leftShooter);
-		requires(rightShooter);
+		requires(shooter);
 		requires(intake);
 	}
 
 	protected void initialize() {
 		timeToSettle = 0;
-		leftShooter.setSetpoint(leftShooter.getTargetShooterSpeed());
-		leftShooter.pidEnable();
-		rightShooter.setSetpoint(rightShooter.getTargetShooterSpeed());
-		rightShooter.pidEnable();
+		shooter.setSetpoint(shooter.getTargetShooterSpeed());
+		shooter.pidEnable();
 	}
 
 	protected void execute() {
-		if(leftShooter.isAtTarget() && rightShooter.isAtTarget()) {
+		if(shooter.isAtTarget()) {
 			if(timeToSettle == 0) {
 				timeToSettle = timeSinceInitialized();
 				SmartDashboard.putNumber("Time to Settle", timeToSettle);
@@ -47,10 +41,8 @@ public class Shoot extends Command {
 	}
 
 	protected void end() {
-		leftShooter.pidDisable();
-		leftShooter.setSpeed(0.0);
-		rightShooter.pidDisable();
-		rightShooter.setSpeed(0.0);
+		shooter.pidDisable();
+		shooter.setSpeed(0.0);
 		intake.rollerStop();
 	}
 

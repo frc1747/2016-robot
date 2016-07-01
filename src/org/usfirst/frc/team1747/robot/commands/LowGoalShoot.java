@@ -3,37 +3,30 @@ package org.usfirst.frc.team1747.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
-import org.usfirst.frc.team1747.robot.subsystems.LeftShooter;
-import org.usfirst.frc.team1747.robot.subsystems.RightShooter;
+import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 public class LowGoalShoot extends Command {
 
 	double startTime;
 	boolean pidMode;
-	private LeftShooter leftShooter;
-	private RightShooter rightShooter;
+	private Shooter shooter;
 	private Intake intake;
-	private double time = -1;
 
 	public LowGoalShoot() {
-		leftShooter = Robot.getLeftShooter();
-		rightShooter = Robot.getRightShooter();
+		shooter = Robot.getShooter();
 		intake = Robot.getIntake();
-		requires(leftShooter);
-		requires(rightShooter);
+		requires(shooter);
 		requires(intake);
 	}
 
 	@Override
 	protected void initialize() {
-		leftShooter.setSpeed(0.2);
-		rightShooter.setSpeed(0.2);
-		time = System.currentTimeMillis();
+		shooter.setSpeed(0.2);
 	}
 
 	@Override
 	protected void execute() {
-		if (leftShooter.getSpeed() >= 14 && rightShooter.getSpeed() >= 14) {
+		if (shooter.getLeftSpeed() >= 14 && shooter.getRightSpeed() >= 14) {
 			intake.intakeBall();
 		}
 	}
@@ -45,8 +38,7 @@ public class LowGoalShoot extends Command {
 
 	@Override
 	protected void end() {
-		leftShooter.setSpeed(0.0);
-		rightShooter.setSpeed(0.0);
+		shooter.setSpeed(0.0);
 		intake.rollerControl(0);
 	}
 
