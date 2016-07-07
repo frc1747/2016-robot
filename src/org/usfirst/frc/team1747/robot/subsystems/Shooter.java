@@ -17,10 +17,10 @@ public class Shooter extends Subsystem implements SDLogger {
 	private boolean pidEnabled = false;
 	private ShooterSide leftShooter, rightShooter;
 
-	private static final double LKP = 0.0114, LKI = 0.300, LKD = 0.075, LKF = 0;
+	private static final double LKP = 0.0126, LKI = 0.300, LKD = 0.075, LKF = 0;
 	private static final double RKP = 0.012, RKI = 0.300, RKD = 0.075, RKF = 0;
 
-	private static final double targetShooterSpeed = 65;
+	private static final double targetShooterSpeed = 67;
 
 	public Shooter() {
 		leftShooter = new ShooterSide(RobotMap.LEFT_SHOOTER_MOTOR_ONE, RobotMap.LEFT_SHOOTER_MOTOR_TWO,
@@ -88,7 +88,7 @@ public class Shooter extends Subsystem implements SDLogger {
 	public void logToSmartDashboard() {
 	}
 	
-	private class ShooterSide implements PIDSource, PIDOutput{
+	private class ShooterSide implements PIDSource, PIDOutput {
 		private CANTalon motorOne;
 		private CANTalon motorTwo;
 		private Counter counter;
@@ -119,7 +119,7 @@ public class Shooter extends Subsystem implements SDLogger {
 			
 			side = shooterSide;
 			
-			SmartDashboard.putData(side + "SHOOTER PID", controller);
+			SmartDashboard.putData(side + " SHOOTER PID", controller);
 		}
 
 		public void setSpeed(double output) {
@@ -153,7 +153,7 @@ public class Shooter extends Subsystem implements SDLogger {
 				count = 0;
 				atTarget = false;
 			}
-			if(count > 5) atTarget = true;
+			if(count > 7) atTarget = true;
 			SmartDashboard.putNumber(side + " SHOOTER COUNT", count);
 			SmartDashboard.putBoolean(side + " IS AT TARGET", atTarget);
 			

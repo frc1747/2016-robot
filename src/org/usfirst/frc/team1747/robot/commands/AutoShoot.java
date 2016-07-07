@@ -115,7 +115,6 @@ public class AutoShoot extends Command {
 					}
 					// turnTime = -1;
 				}
-				shooter.setSpeed(0);
 				startTime = -1;
 			} else if (direction.equals("forward")) {
 				//if (leftShooter.isPidEnabled() || rightShooter.isPidEnabled()) {

@@ -8,7 +8,6 @@ import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 public class TurnToAngle extends Command {
 	private DriveTrain driveTrain;
 	private double angle;
-	private double time;
 
 	public TurnToAngle() {
 		driveTrain = Robot.getDriveTrain();
@@ -21,7 +20,7 @@ public class TurnToAngle extends Command {
 		driveTrain.resetLeftDistance();
 		driveTrain.resetRightDistance();
 		driveTrain.arcadeDrive(0.0, 0.25);
-		time = System.currentTimeMillis();
+		System.currentTimeMillis();
 	}
 
 	protected void execute() {
