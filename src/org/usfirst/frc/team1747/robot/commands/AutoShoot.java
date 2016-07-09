@@ -166,6 +166,7 @@ public class AutoShoot extends Command {
 	// ends shoot and arcadeDrive
 	protected void end() {
 		drive.arcadeDrive(0, 0);
+		intake.rollerStop();
 		shooter.setSpeed(0);
 		shooter.pidDisable();
 	}

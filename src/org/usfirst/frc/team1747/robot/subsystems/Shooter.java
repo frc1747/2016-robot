@@ -94,6 +94,8 @@ public class Shooter extends Subsystem implements SDLogger {
 		private Counter counter;
 		private PIDController controller;
 		private boolean atTarget = false;
+		private double currentSpeed = 0.0;
+		private double previousSpeed = 0.0;
 		private int count = 0;
 		String side;
 
@@ -128,7 +130,14 @@ public class Shooter extends Subsystem implements SDLogger {
 		}
 		
 		public double getSpeed() {
-			return counter.getRate();
+			previousSpeed = currentSpeed;
+			if(Math.abs(currentSpeed - previousSpeed) < 10 && previousSpeed != 0.0) {
+				currentSpeed = previousSpeed;
+			}
+			else {
+				currentSpeed = counter.getRate();
+			}
+			return currentSpeed;
 		}
 		
 		public double getVoltage() {
@@ -137,11 +146,15 @@ public class Shooter extends Subsystem implements SDLogger {
 
 		public void pidEnable() {
 			count = 0;
+			previousSpeed = 0.0;
+			currentSpeed = 0.0;
 			controller.enable();
 		}
 		
 		public void pidDisable() {
 			count = 0;
+			previousSpeed = 0.0;
+			currentSpeed = 0.0;
 			controller.disable();
 		}
 		
@@ -185,7 +198,7 @@ public class Shooter extends Subsystem implements SDLogger {
 
 		@Override
 		public double pidGet() {
-			return counter.getRate();
+			return getSpeed();
 		}
 	}
 }
