@@ -17,6 +17,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem implements SDLogger {
+	double integralError, previousError, totalPreviousAngles;
+	LinkedList<Double> previousAngles;
+	long previousTime;
 	private static final double[] SIGMOIDSTRETCH = { 0.03, 0.06, 0.09, 0.1, 0.11, 0.12, 0.11, 0.1, 0.09, 0.06, 0.03 };
 	private DriveSide left;
 	private DriveSide right;
@@ -29,9 +32,13 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	private double prevTargetRotation = 0.0;
 	private double autonTurn;
 	private double teleopTurnDampening;
+	private double kP = 0.02, kI = 0, kD = 0, angleErrorMargin = .005;
+	private boolean pidEnabled;
+	private static final int errBuffSize = 1;
 
 	// Sets up CANTalons for drive train; maps the left and right LEDs
 	public DriveTrain() {
+		gyro = new AHRS(SPI.Port.kMXP);
 		left = new DriveSide(RobotMap.LEFT_DRIVE_CIM_ONE, RobotMap.LEFT_DRIVE_CIM_TWO, RobotMap.LEFT_DRIVE_MINICIM,
 				true);
 		right = new DriveSide(RobotMap.RIGHT_DRIVE_CIM_ONE, RobotMap.RIGHT_DRIVE_CIM_TWO, RobotMap.RIGHT_DRIVE_MINICIM,
@@ -42,14 +49,13 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			straightTargetDeltas.add(0.0);
 			rotationTargetDeltas.add(0.0);
 		}
-		// SmartDashboard.putNumber("DriveTrain LP", .015);
-		// SmartDashboard.putNumber("DriveTrain LI", 0);
-		// SmartDashboard.putNumber("DriveTrain LD", 0);
-		// SmartDashboard.putNumber("DriveTrain RP", .015);
-		// SmartDashboard.putNumber("DriveTrain RI", 0);
-		// SmartDashboard.putNumber("DriveTrain RD", 0);
+		previousAngles = new LinkedList<Double>();
+		SmartDashboard.putNumber("DriveTrain P", kP);
+		SmartDashboard.putNumber("DriveTrain I", kI);
+		SmartDashboard.putNumber("DriveTrain D", kD);
+		SmartDashboard.putNumber("DriveTrain Error Margin", angleErrorMargin);
 		SmartDashboard.putNumber("Turn Dampening", 0.9);
-		SmartDashboard.putNumber("Auton Turning", 0.310);
+		SmartDashboard.putNumber("Auton Turning", 0.350);
 		SmartDashboard.putBoolean("BackUpInAuto", false);
 	}
 
@@ -66,8 +72,12 @@ public class DriveTrain extends Subsystem implements SDLogger {
 
 	// This is smooth drive.
 	public void smoothDrive(double targetStraight, double targetRotation) {
-		straightTargetDeltas.removeLast();
-		rotationTargetDeltas.removeLast();
+		if (straightTargetDeltas.size() > SIGMOIDSTRETCH.length) {
+			straightTargetDeltas.removeLast();
+		}
+		if (rotationTargetDeltas.size() > SIGMOIDSTRETCH.length) {
+			rotationTargetDeltas.removeLast();
+		}
 		straightTargetDeltas.addFirst(targetStraight - prevTargetStraight);
 		rotationTargetDeltas.addFirst(targetRotation - prevTargetRotation);
 		prevTargetStraight = targetStraight;
@@ -112,59 +122,55 @@ public class DriveTrain extends Subsystem implements SDLogger {
 
 	public double getAutonTurn() {
 		return autonTurn;
-	}
 
-	public void resetGyroDisplacement() {
-		gyro.resetDisplacement();
-	}
-
-	public void resetGyroRate() {
-		gyro.reset();
 	}
 
 	public void resetGyro() {
-		resetGyroRate();
-		resetGyroDisplacement();
+		gyro.zeroYaw();
 	}
 
 	public double getTurnAngle() {
-		return gyro.getAngle();
+		return gyro.getYaw();
 	}
 
 	// This is a public void that logs smart dashboard.
 	public void logToSmartDashboard() {
 		SmartDashboard.putNumber("Left DriveTrain Speed", left.getSpeed());
 		SmartDashboard.putNumber("Right DriveTrain Speed", right.getSpeed());
-		// left.setPID(SmartDashboard.getNumber("DriveTrain LP", left.getP()),
-		// SmartDashboard.getNumber("DriveTrain LI", left.getI()),
-		// SmartDashboard.getNumber("DriveTrain LD", left.getD()));
-		// right.setPID(SmartDashboard.getNumber("DriveTrain RP", right.getP()),
-		// SmartDashboard.getNumber("DriveTrain RI", right.getI()),
-		// SmartDashboard.getNumber("DriveTrain RD", right.getD()));
-		SmartDashboard.putNumber("Turn Angle", gyro.getAngle());
+		setPID(SmartDashboard.getNumber("DriveTrain P", kP), SmartDashboard.getNumber("DriveTrain I", kI),
+				SmartDashboard.getNumber("DriveTrain D", kD));
+		SmartDashboard.putNumber("Turn Angle", getTurnAngle());
 		SmartDashboard.putNumber("Turn Velocity", gyro.getRate());
-		SmartDashboard.putNumber("Left Distance", left.getNetDistance());
-		SmartDashboard.putNumber("Right Distance", right.getNetDistance());
 		teleopTurnDampening = SmartDashboard.getNumber("Turn Dampening", teleopTurnDampening);
 		autonTurn = SmartDashboard.getNumber("Auton Turning", autonTurn);
 	}
 
 	// enables left and right PIDs
 	public void enablePID() {
-		left.enablePID();
-		right.enablePID();
+		pidEnabled = true;
+		previousTime = System.currentTimeMillis();
 	}
 
+	double targetAngle;
+
 	// sets up left and right setpoints
-	public void setSetpoint(double targetSpeed) {
-		left.setSetpoint(targetSpeed);
-		right.setSetpoint(targetSpeed);
+	public void setSetpoint(double targetAngle) {
+		this.targetAngle = targetAngle;
 	}
 
 	// disables left and right PID
 	public void disablePID() {
-		left.disablePID();
-		right.disablePID();
+		integralError = 0;
+		previousError = 0;
+		previousTime = 0;
+		totalPreviousAngles = 0;
+		previousAngles.clear();
+		targetAngle = 0;
+		pidEnabled = false;
+	}
+
+	public boolean isPIDEnabled() {
+		return pidEnabled;
 	}
 
 	// enables Ramping
@@ -181,43 +187,58 @@ public class DriveTrain extends Subsystem implements SDLogger {
 
 	// determines if robot is at target
 	public boolean isAtTarget() {
-		return left.isAtTarget() && right.isAtTarget();
-	}
+		System.out.println("Tolerance: " + ((getTurnAngle() - this.targetAngle) / this.targetAngle));
+		return Math.abs((getTurnAngle() - this.targetAngle) / this.targetAngle) < SmartDashboard
+				.getNumber("DriveTrain Error Margin", angleErrorMargin);
 
-	// turns on the left and right LED lights
+	}
 
 	// runs left and right PIDs
 	public void runPID() {
-		left.runPID();
-		right.runPID();
+		double currentAngle = getTurnAngle();
+		double deltaTime = (System.currentTimeMillis() - previousTime) / 1000.0;
+		double currentError = targetAngle - currentAngle;
+		double derivative = 0;
+		previousAngles.addFirst(currentAngle);
+		totalPreviousAngles += currentAngle;
+		if (previousAngles.size() > errBuffSize) {
+			totalPreviousAngles -= previousAngles.removeLast();
+		}
+		integralError += currentError * deltaTime;
+		if (deltaTime > .0001) {
+			derivative = (currentError - previousError) / deltaTime;
+		}
+		double speed = kP * currentError + kI * integralError + kD * derivative;
+		previousError = currentError;
+		previousTime = System.currentTimeMillis();
+		if (speed > 0.5) {
+			speed = 0.5;
+			System.out.println("Speed > 0.5");
+		} else if (speed < -0.5) {
+			speed = -0.5;
+			System.out.println("Speed < -0.5");
+		}
+		System.out.println("P: " + (kP * currentError));
+		System.out.println("I: " + (kI * integralError));
+		System.out.println("D: " + (kD * derivative));
+		System.out.println("deltaTime: " + deltaTime);
+		System.out.println("currentError: " + currentError);
+		System.out.println("previousError: " + previousError);
+		System.out.println("currentAngle: " + currentAngle);
+		System.out.println("targetSpeed: " + targetAngle);
+		System.out.println("Calculated turnSpeed: " + speed);
+		arcadeDrive(0, speed);
 	}
 
-	public double getRightDistance() {
-		return right.getNetDistance();
-	}
-
-	public double getLeftDistance() {
-		return left.getNetDistance();
-	}
-
-	public void resetRightDistance() {
-		right.resetNetDistance();
-	}
-
-	public void resetLeftDistance() {
-		left.resetNetDistance();
+	public void setPID(double kp, double ki, double kd) {
+		this.kP = kp;
+		this.kI = ki;
+		this.kD = kd;
 	}
 
 	// sets up constants for DriveSide
 	class DriveSide {
 		CANTalon cimOne, cimTwo, miniCim;
-		double kP, kI, kD;
-		double targetDistance;
-		boolean pidEnabled;
-		double integralError;
-		double previousError;
-		double netDistance;
-		double time;
 		boolean inverted;
 
 		// sets up the control modes for the talons and inverts some cims and
@@ -251,21 +272,6 @@ public class DriveTrain extends Subsystem implements SDLogger {
 			cimTwo.setVoltageRampRate(0);
 		}
 
-		// gets P
-		public double getP() {
-			return kP;
-		}
-
-		// gets I
-		public double getI() {
-			return kI;
-		}
-
-		// gets D
-		public double getD() {
-			return kD;
-		}
-
 		// returns the speed of cimtwo
 		public double getSpeed() {
 			// Remove when encoder repaired
@@ -276,80 +282,6 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		public void set(double speed) {
 			speed *= 12.0;
 			cimTwo.set(speed);
-		}
-
-		// sets kP, kI, and kD
-		public void setPID(double p, double i, double d) {
-			kP = p;
-			kI = i;
-			kD = d;
-		}
-
-		// sets the target distance
-		public void setSetpoint(double targetDistance) {
-			this.targetDistance = targetDistance;
-			cimTwo.setSetpoint(targetDistance);
-		}
-
-		// enable PID and clears target distance
-		public void enablePID() {
-			pidEnabled = true;
-			time = System.currentTimeMillis();
-			targetDistance = 0;
-			integralError = 0;
-			previousError = 0;
-			netDistance = 0;
-			time = 0;
-		}
-
-		// disables the PID
-		public void disablePID() {
-			pidEnabled = false;
-		}
-
-		// runs the PID using the constants kP, kI, and kD
-		public void runPID() {
-			if (pidEnabled) {
-				double currentDistance = getNetDistance();
-				double currentError = (targetDistance - currentDistance);
-				integralError += currentError;
-				double speed = kP * currentError + kI * integralError + kD * (currentError - previousError);
-				previousError = currentError;
-				if (speed > 1.0) {
-					speed = 1.0;
-				} else if (speed < -1.0) {
-					speed = -1.0;
-				}
-				if (inverted) {
-					SmartDashboard.putNumber("Drive pid left", speed);
-				} else {
-					SmartDashboard.putNumber("Drive pid right", speed);
-				}
-				set(speed);
-
-			} else {
-				set(0);
-			}
-		}
-
-		// returns true if robot is at target, and false if robot is not at
-		// target
-		// all I do is win, win, no matter what
-		public boolean isAtTarget() {
-			// TODO: Verify grace distance
-			return Math.abs(this.targetDistance - getNetDistance()) < 12;
-		}
-
-		// gets the net distance using input of time
-		public double getNetDistance() {
-			double pTime = time;
-			time = System.currentTimeMillis();
-			netDistance += (getSpeed() * (time - pTime)) / 1000.0;
-			return netDistance;
-		}
-
-		public void resetNetDistance() {
-			netDistance = 0;
 		}
 	}
 }
