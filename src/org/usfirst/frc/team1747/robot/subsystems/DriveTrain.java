@@ -122,7 +122,6 @@ public class DriveTrain extends Subsystem implements SDLogger {
 
 	public double getAutonTurn() {
 		return autonTurn;
-
 	}
 
 	public void resetGyro() {

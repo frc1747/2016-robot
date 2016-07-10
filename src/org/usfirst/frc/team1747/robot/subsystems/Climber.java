@@ -1,42 +1,60 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.SDLogger;
+
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *
  */
 public class Climber extends Subsystem implements SDLogger {
 
-	private CANTalon rightClimberTalon;
-	private CANTalon leftClimberTalon;
-	//maps the left and right climber talons
+	private Talon climberTalon;
+	private Talon blowerTalon;
+	private Boolean isInflated;
+
+	// maps the left and right climber talons
 	public Climber() {
-		rightClimberTalon = new CANTalon(RobotMap.RIGHT_CLIMB_CIM);
-		leftClimberTalon = new CANTalon(RobotMap.LEFT_CLIMB_CIM);
+		climberTalon = new Talon(RobotMap.CLIMB_CIM);
+		blowerTalon = new Talon(RobotMap.BLOW_CIM);
+		isInflated = false;
 	}
-	//sets the speed of the left and right climber talons
+
+	// sets up the climber speed for going up
 	private void climbControl(double speed) {
-		rightClimberTalon.set(speed);
-		leftClimberTalon.set(speed);
+		if (isInflated) {
+			climberTalon.set(speed);
+		}
 	}
-	//sets up the climber speed for going up
+
+	// sets up the climber speed for going down
+	public void inflationControl(double speed) {// blow up command
+		blowerTalon.set(speed);
+		isInflated = true;
+	}
+
+	public void stopClimb() {
+		climbControl(0.0);
+	}
+
+	public void stopInflate() {
+		inflationControl(0.0);
+	}
+
 	public void climbUp() {
 		climbControl(1.0);
 	}
-	//sets up the climber speed for going down
-	public void goDown() {
-		climbControl(-0.5);
+
+	public void inflateClimber() {
+		inflationControl(1.0);
 	}
 
 	public void initDefaultCommand() {
 	}
 
-	@Override
 	public void logToSmartDashboard() {
-		// TODO Auto-generated method stub
-		
+
 	}
 }

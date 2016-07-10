@@ -17,7 +17,6 @@ public class SDController {
 
 	public SDController() {
 		SmartDashboard.putData(Scheduler.getInstance());
-		SmartDashboard.putBoolean("LastSecondShot", false);
 		autonPosition = new SendableChooser();
 		autonPosition.addObject("Don't shoot", Positions.NOTHING);
 		autonPosition.addObject("1", Positions.ONE);
@@ -52,9 +51,11 @@ public class SDController {
 
 	public void refresh() {
 		sdLoggers.forEach(SDLogger::logToSmartDashboard);
-		SmartDashboard.putString("ShooterDirection", networkTable.getString("ShootDirection", "robotUnknown"));
+		String direction = networkTable.getString("ShootDirection", "robotUnknown");
+		SmartDashboard.putString("ShooterDirection", direction);
 		SmartDashboard.putNumber("ShooterRads", networkTable.getNumber("ShootRads", 0.0));
 		SmartDashboard.putNumber("Vison Gyro Calculated Angle", networkTable.getNumber("GyroAngle", 0.0));
+		SmartDashboard.putBoolean("OnTarget", direction.equals("shoot"));
 	}
 
 	public Positions getAutonPosition() {
@@ -72,5 +73,4 @@ public class SDController {
 	public enum Defense {
 		PORTICULLIS, CHEVAL_DE_FRISE, RAMPARTS, MOAT, DRAWBRIDGE, SALLY_PORT, ROCK_WALL, ROUGH_TERRAIN, LOW_BAR
 	}
-
 }

@@ -1,6 +1,8 @@
 package org.usfirst.frc.team1747.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
@@ -9,7 +11,7 @@ public class Shoot extends Command {
 
 	private Shooter shooter;
 	private Intake intake;
-	private long startTime = -1;
+	private double timeToSettle;
 
 	public Shoot() {
 		shooter = Robot.getShooter();
@@ -19,31 +21,28 @@ public class Shoot extends Command {
 	}
 
 	protected void initialize() {
-		startTime = -1;
+		timeToSettle = 0;
 		shooter.setSetpoint(shooter.getTargetShooterSpeed());
-		shooter.enablePID();
+		shooter.pidEnable();
 	}
 
 	protected void execute() {
-		shooter.runPID();
-		if (shooter.isAtTarget()) {
-			if (startTime == -1) {
-				startTime = System.currentTimeMillis();
-			} else if (System.currentTimeMillis() - startTime > 500) {
-				intake.intakeBall();
+		if(shooter.isAtTarget()) {
+			if(timeToSettle == 0) {
+				timeToSettle = timeSinceInitialized();
+				SmartDashboard.putNumber("Time to Settle", timeToSettle);
 			}
-		} else {
-			startTime = -1;
+			intake.intakeBall();
 		}
 	}
 
 	protected boolean isFinished() {
-		return startTime != -1 && System.currentTimeMillis() - startTime > 2000;
+		return false;
 	}
 
 	protected void end() {
-		shooter.disablePID();
-		shooter.shoot(0.0);
+		shooter.pidDisable();
+		shooter.setSpeed(0.0);
 		intake.rollerStop();
 	}
 

@@ -1,34 +1,40 @@
 package org.usfirst.frc.team1747.robot.commands;
 
 import org.usfirst.frc.team1747.robot.Robot;
-import org.usfirst.frc.team1747.robot.subsystems.Flashlight;
+import org.usfirst.frc.team1747.robot.subsystems.Climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class TurnOnFlashlight extends Command {
+public class Climb extends Command {
 
-	Flashlight flashlight;
+	Climber climber;
 
-	public TurnOnFlashlight() {
-		flashlight = Robot.getFlashlight();
-		requires(flashlight);
+	public Climb() {
+		climber = Robot.getClimber();
+		requires(climber);
 	}
 
+	@Override
 	protected void initialize() {
-		flashlight.turnOnFlashlight();
+		climber.climbUp();
 	}
 
+	@Override
 	protected void execute() {
+
 	}
 
+	@Override
 	protected boolean isFinished() {
 		return false;
 	}
 
+	@Override
 	protected void end() {
-		flashlight.turnOffFlashlight();
+		climber.stopClimb();
 	}
 
+	@Override
 	protected void interrupted() {
 		end();
 	}

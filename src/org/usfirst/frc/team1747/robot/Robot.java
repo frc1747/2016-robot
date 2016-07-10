@@ -1,8 +1,10 @@
 package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.commands.BasicAuton;
+import org.usfirst.frc.team1747.robot.subsystems.Climber;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrainPID;
+import org.usfirst.frc.team1747.robot.subsystems.Flashlight;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
@@ -10,6 +12,7 @@ import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,10 +25,12 @@ public class Robot extends IterativeRobot {
 
 	private static OI oi;
 	private static Shooter shooter;
+	private static Flashlight flashlight;
 	private static DriveTrain drive;
 	private static SDController sd;
 	private static Intake intake;
 	private static Scooper scooper;
+	private static Climber climber;
 	private static DriveTrainPID pid;
 
 	public static DriveTrain getDriveTrain() {
@@ -43,6 +48,10 @@ public class Robot extends IterativeRobot {
 	public static Shooter getShooter() {
 		return shooter;
 	}
+	
+	public static Flashlight getFlashlight() {
+		return flashlight;
+	}
 
 	public static Intake getIntake() {
 		return intake;
@@ -56,13 +65,19 @@ public class Robot extends IterativeRobot {
 		return pid;
 	}
 
+	public static Climber getClimber() {
+		return climber;
+	}
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		climber = new Climber();
 		shooter = new Shooter();
+		flashlight = new Flashlight();
 		drive = new DriveTrain();
 		intake = new Intake();
 		scooper = new Scooper();
@@ -126,6 +141,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("LEFT SHOOTER SPEED", shooter.getLeftSpeed());
+		SmartDashboard.putNumber("RIGHT SHOOTER SPEED", shooter.getRightSpeed());
 		sd.refresh();
 	}
 
