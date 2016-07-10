@@ -1,266 +1,191 @@
 package org.usfirst.frc.team1747.robot.subsystems;
 
-import java.util.LinkedList;
-
 import org.usfirst.frc.team1747.robot.RobotMap;
 import org.usfirst.frc.team1747.robot.SDLogger;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends Subsystem implements SDLogger {
 
-	private static final double kLP = .3, kLI = 0, kLD = .03, kLF = .87, kRP = .3, kRI = 0, kRD = .03, kRF = .895,
-			targetShooterSpeed = .65, shooterErrorMargin = .020;
-	private ShooterSide left, right;
-	private Solenoid flashlight;
-	private boolean pidEnabled;
+	private boolean pidEnabled = false;
+	private ShooterSide leftShooter, rightShooter;
 
-	// set up left and right sides of the shooter, puts variables onto the
-	// SmartDashboard
+	private static final double LKP = 0.0126, LKI = 0.300, LKD = 0.075, LKF = 0;
+	private static final double RKP = 0.012, RKI = 0.300, RKD = 0.075, RKF = 0;
+
+	private static final double targetShooterSpeed = 67;
+
 	public Shooter() {
-		left = new ShooterSide(RobotMap.LEFT_SHOOTER_MOTOR_ONE, RobotMap.LEFT_SHOOTER_MOTOR_TWO, true,
-				RobotMap.LEFT_COUNTER);
-		right = new ShooterSide(RobotMap.RIGHT_SHOOTER_MOTOR_ONE, RobotMap.RIGHT_SHOOTER_MOTOR_TWO, false,
-				RobotMap.RIGHT_COUNTER);
-		flashlight = new Solenoid(RobotMap.FLASHLIGHT);
-		pidEnabled = false;
-		SmartDashboard.putNumber("Target Shooter Speed", targetShooterSpeed);
-		SmartDashboard.putNumber("Shooter LP", kLP);
-		SmartDashboard.putNumber("Shooter LI", kLI);
-		SmartDashboard.putNumber("Shooter LD", kLD);
-		SmartDashboard.putNumber("Shooter LF", kLF);
-		SmartDashboard.putNumber("Shooter RP", kRP);
-		SmartDashboard.putNumber("Shooter RI", kRI);
-		SmartDashboard.putNumber("Shooter RD", kRD);
-		SmartDashboard.putNumber("Shooter RF", kRF);
-		SmartDashboard.putNumber("Shooter error margin", shooterErrorMargin);
-	}
+		leftShooter = new ShooterSide(RobotMap.LEFT_SHOOTER_MOTOR_ONE, RobotMap.LEFT_SHOOTER_MOTOR_TWO,
+				RobotMap.LEFT_SHOOTER_INVERTED, RobotMap.LEFT_COUNTER, LKP, LKI, LKD, LKF, "LEFT");
 
-	public double getTargetShooterSpeed() {
-		return SmartDashboard.getNumber("Target Shooter Speed", targetShooterSpeed);
-	}
-
-	// enables PID
-	public void enablePID() {
-		left.enablePID();
-		right.enablePID();
-		pidEnabled = true;
-	}
-
-	// disables PID
-	public void disablePID() {
-		left.disablePID();
-		right.disablePID();
-		pidEnabled = false;
-	}
-
-	public boolean isPidEnabled() {
-		return pidEnabled;
-	}
-
-	// runs PID
-	public void runPID() {
-		left.runPID();
-		right.runPID();
-	}
-
-	public double getLeftSpeed() {
-		return left.getSpeed();
-	}
-
-	public double getRightSpeed() {
-		return right.getSpeed();
-	}
-
-	public void turnOnFlashlight() {
-		flashlight.set(true);
-	}
-
-	public void turnOffFlashlight() {
-		flashlight.set(false);
+		rightShooter = new ShooterSide(RobotMap.RIGHT_SHOOTER_MOTOR_ONE, RobotMap.RIGHT_SHOOTER_MOTOR_TWO,
+				RobotMap.RIGHT_SHOOTER_INVERTED, RobotMap.RIGHT_COUNTER, RKP, RKI, RKD, RKF, "RIGHT");
 	}
 
 	@Override
 	protected void initDefaultCommand() {
 	}
 
-	// logs variables to SmartDashboard
-	public void logToSmartDashboard() {
-		SmartDashboard.putNumber("Left Shooter Speed", getLeftSpeed());
-		SmartDashboard.putNumber("Right Shooter Speed", getRightSpeed());
-		left.setPID(SmartDashboard.getNumber("Shooter LP", left.getP()),
-				SmartDashboard.getNumber("Shooter LI", left.getI()),
-				SmartDashboard.getNumber("Shooter LD", left.getD()),
-				SmartDashboard.getNumber("Shooter LF", left.getF()));
-		right.setPID(SmartDashboard.getNumber("Shooter RP", right.getP()),
-				SmartDashboard.getNumber("Shooter RI", right.getI()),
-				SmartDashboard.getNumber("Shooter RD", right.getD()),
-				SmartDashboard.getNumber("Shooter RF", right.getF()));
+	public double getTargetShooterSpeed() {
+		return targetShooterSpeed;
 	}
 
-	public void setSetpoint(double targetSpeed) {
-		left.setSetpoint(targetSpeed);
-		right.setSetpoint(targetSpeed);
+	public void setSpeed(double output) {
+		leftShooter.setSpeed(output);
+		rightShooter.setSpeed(output);
 	}
-
-	public void shoot(double speed) {
-		left.set(speed);
-		right.set(speed);
+	
+	public double getLeftSpeed() {
+		return leftShooter.getSpeed();
 	}
-
+	
+	public double getRightSpeed() {
+		return rightShooter.getSpeed();
+	}
+	
+	public double getLeftVoltage() {
+		return leftShooter.getVoltage();
+	}
+	
+	public double getRightVoltage() {
+		return rightShooter.getVoltage();
+	}
+	
+	public void pidEnable() {
+		pidEnabled = true;
+		leftShooter.pidEnable();
+		rightShooter.pidEnable();
+	}
+	
+	public void pidDisable() {
+		pidEnabled = false;
+		leftShooter.pidDisable();
+		rightShooter.pidDisable();
+	}
+	
+	public boolean isPidEnabled() {
+		return pidEnabled;
+	}
+	
 	public boolean isAtTarget() {
-		return left.isAtTarget() && right.isAtTarget();
+		return (leftShooter.isAtTarget() && rightShooter.isAtTarget());
+	}
+	
+	public void setSetpoint(double targetShooterSpeed) {
+		leftShooter.setSetpoint(targetShooterSpeed);
+		rightShooter.setSetpoint(targetShooterSpeed);
 	}
 
-	private class ShooterSide {
-		private static final int errBuffSize = 10;
-		CANTalon motorOne, motorTwo;
-		Counter counter;
-		double kP, kI, kD, kF, targetSpeed, integralError, previousError, totalPreviousSpeeds;
-		LinkedList<Double> previousSpeeds;
-		long previousTime;
+	@Override
+	public void logToSmartDashboard() {
+	}
+	
+	private class ShooterSide implements PIDSource, PIDOutput {
+		private CANTalon motorOne;
+		private CANTalon motorTwo;
+		private Counter counter;
+		private PIDController controller;
+		private boolean atTarget = false;
+		private int count = 0;
+		String side;
 
-		// sets up both sides of the shooter
-		public ShooterSide(int motorOneId, int motorTwoId, boolean inverted, int counterId) {
+		private static final double shooterErrorMargin = 1.0;
+
+		public ShooterSide(int motorOneId, int motorTwoId, boolean motorsInverted, int counterId,
+				double KP, double KI, double KD, double KF, String shooterSide) {
 			motorOne = new CANTalon(motorOneId);
 			motorTwo = new CANTalon(motorTwoId);
-			motorOne.changeControlMode(TalonControlMode.Voltage);
-			motorTwo.changeControlMode(TalonControlMode.Voltage);
-			motorOne.setInverted(inverted);
-			motorTwo.setInverted(inverted);
+			motorOne.setInverted(motorsInverted);
+			motorTwo.setInverted(motorsInverted);
+
 			counter = new Counter();
 			counter.setUpSource(counterId);
 			counter.setUpDownCounterMode();
 			counter.setPIDSourceType(PIDSourceType.kRate);
 			counter.setDistancePerPulse(1.0);
-			targetSpeed = 0;
-			integralError = 0;
-			previousError = 0;
-			previousTime = 0;
-			totalPreviousSpeeds = 0;
-			previousSpeeds = new LinkedList<>();
+			counter.setSamplesToAverage(1);
+			
+			controller = new PIDController(KP, KI, KD, KF, this, this);
+			controller.setAbsoluteTolerance(1.0);
+			controller.setOutputRange(0, 1);
+			
+			side = shooterSide;
+			
+			SmartDashboard.putData(side + " SHOOTER PID", controller);
 		}
 
-		public boolean isAtTarget() {
-			System.out.println("Tolerance " + Math.abs(getAvgSpeed() - targetSpeed) / targetSpeed);
-			return Math.abs((getAvgSpeed() - targetSpeed) / targetSpeed) < SmartDashboard
-					.getNumber("Shooter error margin", .02);
+		public void setSpeed(double output) {
+			motorOne.set(output);
+			motorTwo.set(output);
 		}
-
-		public double getP() {
-			return kP;
-		}
-
-		public double getI() {
-			return kI;
-		}
-
-		public double getD() {
-			return kD;
-		}
-
-		public double getF() {
-			return kF;
-		}
-
-		// makes function getspeed which returns the counter rate/10,000
+		
 		public double getSpeed() {
-			return counter.getRate() / 100.0;
+			return counter.getRate();
+		}
+		
+		public double getVoltage() {
+			return motorOne.getOutputVoltage();
 		}
 
-		public double getAvgSpeed() {
-			if (previousSpeeds.size() == 0) {
-				return 0;
-			} else {
-				return totalPreviousSpeeds / previousSpeeds.size();
+		public void pidEnable() {
+			count = 0;
+			controller.enable();
+		}
+		
+		public void pidDisable() {
+			count = 0;
+			controller.disable();
+		}
+		
+		public boolean isAtTarget() {
+			if(Math.abs(targetShooterSpeed - getSpeed()) < shooterErrorMargin) {
+				count++;
 			}
-		}
-
-		// Variation of
-		// http://www.chiefdelphi.com/forums/showpost.php?p=690837&postcount=13
-		// runs PID and puts left and right speeds on SmartDashboard
-		public void runPID() {
-			double currentSpeed = getSpeed();
-			double deltaTime = (System.currentTimeMillis() - previousTime) / 1000.0;
-			double currentError = targetSpeed - currentSpeed;
-			double derivative = 0;
-			previousSpeeds.addFirst(currentSpeed);
-			totalPreviousSpeeds += currentSpeed;
-			if (previousSpeeds.size() > errBuffSize) {
-				totalPreviousSpeeds -= previousSpeeds.removeLast();
+			else {
+				count = 0;
+				atTarget = false;
 			}
-			integralError += currentError * deltaTime;
-			if (deltaTime > .0001) {
-				derivative = (currentError - previousError) / deltaTime;
+			if(count > 7) atTarget = true;
+			SmartDashboard.putNumber(side + " SHOOTER COUNT", count);
+			SmartDashboard.putBoolean(side + " IS AT TARGET", atTarget);
+			
+			return atTarget;
+		}
+		
+		public void setSetpoint(double output) {
+			controller.setSetpoint(output);
+		}
+		
+		@Override
+		public void pidWrite(double output) {
+			if (getSpeed() < 20) {
+				output = Math.min(0.7, output);
 			}
-			double speed = kF * targetSpeed + kP * currentError + kI * integralError + kD * derivative;
-			previousError = currentError;
-			previousTime = System.currentTimeMillis();
-			if (speed > 1.0) {
-				speed = 1.0;
-				System.out.println("Speed > 1.0");
-			} else if (speed < -1.0) {
-				speed = -1.0;
-				System.out.println("Speed < -1.0");
-			}
-			if (motorOne.getInverted()) {
-				SmartDashboard.putNumber("Shooter PID Speed Left", speed);
-				SmartDashboard.putNumber("Left Delta Time", deltaTime);
-				System.out.println("P: " + (kP * currentError));
-				System.out.println("I: " + (kI * integralError));
-				System.out.println("D: " + (kD * derivative));
-				System.out.println("F: " + (kF * targetSpeed));
-				System.out.println("deltaTime: " + deltaTime);
-				System.out.println("currentError: " + currentError);
-				System.out.println("previousError: " + previousError);
-				System.out.println("targetSpeed: " + targetSpeed);
-			} else {
-				SmartDashboard.putNumber("Shooter PID Speed Right", speed);
-			}
-			set(speed);
+			motorOne.set(output);
+			motorTwo.set(output);
+			SmartDashboard.putNumber(side + " SHOOTER POWER", output);
 		}
 
-		// sets motor one and two speeds
-		public void set(double speed) {
-			speed *= 12.0;
-			motorOne.set(speed);
-			motorTwo.set(speed);
-			System.out.println("Setting speed to " + speed);
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
 		}
 
-		// sets kP, kI, kD, and kF
-		public void setPID(double p, double i, double d, double f) {
-			kP = p;
-			kI = i;
-			kD = d;
-			kF = f;
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return PIDSourceType.kRate;
 		}
 
-		// sets the target speed
-		public void setSetpoint(double targetSpeed) {
-			this.targetSpeed = targetSpeed;
-			System.out.println("Setting setpoint to " + targetSpeed);
-		}
-
-		// enables the PID
-		public void enablePID() {
-			previousTime = System.currentTimeMillis();
-		}
-
-		// turns off the PID and clears target speed
-		public void disablePID() {
-			targetSpeed = 0;
-			integralError = 0;
-			previousError = 0;
-			previousTime = 0;
-			totalPreviousSpeeds = 0;
-			previousSpeeds.clear();
+		@Override
+		public double pidGet() {
+			return counter.getRate();
 		}
 	}
 }

@@ -11,7 +11,6 @@ public class LowGoalShoot extends Command {
 	boolean pidMode;
 	private Shooter shooter;
 	private Intake intake;
-	private double time = -1;
 
 	public LowGoalShoot() {
 		shooter = Robot.getShooter();
@@ -22,13 +21,12 @@ public class LowGoalShoot extends Command {
 
 	@Override
 	protected void initialize() {
-		shooter.shoot(.2);
-		time = System.currentTimeMillis();
+		shooter.setSpeed(0.2);
 	}
 
 	@Override
 	protected void execute() {
-		if (shooter.getLeftSpeed() >= 0.14 && shooter.getRightSpeed() >= 0.14) {
+		if (shooter.getLeftSpeed() >= 14 && shooter.getRightSpeed() >= 14) {
 			intake.intakeBall();
 		}
 	}
@@ -40,7 +38,7 @@ public class LowGoalShoot extends Command {
 
 	@Override
 	protected void end() {
-		shooter.shoot(0.0);
+		shooter.setSpeed(0.0);
 		intake.rollerControl(0);
 	}
 
