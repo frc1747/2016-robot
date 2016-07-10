@@ -20,7 +20,6 @@ public class TurnToAngle extends Command {
 		driveTrain.resetLeftDistance();
 		driveTrain.resetRightDistance();
 		driveTrain.arcadeDrive(0.0, 0.25);
-		System.currentTimeMillis();
 	}
 
 	protected void execute() {
