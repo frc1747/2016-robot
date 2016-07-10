@@ -26,6 +26,8 @@ public class DriveStraightForward extends Command {
         }
         if (defenseType == SDController.Defense.ROUGH_TERRAIN || defenseType == SDController.Defense.MOAT) {
             defaultTime -= 50;
+        } else if (defenseType == SDController.Defense.ROCK_WALL) {
+            defaultTime += 150;
         }
         driveTrain.tankDrive(.5, .5);
         startTime = System.currentTimeMillis();

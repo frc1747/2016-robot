@@ -6,6 +6,10 @@ import org.usfirst.frc.team1747.robot.commands.IntakeBall;
 import org.usfirst.frc.team1747.robot.commands.LowerLift;
 import org.usfirst.frc.team1747.robot.commands.RaiseLift;
 import org.usfirst.frc.team1747.robot.commands.Shoot;
+import org.usfirst.frc.team1747.robot.commands.Turn90;
+import org.usfirst.frc.team1747.robot.commands.TurnOnFlashlight;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class OI {
 
@@ -27,6 +31,8 @@ public class OI {
 		auxController.getA().whenPressed(new LowerLift());
 		auxController.getB().toggleWhenPressed(new BallEject());
 		auxController.getY().whenPressed(new RaiseLift());
+		auxController.getBack().toggleWhenPressed(new TurnOnFlashlight());
+		SmartDashboard.putData("Turn90", new Turn90());
 		// auxController.getRightTrigger().whenPressed(new TurnToAngle());
 	}
 

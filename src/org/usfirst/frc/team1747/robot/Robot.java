@@ -2,6 +2,7 @@ package org.usfirst.frc.team1747.robot;
 
 import org.usfirst.frc.team1747.robot.commands.BasicAuton;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1747.robot.subsystems.DriveTrainPID;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
 import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
@@ -25,6 +26,35 @@ public class Robot extends IterativeRobot {
 	private static SDController sd;
 	private static Intake intake;
 	private static Scooper scooper;
+	private static DriveTrainPID pid;
+
+	public static DriveTrain getDriveTrain() {
+		return drive;
+	}
+
+	public static OI getOi() {
+		return oi;
+	}
+
+	public static SDController getSd() {
+		return sd;
+	}
+
+	public static Shooter getShooter() {
+		return shooter;
+	}
+
+	public static Intake getIntake() {
+		return intake;
+	}
+
+	public static Scooper getScooper() {
+		return scooper;
+	}
+
+	public static DriveTrainPID getDriveTrainPID() {
+		return pid;
+	}
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -36,13 +66,12 @@ public class Robot extends IterativeRobot {
 		drive = new DriveTrain();
 		intake = new Intake();
 		scooper = new Scooper();
+		pid = new DriveTrainPID();
 		oi = new OI();
 		sd = new SDController();
+		sd.addSystems(shooter, drive, intake, scooper);
 		drive.resetGyro();
 		sd.refresh();
-		// CameraServer camera = CameraServer.getInstance();
-		// camera.setQuality(50);
-		// camera.startAutomaticCapture("cam0");
 	}
 
 	/**
@@ -107,29 +136,5 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 		sd.refresh();
-	}
-
-	public static DriveTrain getDriveTrain() {
-		return drive;
-	}
-
-	public static OI getOi() {
-		return oi;
-	}
-
-	public static SDController getSd() {
-		return sd;
-	}
-
-	public static Shooter getShooter() {
-		return shooter;
-	}
-
-	public static Intake getIntake() {
-		return intake;
-	}
-
-	public static Scooper getScooper() {
-		return scooper;
 	}
 }
