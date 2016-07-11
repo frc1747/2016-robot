@@ -22,28 +22,21 @@ public class Turn90 extends Command {
 		driveTrain.resetGyro();
 		drivePID.setSetpoint(90.0);
 		drivePID.pidEnable();
-
-		// driveTrain.resetGyro();
-		// driveTrain.enablePID();
-		// driveTrain.setSetpoint(90);
 	}
 
 	@Override
 	protected void execute() {
-		// driveTrain.runPID();
 	}
 
 	@Override
 	protected boolean isFinished() {
 		return drivePID.isAtTarget();
-		// return driveTrain.isAtTarget();
 	}
 
 	@Override
 	protected void end() {
 		drivePID.pidDisable();
-		// driveTrain.disablePID();
-		// driveTrain.arcadeDrive(0.0, 0.0);
+		driveTrain.arcadeDrive(0.0, 0.0);
 	}
 
 	@Override
