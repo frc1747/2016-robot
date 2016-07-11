@@ -25,6 +25,7 @@ public class AutoShoot extends Command {
 	private NetworkTable networkTable;
 	private double startTime;
 	private SDController.Positions position;
+	private double turnValue;
 	private DriverStation driverStation;
 	private double gyroAngle; // reading from Gyro at beginning of execution
 	DriveTrainPID drivePID;
@@ -55,6 +56,7 @@ public class AutoShoot extends Command {
 		startTime = -1;
 		flashlight.turnOffFlashlight();
 		driveTrain.resetGyro();
+		turnValue = driveTrain.getAutonTurn();
 	}
 
 	protected void execute() {
@@ -107,6 +109,14 @@ public class AutoShoot extends Command {
 				} else if (direction.equals("backward")) {
 					driveTrain.arcadeDrive(-0.25, 0.0);
 					startTime = -1;
+				} else if (direction.equals("unknown")) {
+					// Add Lift If 1
+					if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
+							|| position == SDController.Positions.THREE) {
+						driveTrain.arcadeDrive(0, 1.3 * turnValue);
+					} else {
+						driveTrain.arcadeDrive(0, 1.3 * -turnValue);
+					}
 				}
 			}
 		}
