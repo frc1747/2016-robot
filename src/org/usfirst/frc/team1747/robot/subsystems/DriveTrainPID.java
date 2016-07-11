@@ -11,21 +11,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 
-	double kP, kI, kD, kF;
-	DriveTrain drive;
+	private double kP, kI, kD, kF;
+	DriveTrain driveTrain;
 	PIDController pidController;
-	double cameraAngle;
+	private double cameraAngle;
+	private double driveSetpoint;
+	private boolean atTarget = false;
+	private int count = 0;
+	private static final double errorMargin = 1.0;
 
 	public DriveTrainPID() {
 		cameraAngle = -1.0;
 		kP = 0.039;
 		kI = 0.005;// 0.326;
-		kD = 0.08;// 0.0815;
+		kD = 0.080;// 0.0815;
 		kF = 0.0;
 		pidController = new PIDController(kP, kI, kD, kF, this, this);
 		pidController.setOutputRange(-0.5, 0.5);
 		pidController.setAbsoluteTolerance(0.5);
-		drive = Robot.getDriveTrain();
+		driveTrain = Robot.getDriveTrain();
 		SmartDashboard.putData("PIDController", pidController);
 	}
 
@@ -33,8 +37,8 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 	}
 
 	public void pidWrite(double output) {
-		SmartDashboard.putNumber("PIDOutPut", output);
-		drive.arcadeDrive(0, output);
+		SmartDashboard.putNumber("DRIVE PID Output", output);
+		driveTrain.arcadeDrive(0, output);
 	}
 
 	public void setPIDSourceType(PIDSourceType pidSource) {
@@ -46,23 +50,36 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 
 	public double pidGet() {
 		SmartDashboard.putNumber("CAMERA_ANGLE", cameraAngle);
-		return drive.getTurnAngle();
+		return driveTrain.getTurnAngle();
 	}
 
-	public void setSetPoint(double setPoint) {
-		pidController.setSetpoint(setPoint);
+	public void setSetpoint(double setpoint) {
+		driveSetpoint = setpoint;
+		pidController.setSetpoint(setpoint);
 	}
 
 	public void pidEnable() {
+		count = 0;
 		pidController.enable();
 	}
 
 	public void pidDisable() {
+		count = 0;
 		pidController.disable();
 	}
 
 	public boolean isAtTarget() {
-		return pidController.onTarget();
+		if(Math.abs(driveSetpoint - driveTrain.getTurnAngle()) < errorMargin) {
+			count++;
+		}
+		else {
+			count = 0;
+			atTarget = false;
+		}
+		if(count > 7) atTarget = true;
+		SmartDashboard.putNumber("DRIVE PID COUNT", count);
+		SmartDashboard.putBoolean("DRIVE PID IS AT TARGET", atTarget);
+		return atTarget;
 	}
 
 	public void setCameraAngle(double newCameraAngle) {

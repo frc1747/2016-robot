@@ -9,19 +9,19 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Turn90 extends Command {
 
 	private DriveTrain driveTrain;
-	private DriveTrainPID pid;
+	private DriveTrainPID drivePID;
 
 	public Turn90() {
 		driveTrain = Robot.getDriveTrain();
-		pid = Robot.getDriveTrainPID();
-		requires(pid);
+		drivePID = Robot.getDriveTrainPID();
+		requires(drivePID);
 		requires(driveTrain);
 	}
 
 	protected void initialize() {
 		driveTrain.resetGyro();
-		pid.setSetPoint(90.0);
-		pid.pidEnable();
+		drivePID.setSetpoint(90.0);
+		drivePID.pidEnable();
 
 		// driveTrain.resetGyro();
 		// driveTrain.enablePID();
@@ -35,13 +35,13 @@ public class Turn90 extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return pid.isAtTarget();
+		return drivePID.isAtTarget();
 		// return driveTrain.isAtTarget();
 	}
 
 	@Override
 	protected void end() {
-		pid.pidDisable();
+		drivePID.pidDisable();
 		// driveTrain.disablePID();
 		// driveTrain.arcadeDrive(0.0, 0.0);
 	}
