@@ -37,6 +37,12 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 	}
 
 	public void pidWrite(double output) {
+		/*if(output < 0 && output > -0.2) {
+			output = Math.min(-0.2, output);
+		}
+		else if(output > 0 && output < 0.2) {
+			output = Math.max(0.2, output);
+		}*/
 		SmartDashboard.putNumber("DRIVE PID Output", output);
 		driveTrain.arcadeDrive(0, output);
 	}

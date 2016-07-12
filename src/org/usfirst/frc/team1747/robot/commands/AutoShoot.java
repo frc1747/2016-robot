@@ -76,6 +76,7 @@ public class AutoShoot extends Command {
 		if (position != SDController.Positions.NOTHING) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
 			SmartDashboard.putBoolean("Is at Target!", drivePID.isAtTarget());
+
 			if (SmartDashboard.getBoolean("LastSecondShot", false) && driverStation.isAutonomous()
 					&& !direction.equals("robotUnknown") && driverStation.getMatchTime() < 3) {
 				direction = "shoot";
@@ -89,9 +90,11 @@ public class AutoShoot extends Command {
 				}
 				if(shooter.isAtTarget()) {
 					intake.intakeBall();
+					if(startTime == -1) startTime = System.currentTimeMillis();
 				}
 			}
 			else {
+				startTime = -1;
 				shooter.pidDisable();
 				shooter.setSpeed(0.0);
 				if(direction.equals("left") || direction.equals("right")) {
@@ -100,17 +103,13 @@ public class AutoShoot extends Command {
 						drivePID.pidEnable();
 					}
 					if (drivePID.isAtTarget()) {
-						//drivePID.setSetpoint(networkTable.getNumber("GyroAngle", 0.0) * 1.9);
 						drivePID.pidDisable();
 					}
 				} else if (direction.equals("forward")) {
 					driveTrain.arcadeDrive(0.25, 0.0);
-					startTime = -1;
 				} else if (direction.equals("backward")) {
 					driveTrain.arcadeDrive(-0.25, 0.0);
-					startTime = -1;
 				} else if (direction.equals("unknown")) {
-					// Add Lift If 1
 					if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
 							|| position == SDController.Positions.THREE) {
 						driveTrain.arcadeDrive(0, 1.3 * turnValue);
@@ -125,7 +124,7 @@ public class AutoShoot extends Command {
 	// returns true if auto mode is done, if not it returns false; uses
 	// startTime, position, and the current system time
 	protected boolean isFinished() {
-		return (startTime != -1 && System.currentTimeMillis() - startTime > 2250) || position == SDController.Positions.NOTHING;
+		return (startTime != -1 && System.currentTimeMillis() - startTime > 500) || position == SDController.Positions.NOTHING;
 	}
 
 	// ends shoot and arcadeDrive

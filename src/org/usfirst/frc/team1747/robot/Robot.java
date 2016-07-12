@@ -10,6 +10,7 @@ import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,6 +33,8 @@ public class Robot extends IterativeRobot {
 	private static Scooper scooper;
 	private static Climber climber;
 	private static DriveTrainPID pid;
+	
+	private Command auton;
 
 	public static DriveTrain getDriveTrain() {
 		return drive;
@@ -96,6 +99,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
+		if(auton != null)
+		{
+			auton.cancel();
+			auton = null;
+		}
 		sd.refresh();
 	}
 
@@ -118,7 +126,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		new BasicAuton().start();
+		(auton = new BasicAuton()).start();
 	}
 
 	/**
@@ -129,9 +137,14 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		sd.refresh();
 	}
-
+	
 	@Override
 	public void teleopInit() {
+		if(auton != null)
+		{
+			auton.cancel();
+			auton = null;
+		}
 		sd.refresh();
 	}
 
