@@ -61,7 +61,7 @@ public class AutoShoot extends Command {
 
 	protected void execute() {
 		gyroAngle = Math.abs(driveTrain.getTurnAngle());
-		// Lowers scooper if not at lower limit
+
 		if (!scooper.isAtLowerLimit()) {
 			scooper.moveScooperDown();
 		} else {
@@ -75,15 +75,15 @@ public class AutoShoot extends Command {
 
 		if (position != SDController.Positions.NOTHING) {
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
-			SmartDashboard.putBoolean("Is at Target!", drivePID.isAtTarget());
 
 			if (SmartDashboard.getBoolean("LastSecondShot", false) && driverStation.isAutonomous()
 					&& !direction.equals("robotUnknown") && driverStation.getMatchTime() < 3) {
 				direction = "shoot";
 			}
 
-			if(direction.equals("shoot")) {
+			if(direction.equals("shoot") && (!drivePID.isPidEnabled() || drivePID.isAtTarget())) {
 				drivePID.pidDisable();
+				driveTrain.arcadeDrive(0, 0);
 				if(!shooter.isPidEnabled()) {
 					shooter.setSetpoint(shooter.getTargetShooterSpeed());
 					shooter.pidEnable();
@@ -99,30 +99,34 @@ public class AutoShoot extends Command {
 				shooter.setSpeed(0.0);
 				if(direction.equals("left") || direction.equals("right")) {
 					if (!drivePID.isPidEnabled()) {
-						drivePID.setSetpoint(networkTable.getNumber("GyroAngle", 0.0) * 1.9);
+						driveTrain.resetGyro();
+						double cameraAngle = networkTable.getNumber("GyroAngle", 0.0) * 1.9;
+						//drivePID.setCameraAngle(cameraAngle);
+						drivePID.setSetpoint(cameraAngle);
 						drivePID.pidEnable();
 					}
 					if (drivePID.isAtTarget()) {
 						drivePID.pidDisable();
 					}
-				} else if (direction.equals("forward")) {
-					driveTrain.arcadeDrive(0.25, 0.0);
-				} else if (direction.equals("backward")) {
-					driveTrain.arcadeDrive(-0.25, 0.0);
-				} else if (direction.equals("unknown")) {
-					if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
-							|| position == SDController.Positions.THREE) {
-						driveTrain.arcadeDrive(0, 1.3 * turnValue);
-					} else {
-						driveTrain.arcadeDrive(0, 1.3 * -turnValue);
+				} else {
+					drivePID.pidDisable();
+					if (direction.equals("forward")) {
+						driveTrain.arcadeDrive(0.25, 0.0);
+					} else if (direction.equals("backward")) {
+						driveTrain.arcadeDrive(-0.25, 0.0);
+					} else if (direction.equals("unknown")) {
+						if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
+								|| position == SDController.Positions.THREE) {
+							driveTrain.arcadeDrive(0, 1.3 * turnValue);
+						} else {
+							driveTrain.arcadeDrive(0, 1.3 * -turnValue);
+						}
 					}
 				}
 			}
 		}
 	}
 
-	// returns true if auto mode is done, if not it returns false; uses
-	// startTime, position, and the current system time
 	protected boolean isFinished() {
 		return (startTime != -1 && System.currentTimeMillis() - startTime > 500) || position == SDController.Positions.NOTHING;
 	}
@@ -137,13 +141,6 @@ public class AutoShoot extends Command {
 
 	protected void interrupted() {
 		end();
-	}
-
-	private double angleToTime(double shooterRads) {
-		if (shooterRads == 0.0) {
-			return -100;
-		}
-		return (SmartDashboard.getNumber("RadsThreshold", radsThreshold) - shooterRads) * SmartDashboard.getNumber("StallTime", stallTime);
 	}
 
 	public double getCameraAngle() {

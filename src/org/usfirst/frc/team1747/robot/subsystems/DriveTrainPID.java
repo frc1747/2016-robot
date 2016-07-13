@@ -19,6 +19,7 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 	private boolean atTarget = false;
 	private int count = 0;
 	private static final double errorMargin = 1.0;
+	//private static double minPower = 0.2;
 
 	public DriveTrainPID() {
 		cameraAngle = -1.0;
@@ -30,18 +31,20 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 		pidController.setOutputRange(-0.5, 0.5);
 		pidController.setAbsoluteTolerance(0.5);
 		driveTrain = Robot.getDriveTrain();
-		SmartDashboard.putData("PIDController", pidController);
+		SmartDashboard.putData("DRIVE PID Controller", pidController);
+		//SmartDashboard.putNumber("Drive Min Power", minPower);
 	}
 
 	protected void initDefaultCommand() {
 	}
 
 	public void pidWrite(double output) {
-		/*if(output < 0 && output > -0.2) {
-			output = Math.min(-0.2, output);
+		/*minPower = SmartDashboard.getNumber("Drive Min Power", minPower);
+		if(output < 0 && output > - minPower) {
+			output = - minPower;
 		}
-		else if(output > 0 && output < 0.2) {
-			output = Math.max(0.2, output);
+		else if(output > 0 && output < minPower) {
+			output = minPower;
 		}*/
 		SmartDashboard.putNumber("DRIVE PID Output", output);
 		driveTrain.arcadeDrive(0, output);
@@ -61,6 +64,7 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 
 	public void setSetpoint(double setpoint) {
 		driveSetpoint = setpoint;
+		SmartDashboard.putNumber("DRIVE PID SETPOINT", setpoint);
 		pidController.setSetpoint(setpoint);
 	}
 
@@ -82,7 +86,7 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 			count = 0;
 			atTarget = false;
 		}
-		if(count > 7) atTarget = true;
+		if(count > 40) atTarget = true;
 		SmartDashboard.putNumber("DRIVE PID COUNT", count);
 		SmartDashboard.putBoolean("DRIVE PID IS AT TARGET", atTarget);
 		return atTarget;
@@ -90,6 +94,12 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 
 	public void setCameraAngle(double newCameraAngle) {
 		cameraAngle = newCameraAngle;
+		/*if(Math.abs(cameraAngle) > 5.0) {
+			pidController.setPID(kP, 0, kD);
+		}
+		else {
+			pidController.setPID(kP, kI, kD);
+		}*/
 	}
 
 	public boolean isPidEnabled() {

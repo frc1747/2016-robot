@@ -5,6 +5,7 @@ import org.usfirst.frc.team1747.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1747.robot.subsystems.DriveTrainPID;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Turn90 extends Command {
 
@@ -16,11 +17,13 @@ public class Turn90 extends Command {
 		drivePID = Robot.getDriveTrainPID();
 		requires(drivePID);
 		requires(driveTrain);
+		
+		SmartDashboard.putNumber("Turn90 Angle", 90.0);
 	}
 
 	protected void initialize() {
 		driveTrain.resetGyro();
-		drivePID.setSetpoint(90.0);
+		drivePID.setSetpoint(SmartDashboard.getNumber("Turn90 Angle", 90.0));
 		drivePID.pidEnable();
 	}
 
