@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoShoot extends Command {
 
-	private static final double stallTime = 800, radsThreshold = .95;
 	private DriveTrain driveTrain;
 	private Shooter shooter;
 	private Flashlight flashlight;
@@ -27,10 +26,8 @@ public class AutoShoot extends Command {
 	private SDController.Positions position;
 	private double turnValue;
 	private DriverStation driverStation;
-	private double gyroAngle; // reading from Gyro at beginning of execution
-	DriveTrainPID drivePID;
+	private DriveTrainPID drivePID;
 
-	// sets up AutoShoot
 	public AutoShoot() {
 		driveTrain = Robot.getDriveTrain();
 		shooter = Robot.getShooter();
@@ -39,8 +36,6 @@ public class AutoShoot extends Command {
 		flashlight = Robot.getFlashlight();
 		drivePID = Robot.getDriveTrainPID();
 		networkTable = NetworkTable.getTable("imageProcessing");
-		SmartDashboard.putNumber("StallTime", stallTime);
-		SmartDashboard.putNumber("RadsThreshold", radsThreshold);
 		driverStation = DriverStation.getInstance();
 		requires(driveTrain);
 		requires(shooter);
@@ -50,7 +45,6 @@ public class AutoShoot extends Command {
 		requires(drivePID);
 	}
 
-	// initializes AutoShoot then prints out that it is running
 	protected void initialize() {
 		position = Robot.getSd().getAutonPosition();
 		startTime = -1;
@@ -60,8 +54,6 @@ public class AutoShoot extends Command {
 	}
 
 	protected void execute() {
-		gyroAngle = Math.abs(driveTrain.getTurnAngle());
-
 		if (!scooper.isAtLowerLimit()) {
 			scooper.moveScooperDown();
 		} else {
@@ -111,9 +103,9 @@ public class AutoShoot extends Command {
 				} else {
 					drivePID.pidDisable();
 					if (direction.equals("forward")) {
-						driveTrain.arcadeDrive(0.25, 0.0);
+						driveTrain.arcadeDrive(0.30, 0.0);
 					} else if (direction.equals("backward")) {
-						driveTrain.arcadeDrive(-0.25, 0.0);
+						driveTrain.arcadeDrive(-0.30, 0.0);
 					} else if (direction.equals("unknown")) {
 						if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
 								|| position == SDController.Positions.THREE) {
@@ -131,7 +123,6 @@ public class AutoShoot extends Command {
 		return (startTime != -1 && System.currentTimeMillis() - startTime > 500) || position == SDController.Positions.NOTHING;
 	}
 
-	// ends shoot and arcadeDrive
 	protected void end() {
 		drivePID.pidDisable();
 		driveTrain.arcadeDrive(0, 0);
@@ -141,10 +132,6 @@ public class AutoShoot extends Command {
 
 	protected void interrupted() {
 		end();
-	}
-
-	public double getCameraAngle() {
-		return networkTable.getNumber("GyroAngle", 0.0);
 	}
 }
 
