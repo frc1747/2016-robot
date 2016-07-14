@@ -74,7 +74,7 @@ public class AutoShoot extends Command {
 				direction = "shoot";
 			}
 
-			if(direction.equals("shoot") && (!drivePID.isPidEnabled() || drivePID.isAtTarget() || (drivePID.getPidOutput() < .10 && drivePID.getPidOutput() > -0.10))) {
+			if(direction.equals("shoot") && (!drivePID.isPidEnabled() || drivePID.isAtTarget() || (drivePID.getPidOutput() < .08 && drivePID.getPidOutput() > -0.08))) {
 				drivePID.pidDisable();
 				driveTrain.arcadeDrive(0, 0);
 				if(!shooter.isPidEnabled()) {
