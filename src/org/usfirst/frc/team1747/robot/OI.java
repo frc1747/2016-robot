@@ -6,7 +6,9 @@ import org.usfirst.frc.team1747.robot.commands.Climb;
 import org.usfirst.frc.team1747.robot.commands.InflateClimber;
 import org.usfirst.frc.team1747.robot.commands.IntakeBall;
 import org.usfirst.frc.team1747.robot.commands.LowerLift;
+import org.usfirst.frc.team1747.robot.commands.LowerScooper;
 import org.usfirst.frc.team1747.robot.commands.RaiseLift;
+import org.usfirst.frc.team1747.robot.commands.RaiseScooper;
 import org.usfirst.frc.team1747.robot.commands.Shoot;
 import org.usfirst.frc.team1747.robot.commands.Turn90;
 import org.usfirst.frc.team1747.robot.commands.TurnOnFlashlight;
@@ -36,6 +38,8 @@ public class OI {
 		auxController.getBack().toggleWhenPressed(new TurnOnFlashlight());
 		auxController.getLeftTrigger().whileHeld(new InflateClimber());
 		auxController.getRightTrigger().whileHeld(new Climb());
+		auxController.getRightBumper().whileHeld(new RaiseScooper());
+		auxController.getLeftBumper().whileHeld(new LowerScooper());
 		SmartDashboard.putData("Turn90", new Turn90());
 		// auxController.getRightTrigger().whenPressed(new TurnToAngle());
 	}

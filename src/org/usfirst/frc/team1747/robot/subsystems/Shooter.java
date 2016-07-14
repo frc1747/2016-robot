@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends Subsystem implements SDLogger {
 
@@ -95,7 +95,7 @@ public class Shooter extends Subsystem implements SDLogger {
 		private PIDController controller;
 		private boolean atTarget = false;
 		private int count = 0;
-		String side;
+		//String side;
 
 		private static final double shooterErrorMargin = 1.0;
 
@@ -117,9 +117,9 @@ public class Shooter extends Subsystem implements SDLogger {
 			controller.setAbsoluteTolerance(1.0);
 			controller.setOutputRange(0, 1);
 			
-			side = shooterSide;
+			//side = shooterSide;
 			
-			SmartDashboard.putData(side + " SHOOTER PID", controller);
+			//SmartDashboard.putData(side + " SHOOTER PID", controller);
 		}
 
 		public void setSpeed(double output) {
@@ -154,8 +154,8 @@ public class Shooter extends Subsystem implements SDLogger {
 				atTarget = false;
 			}
 			if(count > 7) atTarget = true;
-			SmartDashboard.putNumber(side + " SHOOTER COUNT", count);
-			SmartDashboard.putBoolean(side + " IS AT TARGET", atTarget);
+			//SmartDashboard.putNumber(side + " SHOOTER COUNT", count);
+			//SmartDashboard.putBoolean(side + " IS AT TARGET", atTarget);
 			
 			return atTarget;
 		}
@@ -171,7 +171,7 @@ public class Shooter extends Subsystem implements SDLogger {
 			}
 			motorOne.set(output);
 			motorTwo.set(output);
-			SmartDashboard.putNumber(side + " SHOOTER POWER", output);
+			//SmartDashboard.putNumber(side + " SHOOTER POWER", output);
 		}
 
 		@Override

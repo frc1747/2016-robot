@@ -51,6 +51,7 @@ public class AutoShoot extends Command {
 		flashlight.turnOffFlashlight();
 		driveTrain.resetGyro();
 		turnValue = driveTrain.getAutonTurn();
+		drivePID.pidDisable();
 	}
 
 	protected void execute() {
@@ -73,7 +74,7 @@ public class AutoShoot extends Command {
 				direction = "shoot";
 			}
 
-			if(direction.equals("shoot") && (!drivePID.isPidEnabled() || drivePID.isAtTarget())) {
+			if(direction.equals("shoot") && (!drivePID.isPidEnabled() || drivePID.isAtTarget() || (drivePID.getPidOutput() < .10 && drivePID.getPidOutput() > -0.10))) {
 				drivePID.pidDisable();
 				driveTrain.arcadeDrive(0, 0);
 				if(!shooter.isPidEnabled()) {
@@ -91,27 +92,31 @@ public class AutoShoot extends Command {
 				shooter.setSpeed(0.0);
 				if(direction.equals("left") || direction.equals("right")) {
 					if (!drivePID.isPidEnabled()) {
+						//driveTrain.arcadeDrive(0, 0);
 						driveTrain.resetGyro();
 						double cameraAngle = networkTable.getNumber("GyroAngle", 0.0) * 1.9;
-						//drivePID.setCameraAngle(cameraAngle);
 						drivePID.setSetpoint(cameraAngle);
 						drivePID.pidEnable();
 					}
 					if (drivePID.isAtTarget()) {
 						drivePID.pidDisable();
+						driveTrain.resetGyro();
 					}
 				} else {
-					drivePID.pidDisable();
-					if (direction.equals("forward")) {
-						driveTrain.arcadeDrive(0.30, 0.0);
-					} else if (direction.equals("backward")) {
-						driveTrain.arcadeDrive(-0.30, 0.0);
-					} else if (direction.equals("unknown")) {
+					if (drivePID.isPidEnabled() && drivePID.isAtTarget()  || (drivePID.getPidOutput() < .10 && drivePID.getPidOutput() > -0.10)) {
+						drivePID.pidDisable();
+					}
+					if (direction.equals("forward") && !drivePID.isPidEnabled()) {
+						driveTrain.tankDrive(0.3, 0.32);
+					} else if (direction.equals("backward") && !drivePID.isPidEnabled()) {
+						driveTrain.tankDrive(-0.3, -0.32);
+					} else if (direction.equals("unknown") && !drivePID.isPidEnabled()) {
+						drivePID.pidDisable();
 						if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
 								|| position == SDController.Positions.THREE) {
-							driveTrain.arcadeDrive(0, 1.3 * turnValue);
+							driveTrain.arcadeDrive(0, 1.15 * turnValue);
 						} else {
-							driveTrain.arcadeDrive(0, 1.3 * -turnValue);
+							driveTrain.arcadeDrive(0, 1.15 * -turnValue);
 						}
 					}
 				}
@@ -120,7 +125,7 @@ public class AutoShoot extends Command {
 	}
 
 	protected boolean isFinished() {
-		return (startTime != -1 && System.currentTimeMillis() - startTime > 500) || position == SDController.Positions.NOTHING;
+		return (startTime != -1 && System.currentTimeMillis() - startTime > 300) || position == SDController.Positions.NOTHING;
 	}
 
 	protected void end() {
@@ -128,6 +133,7 @@ public class AutoShoot extends Command {
 		driveTrain.arcadeDrive(0, 0);
 		shooter.setSpeed(0.0);
 		shooter.pidDisable();
+		intake.rollerStop();
 	}
 
 	protected void interrupted() {

@@ -29,7 +29,7 @@ public class DriveStraightForward extends Command {
         } else if (defenseType == SDController.Defense.ROCK_WALL) {
             defaultTime += 150;
         }
-        driveTrain.tankDrive(.5, .5);
+        driveTrain.tankDrive(.5, .525);
         startTime = System.currentTimeMillis();
     }
 

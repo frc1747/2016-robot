@@ -18,14 +18,15 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 	private double driveSetpoint;
 	private boolean atTarget = false;
 	private int count = 0;
-	private static final double errorMargin = 1.0;
+	private double pidOutput;
+	private static final double errorMargin = 0.7;
 	//private static double minPower = 0.2;
 
 	public DriveTrainPID() {
 		cameraAngle = -1.0;
-		kP = 0.039;
-		kI = 0.005;// 0.326;
-		kD = 0.080;// 0.0815;
+		kP = 0.035;
+		kI = 0.005;
+		kD = 0.085;
 		kF = 0.0;
 		pidController = new PIDController(kP, kI, kD, kF, this, this);
 		pidController.setOutputRange(-0.5, 0.5);
@@ -47,7 +48,12 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 			output = minPower;
 		}*/
 		SmartDashboard.putNumber("DRIVE PID Output", output);
+		pidOutput = output;
 		driveTrain.arcadeDrive(0, output);
+	}
+	
+	public double getPidOutput() {
+		return pidOutput;
 	}
 
 	public void setPIDSourceType(PIDSourceType pidSource) {
@@ -86,7 +92,7 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 			count = 0;
 			atTarget = false;
 		}
-		if(count > 40) atTarget = true;
+		if(count > 10) atTarget = true;
 		SmartDashboard.putNumber("DRIVE PID COUNT", count);
 		SmartDashboard.putBoolean("DRIVE PID IS AT TARGET", atTarget);
 		return atTarget;
