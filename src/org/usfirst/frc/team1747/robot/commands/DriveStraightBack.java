@@ -20,7 +20,7 @@ public class DriveStraightBack extends Command {
 	@Override
 	protected void initialize() {
 		startTime = System.currentTimeMillis();
-		driveTrain.tankDrive(-.5, -.5);
+		driveTrain.tankDrive(-.5, -.525);
 		SDController.Defense defenseType = Robot.getSd().getDefenseType();
 		defaultTime = 3000;
 		if (defenseType == SDController.Defense.MOAT || defenseType == SDController.Defense.ROUGH_TERRAIN) {
