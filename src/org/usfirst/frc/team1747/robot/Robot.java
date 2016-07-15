@@ -34,6 +34,8 @@ public class Robot extends IterativeRobot {
 	private static Climber climber;
 	private static DriveTrainPID pid;
 	
+	private static final String GAME_STATE = "GameState";
+	
 	private Command auton;
 
 	public static DriveTrain getDriveTrain() {
@@ -89,6 +91,7 @@ public class Robot extends IterativeRobot {
 		sd = new SDController();
 		sd.addSystems(shooter, drive, intake, scooper);
 		drive.resetGyro();
+    	SmartDashboard.putString(GAME_STATE, "robotInit");
 		sd.refresh();
 	}
 
@@ -104,6 +107,7 @@ public class Robot extends IterativeRobot {
 			auton.cancel();
 			auton = null;
 		}
+       	SmartDashboard.putString(GAME_STATE, "disabled");
 		sd.refresh();
 	}
 
@@ -127,6 +131,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		(auton = new BasicAuton()).start();
+    	SmartDashboard.putString(GAME_STATE, "auton");
 	}
 
 	/**
@@ -145,6 +150,7 @@ public class Robot extends IterativeRobot {
 			auton.cancel();
 			auton = null;
 		}
+    	SmartDashboard.putString(GAME_STATE, "teleop");
 		sd.refresh();
 	}
 
