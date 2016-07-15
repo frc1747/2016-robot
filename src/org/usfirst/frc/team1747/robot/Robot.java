@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -33,6 +34,7 @@ public class Robot extends IterativeRobot {
 	private static Scooper scooper;
 	private static Climber climber;
 	private static DriveTrainPID pid;
+	private NetworkTable networkTable;
 	
 	private static final String GAME_STATE = "GameState";
 	
@@ -91,7 +93,8 @@ public class Robot extends IterativeRobot {
 		sd = new SDController();
 		sd.addSystems(shooter, drive, intake, scooper);
 		drive.resetGyro();
-    	SmartDashboard.putString(GAME_STATE, "robotInit");
+		NetworkTable networkTable = NetworkTable.getTable("imageProcessing");
+    	networkTable.putString(GAME_STATE, "robotInit");
 		sd.refresh();
 	}
 
@@ -107,7 +110,7 @@ public class Robot extends IterativeRobot {
 			auton.cancel();
 			auton = null;
 		}
-       	SmartDashboard.putString(GAME_STATE, "disabled");
+       	networkTable.putString(GAME_STATE, "disabled");
 		sd.refresh();
 	}
 
@@ -131,7 +134,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		(auton = new BasicAuton()).start();
-    	SmartDashboard.putString(GAME_STATE, "auton");
+    	networkTable.putString(GAME_STATE, "auton");
 	}
 
 	/**
@@ -150,7 +153,7 @@ public class Robot extends IterativeRobot {
 			auton.cancel();
 			auton = null;
 		}
-    	SmartDashboard.putString(GAME_STATE, "teleop");
+    	networkTable.putString(GAME_STATE, "teleop");
 		sd.refresh();
 	}
 
