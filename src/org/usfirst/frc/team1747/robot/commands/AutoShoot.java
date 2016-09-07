@@ -103,15 +103,20 @@ public class AutoShoot extends Command {
 						driveTrain.resetGyro();
 					}
 				} else {
-					if (drivePID.isPidEnabled() && drivePID.isAtTarget()  || (drivePID.getPidOutput() < .10 && drivePID.getPidOutput() > -0.10)) {
-						drivePID.pidDisable();
-					}
-					if (direction.equals("forward") && !drivePID.isPidEnabled()) {
+					//if (drivePID.isPidEnabled() && drivePID.isAtTarget() || (drivePID.getPidOutput() < .10 && drivePID.getPidOutput() > -0.10)) {
+					drivePID.pidDisable();
+					//}
+					//if (direction.equals("forward") && !drivePID.isPidEnabled()) {
+					if (direction.equals("forward")) {
 						driveTrain.tankDrive(0.3, 0.32);
-					} else if (direction.equals("backward") && !drivePID.isPidEnabled()) {
+					}
+					//} else if (direction.equals("backward") && !drivePID.isPidEnabled()) {
+					else if (direction.equals("backward")) {
 						driveTrain.tankDrive(-0.3, -0.32);
-					} else if (direction.equals("unknown") && !drivePID.isPidEnabled()) {
-						drivePID.pidDisable();
+					}
+					//} else if (direction.equals("unknown") && !drivePID.isPidEnabled()) {
+					else if (direction.equals("unknown")) {
+						//drivePID.pidDisable();
 						if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
 								|| position == SDController.Positions.THREE) {
 							driveTrain.arcadeDrive(0, 1.15 * turnValue);
@@ -125,7 +130,7 @@ public class AutoShoot extends Command {
 	}
 
 	protected boolean isFinished() {
-		return (startTime != -1 && System.currentTimeMillis() - startTime > 300) || position == SDController.Positions.NOTHING;
+		return (startTime != -1 && System.currentTimeMillis() - startTime > 600) || position == SDController.Positions.NOTHING;
 	}
 
 	protected void end() {

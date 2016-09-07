@@ -20,7 +20,7 @@ public class Shooter extends Subsystem implements SDLogger {
 	private static final double LKP = 0.0126, LKI = 0.300, LKD = 0.075, LKF = 0;
 	private static final double RKP = 0.012, RKI = 0.300, RKD = 0.075, RKF = 0;
 
-	private static final double targetShooterSpeed = 67;
+	private static final double targetShooterSpeed = 67;//change back to 67;
 
 	public Shooter() {
 		leftShooter = new ShooterSide(RobotMap.LEFT_SHOOTER_MOTOR_ONE, RobotMap.LEFT_SHOOTER_MOTOR_TWO,

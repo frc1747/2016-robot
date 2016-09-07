@@ -93,7 +93,7 @@ public class Robot extends IterativeRobot {
 		sd = new SDController();
 		sd.addSystems(shooter, drive, intake, scooper);
 		drive.resetGyro();
-		NetworkTable networkTable = NetworkTable.getTable("imageProcessing");
+		networkTable = NetworkTable.getTable("imageProcessing");
     	networkTable.putString(GAME_STATE, "robotInit");
 		sd.refresh();
 	}
@@ -105,12 +105,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
+       	networkTable.putString(GAME_STATE, "disabled");
 		if(auton != null)
 		{
 			auton.cancel();
 			auton = null;
 		}
-       	networkTable.putString(GAME_STATE, "disabled");
 		sd.refresh();
 	}
 

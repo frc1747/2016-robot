@@ -17,7 +17,9 @@ public class BasicAuton extends CommandGroup {
             addSequential(new LowerScooper());
         }
         addSequential(new DriveStraightForward());
-        addSequential(new RaiseLift());
+        if(def == SDController.Defense.PORTICULLIS || def == SDController.Defense.LOW_BAR) {
+        	addSequential(new RaiseLift());
+        }
         addSequential(new AutoShoot());
         if ((pos == SDController.Positions.THREE || pos == SDController.Positions.FOUR) &&
                 (def == SDController.Defense.ROCK_WALL || def == SDController.Defense.ROUGH_TERRAIN
