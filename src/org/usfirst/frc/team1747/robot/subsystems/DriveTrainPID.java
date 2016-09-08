@@ -24,9 +24,9 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 
 	public DriveTrainPID() {
 		cameraAngle = -1.0;
-		kP = 0.035;
+		kP = 0.050;
 		kI = 0.005;
-		kD = 0.085;
+		kD = 0.095;
 		kF = 0.0;
 		pidController = new PIDController(kP, kI, kD, kF, this, this);
 		pidController.setOutputRange(-0.5, 0.5);

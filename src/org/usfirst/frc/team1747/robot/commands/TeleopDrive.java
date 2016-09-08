@@ -38,8 +38,8 @@ public class TeleopDrive extends Command {
             rightHoriz *= 1.1;// Add to compensate for turning left, may not work
         }
 
-        driveTrain.smoothDrive(leftVert, rightHoriz * (auxController.getRightBumper().get() ? turnDampening : 1));
-
+        //driveTrain.smoothDrive(leftVert, rightHoriz * (auxController.getRightBumper().get() ? turnDampening : 1));
+        driveTrain.arcadeDrive(leftVert, rightHoriz);
     }
 
     // Make this return true when this Command no longer needs to run execute()

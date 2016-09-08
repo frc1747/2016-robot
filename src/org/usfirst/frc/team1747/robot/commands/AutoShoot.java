@@ -67,6 +67,85 @@ public class AutoShoot extends Command {
 		}
 
 		if (position != SDController.Positions.NOTHING) {
+			double turnAngle = SmartDashboard.getNumber("OffCenterDegreesX");
+			double realDr = SmartDashboard.getNumber("RealDr");
+			double realXr = SmartDashboard.getNumber("RealXr");
+			
+			double xrTol = 2.625;
+			double drTol = 5;
+			double drTarget = 133;
+			double xrTarget = -1.875;
+			//String direction = networkTable.getString("ShootDirection", "robotUnknown");
+			String direction = "unknown";
+			if(SmartDashboard.getBoolean("targetFound")) {
+				direction = "shoot";
+				if(realDr > drTarget + drTol) direction = "forward";
+				if(realDr < drTarget - drTol) direction = "backward";
+				if(realXr > xrTarget + xrTol) direction = "left";
+				if(realXr < xrTarget - xrTol) direction = "right";
+			}
+			
+			if (SmartDashboard.getBoolean("LastSecondShot", false) && driverStation.isAutonomous()
+					&& !direction.equals("robotUnknown") && driverStation.getMatchTime() < 3) {
+				direction = "shoot";
+			}
+			SmartDashboard.putString("direction", direction);
+			if(direction.equals("shoot") && (!drivePID.isPidEnabled() || drivePID.isAtTarget() || (drivePID.getPidOutput() < .08 && drivePID.getPidOutput() > -0.08))) {
+				drivePID.pidDisable();
+				driveTrain.arcadeDrive(0, 0);
+				if(!shooter.isPidEnabled()) {
+					shooter.setSetpoint(shooter.getTargetShooterSpeed());
+					shooter.pidEnable();
+				}
+				if(shooter.isAtTarget()) {
+					intake.intakeBall();
+					if(startTime == -1) startTime = System.currentTimeMillis();
+				}
+			}
+			else {
+				startTime = -1;
+				shooter.pidDisable();
+				shooter.setSpeed(0.0);
+				if(direction.equals("left") || direction.equals("right")) {
+					if (!drivePID.isPidEnabled()) {
+						//driveTrain.arcadeDrive(0, 0);
+						driveTrain.resetGyro();
+						//double cameraAngle = networkTable.getNumber("GyroAngle", 0.0) * 1.9;
+						drivePID.setSetpoint(turnAngle);
+						drivePID.pidEnable();
+					}
+					if (drivePID.isAtTarget()) {
+						drivePID.pidDisable();
+						driveTrain.resetGyro();
+					}
+				} else {
+					//if (drivePID.isPidEnabled() && drivePID.isAtTarget() || (drivePID.getPidOutput() < .10 && drivePID.getPidOutput() > -0.10)) {
+					drivePID.pidDisable();
+					//}
+					//if (direction.equals("forward") && !drivePID.isPidEnabled()) {
+					if (direction.equals("forward")) {
+						driveTrain.tankDrive(0.25, 0.27);
+					}
+					//} else if (direction.equals("backward") && !drivePID.isPidEnabled()) {
+					else if (direction.equals("backward")) {
+						driveTrain.tankDrive(-0.25, -0.27);
+					}
+					//} else if (direction.equals("unknown") && !drivePID.isPidEnabled()) {
+					else if (direction.equals("unknown")) {
+						//drivePID.pidDisable();
+						if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
+								|| position == SDController.Positions.THREE) {
+							driveTrain.arcadeDrive(0, turnValue);
+						} else {
+							driveTrain.arcadeDrive(0, -turnValue);
+						}
+					}
+				}
+			}
+			
+			
+			//////////// old stuff
+			/*
 			String direction = networkTable.getString("ShootDirection", "robotUnknown");
 
 			if (SmartDashboard.getBoolean("LastSecondShot", false) && driverStation.isAutonomous()
@@ -126,6 +205,8 @@ public class AutoShoot extends Command {
 					}
 				}
 			}
+			*/
+			///////////////////////////
 		}
 	}
 
