@@ -55,17 +55,21 @@ public class AutoShoot extends Command {
 	}
 
 	protected void execute() {
+		//Ensure scooper is at lower limit
 		if (!scooper.isAtLowerLimit()) {
 			scooper.moveScooperDown();
 		} else {
 			scooper.scooperStop();
 		}
+		
+		//Ensure intake is lifted up
 		if (!intake.isAtTop()) {
 			intake.moveLiftUp();
 		} else {
 			intake.liftStop();
 		}
 
+		//For auton, make sure that the position is valid
 		if (position != SDController.Positions.NOTHING) {
 			double turnAngle = SmartDashboard.getNumber("OffCenterDegreesX");
 			double realDr = SmartDashboard.getNumber("RealDr");
@@ -79,6 +83,7 @@ public class AutoShoot extends Command {
 			String direction = "unknown";
 			if(SmartDashboard.getBoolean("targetFound")) {
 				direction = "shoot";
+				//Currently prioritizing left/right over forward/backward
 				if(realDr > drTarget + drTol) direction = "forward";
 				if(realDr < drTarget - drTol) direction = "backward";
 				if(realXr > xrTarget + xrTol) direction = "left";
