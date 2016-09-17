@@ -28,6 +28,9 @@ public class AutoShoot extends Command {
 	private DriverStation driverStation;
 	private DriveTrainPID drivePID;
 
+	int count = 0;
+	int countTarget = 16;
+
 	public AutoShoot() {
 		driveTrain = Robot.getDriveTrain();
 		shooter = Robot.getShooter();
@@ -99,6 +102,7 @@ public class AutoShoot extends Command {
 			SmartDashboard.putString("direction", direction);
 			if(direction.equals("shoot") && (!drivePID.isPidEnabled() || drivePID.isAtTarget() || (drivePID.getPidOutput() < .08 && drivePID.getPidOutput() > -0.08))) {
 				drivePID.pidDisable();
+				count = 0;
 				driveTrain.arcadeDrive(0, 0);
 				if(!shooter.isPidEnabled()) {
 					shooter.setSetpoint(shooter.getTargetShooterSpeed());
@@ -116,18 +120,24 @@ public class AutoShoot extends Command {
 				if(direction.equals("left") || direction.equals("right")) {
 					if (!drivePID.isPidEnabled()) {
 						//driveTrain.arcadeDrive(0, 0);
-						driveTrain.resetGyro();
-						//double cameraAngle = networkTable.getNumber("GyroAngle", 0.0) * 1.9;
-						drivePID.setSetpoint(realTurnAngle);
-						drivePID.pidEnable();
+						count++;
+						if(count > countTarget) {
+							driveTrain.resetGyro();
+							//double cameraAngle = networkTable.getNumber("GyroAngle", 0.0) * 1.9;
+							drivePID.setSetpoint(realTurnAngle);
+							drivePID.pidEnable();
+							count = 0;
+						}
 					}
 					if (drivePID.isAtTarget()) {
 						drivePID.pidDisable();
 						driveTrain.resetGyro();
+						count = 0;
 					}
 				} else {
 					//if (drivePID.isPidEnabled() && drivePID.isAtTarget() || (drivePID.getPidOutput() < .10 && drivePID.getPidOutput() > -0.10)) {
 					drivePID.pidDisable();
+					count = 0;
 					//}
 					//if (direction.equals("forward") && !drivePID.isPidEnabled()) {
 					if (direction.equals("forward")) {
@@ -223,6 +233,7 @@ public class AutoShoot extends Command {
 
 	protected void end() {
 		drivePID.pidDisable();
+		count = 0;
 		driveTrain.arcadeDrive(0, 0);
 		shooter.setSpeed(0.0);
 		shooter.pidDisable();
