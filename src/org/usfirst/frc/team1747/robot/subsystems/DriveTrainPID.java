@@ -81,7 +81,7 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 
 	public void pidDisable() {
 		count = 0;
-		pidController.disable();
+		pidController.reset();
 	}
 
 	public boolean isAtTarget() {

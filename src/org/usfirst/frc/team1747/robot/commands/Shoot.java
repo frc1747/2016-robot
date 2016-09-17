@@ -5,25 +5,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team1747.robot.Robot;
 import org.usfirst.frc.team1747.robot.subsystems.Intake;
+import org.usfirst.frc.team1747.robot.subsystems.Scooper;
 import org.usfirst.frc.team1747.robot.subsystems.Shooter;
 
 public class Shoot extends Command {
 
 	private Shooter shooter;
 	private Intake intake;
+	private Scooper scooper;
 	private double timeToSettle;
 
 	public Shoot() {
 		shooter = Robot.getShooter();
 		intake = Robot.getIntake();
+		scooper = Robot.getScooper();
 		requires(shooter);
 		requires(intake);
+		requires(scooper);
 	}
 
 	protected void initialize() {
 		timeToSettle = 0;
 		shooter.setSetpoint(shooter.getTargetShooterSpeed());
 		shooter.pidEnable();
+		if (!scooper.isAtLowerLimit()) {
+			scooper.moveScooperDown();
+		} else {
+			scooper.scooperStop();
+		}
 	}
 
 	protected void execute() {

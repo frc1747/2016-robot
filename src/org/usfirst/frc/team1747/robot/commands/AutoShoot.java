@@ -77,8 +77,10 @@ public class AutoShoot extends Command {
 			
 			double xrTol = 2.625;
 			double drTol = 5;
-			double drTarget = 133;
-			double xrTarget = -1.875;
+			double drTarget = 139;
+			double xrTarget = -2.05;
+			double angleOffset = Math.atan2(xrTarget, drTarget);
+			double realTurnAngle = turnAngle + angleOffset;
 			//String direction = networkTable.getString("ShootDirection", "robotUnknown");
 			String direction = "unknown";
 			if(SmartDashboard.getBoolean("targetFound")) {
@@ -116,7 +118,7 @@ public class AutoShoot extends Command {
 						//driveTrain.arcadeDrive(0, 0);
 						driveTrain.resetGyro();
 						//double cameraAngle = networkTable.getNumber("GyroAngle", 0.0) * 1.9;
-						drivePID.setSetpoint(turnAngle);
+						drivePID.setSetpoint(realTurnAngle);
 						drivePID.pidEnable();
 					}
 					if (drivePID.isAtTarget()) {
