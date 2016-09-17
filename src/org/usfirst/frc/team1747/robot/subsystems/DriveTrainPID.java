@@ -29,7 +29,7 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 		kD = 0.095;
 		kF = 0.0;
 		pidController = new PIDController(kP, kI, kD, kF, this, this);
-		pidController.setOutputRange(-0.5, 0.5);
+		pidController.setOutputRange(-0.4, 0.4);
 		pidController.setAbsoluteTolerance(0.5);
 		driveTrain = Robot.getDriveTrain();
 		SmartDashboard.putData("DRIVE PID Controller", pidController);
