@@ -66,11 +66,11 @@ public class AutoShoot extends Command {
 		}
 		
 		//Ensure intake is lifted up
-		if (!intake.isAtTop()) {
+		/*if (!intake.isAtTop()) {
 			intake.moveLiftUp();
 		} else {
 			intake.liftStop();
-		}
+		}*/
 
 		//For auton, make sure that the position is valid
 		if (position != SDController.Positions.NOTHING) {
@@ -81,7 +81,7 @@ public class AutoShoot extends Command {
 			double xrTol = 2.625;
 			double drTol = 5;
 			double drTarget = 139;
-			double xrTarget = -2.05;
+			double xrTarget = -2.1;
 			double angleOffset = Math.atan2(xrTarget, drTarget);
 			double realTurnAngle = turnAngle + angleOffset;
 			//String direction = networkTable.getString("ShootDirection", "robotUnknown");
@@ -121,23 +121,27 @@ public class AutoShoot extends Command {
 					if (!drivePID.isPidEnabled()) {
 						//driveTrain.arcadeDrive(0, 0);
 						count++;
+						System.out.println("Incrementing counter");
 						if(count > countTarget) {
 							driveTrain.resetGyro();
 							//double cameraAngle = networkTable.getNumber("GyroAngle", 0.0) * 1.9;
 							drivePID.setSetpoint(realTurnAngle);
 							drivePID.pidEnable();
 							count = 0;
+							System.out.println("count = 0; location 1");
 						}
 					}
 					if (drivePID.isAtTarget()) {
 						drivePID.pidDisable();
 						driveTrain.resetGyro();
 						count = 0;
+						System.out.println("count = 0; location 2");
 					}
 				} else {
 					//if (drivePID.isPidEnabled() && drivePID.isAtTarget() || (drivePID.getPidOutput() < .10 && drivePID.getPidOutput() > -0.10)) {
 					drivePID.pidDisable();
 					count = 0;
+					System.out.println("count = 0; location 3");
 					//}
 					//if (direction.equals("forward") && !drivePID.isPidEnabled()) {
 					if (direction.equals("forward")) {
@@ -159,7 +163,7 @@ public class AutoShoot extends Command {
 					}
 				}
 			}
-			
+			SmartDashboard.putNumber("drive pid count", count);
 			
 			//////////// old stuff
 			/*

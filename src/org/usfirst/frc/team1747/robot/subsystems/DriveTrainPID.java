@@ -19,7 +19,7 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 	private boolean atTarget = false;
 	private int count = 0;
 	private double pidOutput;
-	private static final double errorMargin = 0.7;
+	private static final double errorMargin = 0.4;
 	//private static double minPower = 0.2;
 
 	public DriveTrainPID() {
@@ -81,11 +81,13 @@ public class DriveTrainPID extends Subsystem implements PIDSource, PIDOutput {
 
 	public void pidDisable() {
 		count = 0;
+		driveSetpoint = 0;
 		pidController.reset();
 	}
 
 	public boolean isAtTarget() {
-		if(Math.abs(driveSetpoint - driveTrain.getTurnAngle()) < errorMargin) {
+		atTarget = false;
+		if(pidController.isEnabled() && Math.abs(driveSetpoint - driveTrain.getTurnAngle()) < errorMargin) {
 			count++;
 		}
 		else {

@@ -34,10 +34,16 @@ public class TeleopDrive extends Command {
     @Override
     protected void execute() {
         double leftVert = controller.getLeftVert(), rightHoriz = controller.getRightHoriz();
+        if(controller.getLeftTrigger().get()) {
+        	rightHoriz *= .5;
+        }
         if (rightHoriz < 0) {
             rightHoriz *= 1.1;// Add to compensate for turning left, may not work
         }
 
+        if(Math.abs(rightHoriz) > .1) {
+        	System.out.println(rightHoriz);
+        }
         //driveTrain.smoothDrive(leftVert, rightHoriz * (auxController.getRightBumper().get() ? turnDampening : 1));
         driveTrain.arcadeDrive(leftVert, rightHoriz);
     }
