@@ -16,6 +16,11 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+//Test logging stuff
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.FileOutputStream;
+
 public class DriveTrain extends Subsystem implements SDLogger {
 	double integralError, previousError, totalPreviousAngles;
 	LinkedList<Double> previousAngles;
@@ -36,6 +41,12 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	private boolean pidEnabled;
 	private static final int errBuffSize = 1;
 
+	//Test logging stuff
+	private PrintWriter print;
+	private double printOffset;
+	private double printTime;
+	private double printTurn;
+	
 	// Sets up CANTalons for drive train; maps the left and right LEDs
 	public DriveTrain() {
 		gyro = new AHRS(SPI.Port.kMXP);
@@ -57,17 +68,36 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("Turn Dampening", 0.9);
 		SmartDashboard.putNumber("Auton Turning", 0.350);
 		SmartDashboard.putBoolean("BackUpInAuto", false);
+		
+		//More data collection
+		try {
+			File f = new File("/home/lvuser/turning.csv");
+			f.createNewFile();
+			print = new PrintWriter(new FileOutputStream(f,true));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		printTime = 0;
+		printTurn = 0;
+		printOffset = 0;
+		print.println("\nTime, Input, Angle"); //Need extra line for spacing
+		print.println(printTime + ", " + printTurn + ", " + getUnzeroedAngle());
+		printTime += .02;
 	}
 
 	// Sets up the tank drive using left and right speed
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		left.set(leftSpeed);
 		right.set(rightSpeed);
+		printTurn = (leftSpeed - rightSpeed)/2;
 	}
 
 	// sets up arcade drive
 	public void arcadeDrive(double straight, double turn) {
 		tankDrive(straight + turn, straight - turn);
+		printTurn = turn;
 	}
 
 	// This is smooth drive.
@@ -125,11 +155,17 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	}
 
 	public void resetGyro() {
+		printOffset += getTurnAngle();
+		
 		gyro.zeroYaw();
 	}
 
 	public double getTurnAngle() {
 		return gyro.getYaw();
+	}
+	
+	public double getUnzeroedAngle() {
+		return getTurnAngle() + printOffset;
 	}
 
 	// This is a public void that logs smart dashboard.
@@ -142,6 +178,10 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		SmartDashboard.putNumber("Turn Velocity", gyro.getRate());
 		teleopTurnDampening = SmartDashboard.getNumber("Turn Dampening", teleopTurnDampening);
 		autonTurn = SmartDashboard.getNumber("Auton Turning", autonTurn);
+		
+		//@50hz		
+		print.println(printTime + ", " + printTurn + ", " + getUnzeroedAngle());
+		printTime += .02;
 	}
 
 	// enables left and right PIDs
