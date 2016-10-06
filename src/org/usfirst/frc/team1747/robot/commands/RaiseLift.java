@@ -21,23 +21,29 @@ public class RaiseLift extends Command {
 	@Override
 	protected void initialize() {
 		startTime = System.currentTimeMillis();
-		intake.moveLiftUp();
+		intake.setSetpoint(0.0);
+		intake.pidEnable();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		//intake.moveLiftUp();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return intake.isAtTop() || (System.currentTimeMillis() - startTime >= 1500);
+		if(intake.isAtTarget()) {
+			return true;
+		}
+		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		intake.pidDisable();
 		intake.liftControl(0);
 	}
 

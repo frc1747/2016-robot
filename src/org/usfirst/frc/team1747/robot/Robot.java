@@ -93,6 +93,7 @@ public class Robot extends IterativeRobot {
 		sd = new SDController();
 		sd.addSystems(shooter, drive, intake, scooper);
 		drive.resetGyro();
+		intake.resetEncoder();
 		networkTable = NetworkTable.getTable("imageProcessing");
     	networkTable.putString(GAME_STATE, "robotInit");
 		sd.refresh();
