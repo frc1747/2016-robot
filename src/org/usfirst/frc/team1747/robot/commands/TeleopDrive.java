@@ -45,7 +45,7 @@ public class TeleopDrive extends Command {
         	System.out.println(rightHoriz);
         }
         //driveTrain.smoothDrive(leftVert, rightHoriz * (auxController.getRightBumper().get() ? turnDampening : 1));
-        driveTrain.arcadeDrive(leftVert, rightHoriz);
+        driveTrain.arcadeDrive(leftVert * 0.75 , rightHoriz * 0.75);
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -20,9 +20,12 @@ public class DriveStraightForward extends Command {
     protected void initialize() {
         SDController.Positions position = Robot.getSd().getAutonPosition();
         SDController.Defense defenseType = Robot.getSd().getDefenseType();
-        defaultTime = 3250;
+        defaultTime = 3200;
         if (position == SDController.Positions.ONE || position == SDController.Positions.FIVE) {
             defaultTime += 50;
+        }
+        else if (position == SDController.Positions.TWO || position == SDController.Positions.THREE || position == SDController.Positions.FOUR){
+        	defaultTime -= 325;
         }
         if (defenseType == SDController.Defense.ROUGH_TERRAIN || defenseType == SDController.Defense.MOAT) {
             defaultTime -= 50;

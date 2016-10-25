@@ -80,7 +80,7 @@ public class AutoShoot extends Command {
 			
 			double xrTol = 2.625;
 			double drTol = 5;
-			double drTarget = 139;
+			double drTarget = 130;
 			double xrTarget = -2.1;
 			double angleOffset = Math.atan2(xrTarget, drTarget);
 			double realTurnAngle = turnAngle + angleOffset;
@@ -156,9 +156,9 @@ public class AutoShoot extends Command {
 						//drivePID.pidDisable();
 						if (position == SDController.Positions.ONE || position == SDController.Positions.TWO
 								|| position == SDController.Positions.THREE) {
-							driveTrain.arcadeDrive(0, turnValue);
+							driveTrain.arcadeDrive(0, turnValue * 0.85);
 						} else {
-							driveTrain.arcadeDrive(0, -turnValue);
+							driveTrain.arcadeDrive(0, -turnValue * 0.85);
 						}
 					}
 				}

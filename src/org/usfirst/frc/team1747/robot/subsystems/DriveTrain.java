@@ -46,6 +46,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 	private double printOffset;
 	private double printTime;
 	private double printTurn;
+	private double printPower;
 	
 	// Sets up CANTalons for drive train; maps the left and right LEDs
 	public DriveTrain() {
@@ -81,9 +82,10 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		
 		printTime = 0;
 		printTurn = 0;
+		printPower = 0;
 		printOffset = 0;
-		print.println("\nTime, Input, Angle"); //Need extra line for spacing
-		print.println(printTime + ", " + printTurn + ", " + getUnzeroedAngle());
+		print.println("\nTime, Turn Power, Drive Power, Angle"); //Need extra line for spacing
+		print.println(printTime + ", " + printTurn + ", " + printPower + ", " + getUnzeroedAngle());
 		printTime += .02;
 	}
 
@@ -92,12 +94,14 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		left.set(leftSpeed);
 		right.set(rightSpeed);
 		printTurn = (leftSpeed - rightSpeed)/2;
+		printPower = (leftSpeed + rightSpeed)/2;
 	}
 
 	// sets up arcade drive
 	public void arcadeDrive(double straight, double turn) {
 		tankDrive(straight + turn, straight - turn);
 		printTurn = turn;
+		printPower = straight;
 	}
 
 	// This is smooth drive.
@@ -180,7 +184,7 @@ public class DriveTrain extends Subsystem implements SDLogger {
 		autonTurn = SmartDashboard.getNumber("Auton Turning", autonTurn);
 		
 		//@50hz		
-		print.println(printTime + ", " + printTurn + ", " + getUnzeroedAngle());
+		print.println(printTime + ", " + printTurn + ", " + printPower + ", " + getUnzeroedAngle());
 		printTime += .02;
 	}
 
